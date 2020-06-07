@@ -1,0 +1,42 @@
+
+import 'dart:convert';
+
+import 'package:bloc/bloc.dart';
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:updateperutangan/src/page/login/bloc/login_event.dart';
+import 'package:updateperutangan/src/page/login/bloc/login_state.dart';
+
+class LoginBloc extends Bloc<LoginEvent,LoginState>{
+
+
+  @override
+  LoginState get initialState => InitialLogin();
+
+  @override
+  Stream<LoginState> mapEventToState(LoginEvent event) async*{
+    if(event is LoginButtonPressed){
+      yield LoadingLogin();
+      try{
+        final http.Response response = await http.post(
+          'https://hutangku.herokuapp.com/login',
+          body: jsonEncode(<String, String>{
+            'username' : event.username,
+            'password' : event.password
+          })
+        );
+        print(response.body);
+        if(response.statusCode == 200){
+          yield SuccessLogin();
+        } else{
+          yield ErrorLogin();
+        }
+      } catch(_){
+        yield ErrorLogin();
+      }
+
+    }
+
+  }
+
+}
