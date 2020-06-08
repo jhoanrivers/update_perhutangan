@@ -7,6 +7,7 @@ import 'package:updateperutangan/src/page/login/bloc/login_bloc.dart';
 import 'package:updateperutangan/src/page/login/bloc/login_event.dart';
 import 'package:updateperutangan/src/page/login/bloc/login_state.dart';
 import 'package:updateperutangan/src/page/register/register_page.dart';
+import 'package:updateperutangan/src/page/register/register_view.dart';
 import 'package:updateperutangan/src/utils/basestyle.dart';
 
 class LoginForm extends StatefulWidget {
@@ -103,7 +104,7 @@ class _LoginFormState extends State<LoginForm> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         SizedBox(
-                          height: 100,
+                          height: 140,
                         ),
                         Container(
                             height: 100,
@@ -188,7 +189,6 @@ class _LoginFormState extends State<LoginForm> {
                             InkWell(
                               onTap: (){
                                 Navigator.push(context, MaterialPageRoute(builder: (context) => RegisterPage()));
-
                               },
                               child: Text('Sign Up',
                                 style: BaseStyle.ts12BlueBold,),
