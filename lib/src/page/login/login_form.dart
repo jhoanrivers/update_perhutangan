@@ -19,6 +19,10 @@ class _LoginFormState extends State<LoginForm> {
   var usernameController = TextEditingController();
   var passwordController = TextEditingController();
   var loginBloc;
+  bool obsecurePass = true;
+  bool autoVal = false;
+
+  final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -90,77 +94,112 @@ class _LoginFormState extends State<LoginForm> {
           builder: (BuildContext context, LoginState state) {
 
             return SingleChildScrollView(
-              child: Padding(
-                padding: EdgeInsets.all(16),
-                child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      SizedBox(
-                        height: 100,
-                      ),
-                      Container(
+              child: Form(
+                key: _formKey,
+                child: Padding(
+                  padding: EdgeInsets.all(16),
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        SizedBox(
                           height: 100,
-                          width: 100,
-                          child: Image.asset('assets/logo.png')
-                      ),
-                      SizedBox(height: 20,),
-                      TextFormField(
-                        decoration: InputDecoration(
-                            labelText: 'Username'
                         ),
-                        controller: usernameController,
-                      ),
-                      TextFormField(
-                        decoration: InputDecoration(
-                            labelText: 'Password',
-                            suffix: FlatButton(
-                              onPressed: (){},
-                              child: Text('Show'),
-                            )
+                        Container(
+                            height: 100,
+                            width: 100,
+                            child: Image.asset('assets/logo.png')
                         ),
-                        controller: passwordController,
-                        obscureText: true,
-                      ),
-                      SizedBox(
-                        height: 80,
-                      ),
-
-                      SizedBox(
-                        width: double.infinity,
-                        child: RaisedButton(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(6),
+                        SizedBox(height: 20,),
+                        TextFormField(
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(6),
+                              borderSide: BorderSide()
+                            ),
+                            labelText: 'Username',
                           ),
-                          padding: EdgeInsets.symmetric(vertical: 12),
-                          color: Colors.blue,
-                          onPressed: onButtonPressed,
-                          child: Text('Login',
-                            style: BaseStyle.ts18WhiteBold,),
+                          autovalidate: autoVal,
+                          controller: usernameController,
+                          validator: (value){
+                            if(value.isEmpty){
+                              return 'Username can not be empty';
+                            }
+                            return null;
+                          },
+
                         ),
-                      ),
-                      SizedBox(
-                        height: 24,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          Text("Don't have an account? "),
-                          InkWell(
-                            onTap: (){
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => RegisterPage()));
+                        SizedBox(
+                          height: 24,
+                        ),
+                        TextFormField(
+                          decoration: InputDecoration(
+                              labelText: 'Password',
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(6),
+                                borderSide: BorderSide()
+                              ),
+                              suffix: GestureDetector(
+                                onTap: (){
+                                  setState(() {
+                                    obsecurePass = !obsecurePass;
+                                  });
+                                },
+                                child: obsecurePass
+                                    ? Text('Show')
+                                    : Text('Hide'),
+                              ),
+                          ),
+                          controller: passwordController,
+                          obscureText: obsecurePass,
+                          autovalidate: autoVal,
+                          validator: (value){
+                            if(value.isEmpty){
+                              return 'Password can not be empty';
+                            }
+                            return null;
+                          },
+                        ),
+                        SizedBox(
+                          height: 80,
+                        ),
 
-                            },
-                            child: Text('Sign Up',
-                              style: BaseStyle.ts12BlueBold,),
-                          )
+                        SizedBox(
+                          width: double.infinity,
+                          child: RaisedButton(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(6),
+                            ),
+                            padding: EdgeInsets.symmetric(vertical: 12),
+                            color: Colors.blue,
+                            onPressed: onButtonPressed,
+                            child: Text('Login',
+                              style: BaseStyle.ts18WhiteBold,),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            Text("Don't have an account? "),
+                            InkWell(
+                              onTap: (){
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => RegisterPage()));
 
-                        ],
-                      ),
+                              },
+                              child: Text('Sign Up',
+                                style: BaseStyle.ts12BlueBold,),
+                            )
+
+                          ],
+                        ),
 
 
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -179,12 +218,20 @@ class _LoginFormState extends State<LoginForm> {
   }
 
   void onButtonPressed() {
-    loginBloc.add(
-      LoginButtonPressed(
-        username: usernameController.text,
-        password: passwordController.text,
-      )
-    );
+    if(!_formKey.currentState.validate()){
+      setState(() {
+        autoVal = true;
+      });
+    }
+    else{
+      loginBloc.add(
+          LoginButtonPressed(
+            username: usernameController.text,
+            password: passwordController.text,
+          )
+      );
+    }
+
 
   }
 }
