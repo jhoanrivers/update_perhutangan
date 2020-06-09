@@ -9,6 +9,7 @@ import 'package:updateperutangan/src/page/login/bloc/login_state.dart';
 import 'package:updateperutangan/src/page/register/register_page.dart';
 import 'package:updateperutangan/src/page/register/register_view.dart';
 import 'package:updateperutangan/src/utils/basestyle.dart';
+import 'package:updateperutangan/src/widget/navigation_bar.dart';
 
 class LoginForm extends StatefulWidget {
   @override
@@ -60,7 +61,7 @@ class _LoginFormState extends State<LoginForm> {
           if(state is SuccessLogin){
             Navigator.pop(context);
             Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(builder: (context) => HomePage()), (route)=> false);
+              MaterialPageRoute(builder: (context) => NavigationBar()), (route)=> false);
           }
 
           if(state is LoadingLogin){

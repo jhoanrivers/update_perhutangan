@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:updateperutangan/src/page/login/login_page.dart';
 import 'package:updateperutangan/src/page/register/bloc/register_bloc.dart';
+import 'package:updateperutangan/src/page/register/bloc/register_event.dart';
 import 'package:updateperutangan/src/page/register/bloc/register_state.dart';
 import 'package:updateperutangan/src/utils/basestyle.dart';
 
@@ -36,6 +37,19 @@ class _RegisterViewState extends State<RegisterView> {
   }
 
 
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    usernameController.dispose();
+    nameController.dispose();
+    ovoController.dispose();
+    gopayController.dispose();
+    danaController.dispose();
+    passwordController.dispose();
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +59,6 @@ class _RegisterViewState extends State<RegisterView> {
         if(state is LoadingRegister){
           showDialog(
             context: context,
-            barrierDismissible: false,
             builder: (BuildContext context) {
               return Dialog(
                 shape: RoundedRectangleBorder(
@@ -71,7 +84,7 @@ class _RegisterViewState extends State<RegisterView> {
           Navigator.pop(context);
           Scaffold.of(context).showSnackBar(
             SnackBar(
-              content: Text('Login Failure'),
+              content: Text('Username already used'),
               backgroundColor: Colors.red,
             ),
           );
@@ -79,12 +92,48 @@ class _RegisterViewState extends State<RegisterView> {
 
         if(state is SuccessRegister){
           Navigator.pop(context);
-          Navigator.pop(context);
-          Scaffold.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Register success, please login with your new account'),
-              backgroundColor: Colors.blue,
-            ),
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return Dialog(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(6)
+                ),
+                child: Padding(
+                  padding: EdgeInsets.all(20),
+                  child: Column(
+                    
+                    children: [
+                      Icon(Icons.check_circle,
+                        size: 60,
+                        color: Colors.green,
+                      ),
+                      SizedBox(height: 24,),
+                      Text('Registration successful, Please log-in with your new account',
+                        style: BaseStyle.ts14PrimaryBold,),
+                      SizedBox(height: 24,),
+                      SizedBox(
+                        width: double.infinity,
+                        child: FlatButton(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(6)
+                          ),
+                          padding: EdgeInsets.symmetric(vertical: 14),
+                          color: Colors.green,
+                          onPressed: () {
+                            Navigator.pop(context);
+                            Navigator.pop(context);
+                            Navigator.push(context, MaterialPageRoute(builder: (context)=> LoginPage()));
+                          },
+                          child: Text('Login',style: BaseStyle.ts14White,),
+
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              );
+            },
           );
         }
 
@@ -224,6 +273,7 @@ class _RegisterViewState extends State<RegisterView> {
                                           : Text('Hide'),
                                     )
                                 ),
+                                obscureText: obsecurePass,
                                 controller: passwordController,
                                 autovalidate: autoVal,
                                 validator: (value){
@@ -245,6 +295,8 @@ class _RegisterViewState extends State<RegisterView> {
                                         borderSide: BorderSide()
                                     )
                                 ),
+                                obscureText: obsecurePass,
+                                autovalidate: autoVal,
                                 validator: (value){
                                   if(value.isEmpty){
                                     return 'Password can not be empty';
@@ -297,7 +349,14 @@ class _RegisterViewState extends State<RegisterView> {
       });
     }
     else{
-
+      registerBloc.add(RegisterButtonPressed(
+          username: usernameController.text,
+          name: nameController.text,
+          password: passwordController.text,
+          dana: danaController.text,
+          gopay: gopayController.text,
+          ovo: ovoController.text
+      ));
     }
   }
 }

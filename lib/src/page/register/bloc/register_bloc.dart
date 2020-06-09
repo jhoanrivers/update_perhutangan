@@ -30,8 +30,11 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState>{
           })
         );
 
+        print(response.body);
         if(response.statusCode == 200){
           yield SuccessRegister();
+        } else{
+          yield ErrorRegister();
         }
       }catch(_){
         yield ErrorRegister();

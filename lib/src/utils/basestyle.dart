@@ -75,6 +75,21 @@ class BaseStyle {
   );
 
 
+  static TextStyle ts16RedBold = TextStyle(
+      fontFamily: fontFamily,
+      fontSize: 16,
+      color: Colors.red,
+      fontWeight: bold
+  );
+
+  static TextStyle ts16GreenBold = TextStyle(
+      fontFamily: fontFamily,
+      fontSize: 16,
+      color: Colors.green,
+      fontWeight: bold
+  );
+
+
 
 
 
