@@ -3,8 +3,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:updateperutangan/src/page/home/home_page.dart';
-import 'package:updateperutangan/src/page/minus/minus_view.dart';
-import 'package:updateperutangan/src/page/plus/plus_view.dart';
+import 'package:updateperutangan/src/page/hutang/minus_view.dart';
+import 'package:updateperutangan/src/page/piutang/piutang_view.dart';
+import 'package:updateperutangan/src/page/profile/profile_page.dart';
 
 class NavigationBar extends StatefulWidget {
   @override
@@ -22,8 +23,15 @@ class _NavigationBarState extends State<NavigationBar> {
       child: MinusView(),
     ),
     Center(
-      child: PlusView(),
+      child: PiutangView(),
+    ),
+    Center(
+      child: PiutangView(),
+    ),
+    Center(
+      child: ProfilePage(),
     )
+
 
   ];
 
@@ -37,6 +45,7 @@ class _NavigationBarState extends State<NavigationBar> {
       ),
 
       bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
@@ -47,13 +56,34 @@ class _NavigationBarState extends State<NavigationBar> {
             title: Text('Minus')
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.call_made),
+            icon: Icon(Icons.call_made,),
             title: Text('Plus')
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.chat),
+            title: Text('Chat')
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            title: Text('Profile')
           )
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.blue,
+        selectedItemColor:
+         _selectedIndex == 1
+             ? Colors.red
+             : _selectedIndex == 2
+                ? Colors.green
+                : Colors.deepOrangeAccent,
+        selectedLabelStyle: TextStyle(
+          color: _selectedIndex == 1
+              ? Colors.red
+              : _selectedIndex == 2
+                ? Colors.green
+                : Colors.grey,
+        ),
         onTap: _onTapItem,
+        unselectedItemColor: Colors.grey,
 
 
       ),

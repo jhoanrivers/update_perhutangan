@@ -18,12 +18,10 @@ class RegisterButtonPressed extends RegisterEvent {
   final String password;
   final String ovo;
   final String gopay;
-  final String dana;
 
   RegisterButtonPressed({
-    this.ovo,
-    this.gopay,
-    this.dana,
+    @required this.ovo,
+    @required this.gopay,
     @required this.username,
     @required this.name,
     @required this.password,

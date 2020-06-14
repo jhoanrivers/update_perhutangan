@@ -63,6 +63,14 @@ class BaseStyle {
       color: Colors.black
   );
 
+  static TextStyle ts14PrimaryLabel = TextStyle(
+      fontFamily: fontFamily,
+      fontSize: 14,
+      color: Colors.grey,
+      fontWeight: FontWeight.w600
+  );
+
+
   static TextStyle ts14PrimaryBold = TextStyle(
       fontFamily: fontFamily,
       fontSize: 14,
@@ -87,6 +95,21 @@ class BaseStyle {
       fontSize: 16,
       color: Colors.green,
       fontWeight: bold
+  );
+
+  static TextStyle ts16WhiteBold = TextStyle(
+      fontFamily: fontFamily,
+      fontSize: 16,
+      color: Colors.white,
+      fontWeight: bold
+  );
+
+
+  static var ts14WhiteBold =  TextStyle(
+      fontFamily: fontFamily,
+      fontSize: 14,
+      color: Colors.white,
+      fontWeight: FontWeight.w600
   );
 
 
