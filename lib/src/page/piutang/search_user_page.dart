@@ -3,16 +3,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:updateperutangan/src/page/piutang/bloc/piutang_bloc.dart';
-import 'package:updateperutangan/src/page/piutang/piutang_view.dart';
+import 'package:updateperutangan/src/page/piutang/search_user_view.dart';
 
-class PiutangPage extends StatelessWidget {
-  const PiutangPage();
-
+class SearchUserPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (BuildContext context) => PiutangBloc(),
-      child: PiutangView(),
+      create: (context) => PiutangBloc(),
+      child: SearchUserView(),
     );
   }
 }

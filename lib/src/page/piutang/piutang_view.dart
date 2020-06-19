@@ -2,6 +2,10 @@
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:updateperutangan/src/page/piutang/bloc/piutang_bloc.dart';
+import 'package:updateperutangan/src/page/piutang/bloc/piutang_event.dart';
+import 'package:updateperutangan/src/page/piutang/create_putang_form.dart';
 import 'package:updateperutangan/src/utils/basestyle.dart';
 
 class PiutangView extends StatefulWidget {
@@ -13,6 +17,20 @@ class PiutangView extends StatefulWidget {
 }
 
 class _PiutangViewState extends State<PiutangView> {
+
+  PiutangBloc piutangBloc;
+
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    piutangBloc = BlocProvider.of<PiutangBloc>(context);
+
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -74,7 +92,16 @@ class _PiutangViewState extends State<PiutangView> {
 
 
       floatingActionButton: FloatingActionButton(
-        onPressed: () {  },
+        onPressed: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context) =>
+              BlocProvider(
+                create: (BuildContext context) {
+                  return PiutangBloc();
+                },
+                child:  CreatePiutangForm(),
+              ),)
+          );
+        },
         child: Icon(Icons.add,
         color: Colors.white,),
         elevation: 4,

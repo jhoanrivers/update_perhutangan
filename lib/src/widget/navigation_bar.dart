@@ -4,6 +4,7 @@
 import 'package:flutter/material.dart';
 import 'package:updateperutangan/src/page/home/home_page.dart';
 import 'package:updateperutangan/src/page/hutang/minus_view.dart';
+import 'package:updateperutangan/src/page/piutang/piutang_page.dart';
 import 'package:updateperutangan/src/page/piutang/piutang_view.dart';
 import 'package:updateperutangan/src/page/profile/profile_page.dart';
 
@@ -23,7 +24,7 @@ class _NavigationBarState extends State<NavigationBar> {
       child: MinusView(),
     ),
     Center(
-      child: PiutangView(),
+      child: PiutangPage(),
     ),
     Center(
       child: PiutangView(),
@@ -53,11 +54,11 @@ class _NavigationBarState extends State<NavigationBar> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.call_received),
-            title: Text('Minus')
+            title: Text('Hutang')
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.call_made,),
-            title: Text('Plus')
+            title: Text('Piutang')
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.chat),

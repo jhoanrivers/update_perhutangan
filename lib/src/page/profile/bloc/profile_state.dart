@@ -21,7 +21,7 @@ class SuccessLogoutState extends ProfileState{}
 class FailedLogoutState extends ProfileState{}
 
 class SuccessFetchData extends ProfileState{
-  final Account account;
+final Account account;
 
   SuccessFetchData({this.account});
 
