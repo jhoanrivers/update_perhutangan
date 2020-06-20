@@ -14,8 +14,6 @@ abstract class PiutangEvent extends Equatable{
 }
 
 
-class FetchDataPiutang extends PiutangEvent{}
-
 class CreatePiutang extends PiutangEvent{
   List<int> id;
   String item;
@@ -30,8 +28,21 @@ class CreatePiutang extends PiutangEvent{
   });
 
   @override
-  List<Object> get props => [id,item,description,amount];
+  List<Object> get props {
+    return [
+      id,
+      item,
+      description,
+      amount
+    ];
+  }
+
 
 }
 
 class SearchUser extends PiutangEvent{}
+
+
+class PiutangBackAfterSuccess extends PiutangEvent{}
+
+class FetchAllPiutang extends PiutangEvent{}

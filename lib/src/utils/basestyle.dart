@@ -112,6 +112,13 @@ class BaseStyle {
       fontWeight: FontWeight.w600
   );
 
+  static var ts16BlackBold = TextStyle(
+    fontFamily: fontFamily,
+    fontSize: 16,
+    fontWeight: FontWeight.w800,
+    color: Colors.black
+  );
+
 
 
 

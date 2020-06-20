@@ -2,8 +2,10 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:updateperutangan/src/page/chat/chat_page.dart';
 import 'package:updateperutangan/src/page/home/home_page.dart';
-import 'package:updateperutangan/src/page/hutang/minus_view.dart';
+import 'package:updateperutangan/src/page/hutang/hutang_page.dart';
+import 'package:updateperutangan/src/page/hutang/hutang_view.dart';
 import 'package:updateperutangan/src/page/piutang/piutang_page.dart';
 import 'package:updateperutangan/src/page/piutang/piutang_view.dart';
 import 'package:updateperutangan/src/page/profile/profile_page.dart';
@@ -21,13 +23,13 @@ class _NavigationBarState extends State<NavigationBar> {
       child: HomePage(),
     ),
     Center(
-      child: MinusView(),
+      child: HutangPage(),
     ),
     Center(
       child: PiutangPage(),
     ),
     Center(
-      child: PiutangView(),
+      child: ChatPage(),
     ),
     Center(
       child: ProfilePage(),

@@ -85,10 +85,8 @@ class _SearchUserViewState extends State<SearchUserView> {
                                 });
                                 if (state.listAccount[index].isSelected) {
                                   resultList.add(state.listAccount[index]);
-                                  print(resultList.length);
                                 } else {
                                   resultList.remove(state.listAccount[index]);
-                                  print(resultList.length);
                                 }
                               }
                             },

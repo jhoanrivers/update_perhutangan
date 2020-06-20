@@ -7,6 +7,7 @@ import 'dart:io';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:updateperutangan/src/model/account.dart';
 import 'package:updateperutangan/src/model/data.dart';
+import 'package:updateperutangan/src/model/data_credit_piutang.dart';
 import 'package:updateperutangan/src/page/piutang/bloc/piutang_event.dart';
 import 'package:updateperutangan/src/page/piutang/bloc/piutang_state.dart';
 import 'package:bloc/bloc.dart';
@@ -22,20 +23,44 @@ class PiutangBloc extends Bloc<PiutangEvent,PiutangState>{
 
   @override
   Stream<PiutangState> mapEventToState(PiutangEvent event) async*{
+
+    final prefs = await SharedPreferences.getInstance();
+    final value = prefs.getString('token');
+
+
     List<Account> listAccount = new List();
 
-    if(event is FetchDataPiutang){
-
-    }
 
     if(event is CreatePiutang){
+      yield LoadingState();
+      Map<String,dynamic> data = {
+        'borrower' : event.id,
+        'item' : event.item,
+        'description' : event.description,
+        'amount' : event.amount
+      };
 
+
+      try{
+        http.Response response = await http.post(
+          'https://dev-hutangku.herokuapp.com/new/request',
+          body: json.encode(data),
+          headers: {HttpHeaders.authorizationHeader: 'Basic $value'}
+        );
+
+        if(response.statusCode == 200){
+          yield SuccessCreatePiutang();
+        } else{
+          yield ErrorCreatePiutang();
+        }
+      } catch(_){
+        yield ErrorCreatePiutang();
+      }
     }
+
 
     if(event is SearchUser){
       yield LoadingState();
-      final prefs = await SharedPreferences.getInstance();
-      final value = prefs.getString('token');
       try{
         var response = await http.get(
           'https://dev-hutangku.herokuapp.com/all/account',
@@ -59,6 +84,39 @@ class PiutangBloc extends Bloc<PiutangEvent,PiutangState>{
       }
 
     }
+
+
+    if(event is PiutangBackAfterSuccess){
+      yield LoadingState();
+    }
+
+
+
+    if(event is FetchAllPiutang){
+      yield LoadingState();
+      try{
+        var response = await http.get(
+          'https://dev-hutangku.herokuapp.com/all/credit',
+          headers: {HttpHeaders.authorizationHeader : 'Basic $value'}
+        );
+
+        if(response.statusCode== 200){
+         Map<String, dynamic> dataJson = json.decode(response.body);
+         List<DataCreditPiutang> listDataCredit = DataCreditPiutang.parseList(dataJson['data']);
+
+         yield SuccessFetchPiutang(
+           dataCredit: listDataCredit
+         );
+        } else{
+          yield ErrorFetchPiutang();
+        }
+      } catch(_){
+        yield ErrorFetchPiutang();
+      }
+
+
+    }
+
 
   }
 
