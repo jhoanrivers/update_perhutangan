@@ -19,19 +19,21 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState>{
 
       try{
         final http.Response response = await  http.post(
-            "https://hutangku.herokuapp.com/register",
+            "https://dev-hutangku.herokuapp.com/register",
           body: jsonEncode(<String, String>{
             'username' : event.username,
             'name' : event.name,
             'password' : event.password,
             'ovo' : event.ovo,
             'gopay' :event.gopay,
-            'dana' : event.dana
           })
         );
 
+        print(response.body);
         if(response.statusCode == 200){
           yield SuccessRegister();
+        } else{
+          yield ErrorRegister();
         }
       }catch(_){
         yield ErrorRegister();

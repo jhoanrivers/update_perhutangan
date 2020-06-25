@@ -54,11 +54,16 @@ class _SplashScreenState extends State<SplashScreen> {
   startSplashScreen() async{
 
 
+
+
     return Timer(Duration(seconds: 3),(){
       if(isUserLogin){
+        //Navigator.pop(context);
         Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
       } else{
-        Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
+        //Navigator.pop(context);
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (context) => LoginPage()), (route)=> false);
       }
     });
 

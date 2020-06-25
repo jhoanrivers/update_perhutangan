@@ -27,6 +27,13 @@ class BaseStyle {
     fontWeight: bold
   );
 
+  static TextStyle ts18BlackBold = TextStyle(
+      fontFamily: fontFamily,
+      color: Colors.black,
+      fontSize: 18,
+      fontWeight: bold
+  );
+
   static TextStyle ts14Red = TextStyle(
       fontFamily: fontFamily,
       color: Colors.red,
@@ -63,6 +70,14 @@ class BaseStyle {
       color: Colors.black
   );
 
+  static TextStyle ts14PrimaryLabel = TextStyle(
+      fontFamily: fontFamily,
+      fontSize: 14,
+      color: Colors.grey,
+      fontWeight: FontWeight.w600
+  );
+
+
   static TextStyle ts14PrimaryBold = TextStyle(
       fontFamily: fontFamily,
       fontSize: 14,
@@ -72,6 +87,50 @@ class BaseStyle {
 
   static TextStyle tsAppBar = TextStyle(
       color: Colors.white
+  );
+
+
+  static TextStyle ts16RedBold = TextStyle(
+      fontFamily: fontFamily,
+      fontSize: 16,
+      color: Colors.red,
+      fontWeight: bold
+  );
+
+  static TextStyle ts16GreenBold = TextStyle(
+      fontFamily: fontFamily,
+      fontSize: 16,
+      color: Colors.green,
+      fontWeight: bold
+  );
+
+  static TextStyle ts16WhiteBold = TextStyle(
+      fontFamily: fontFamily,
+      fontSize: 16,
+      color: Colors.white,
+      fontWeight: bold
+  );
+
+
+  static var ts14WhiteBold =  TextStyle(
+      fontFamily: fontFamily,
+      fontSize: 14,
+      color: Colors.white,
+      fontWeight: FontWeight.w600
+  );
+
+  static var ts16BlackBold = TextStyle(
+    fontFamily: fontFamily,
+    fontSize: 16,
+    fontWeight: FontWeight.w800,
+    color: Colors.black
+  );
+
+  static var ts14GreyBlue = TextStyle(
+    fontFamily: fontFamily,
+    fontSize: 14,
+    color: Colors.black,
+
   );
 
 
