@@ -19,6 +19,7 @@ class HutangBloc extends Bloc<HutangEvent, HutangState> {
   Stream<HutangState> mapEventToState(HutangEvent event) async* {
     final prefs = await SharedPreferences.getInstance();
     final value = prefs.getString('token');
+    List<DataCreditHutang> listCredit;
 
     if(event is FetchAllHutang){
       yield LoadingState();
@@ -32,7 +33,12 @@ class HutangBloc extends Bloc<HutangEvent, HutangState> {
         if(response.statusCode == 200){
 
           Map<String, dynamic> dataJson = json.decode(response.body);
-          List<DataCreditHutang> listCredit = DataCreditHutang.parseList(dataJson['data']);
+          var checkData = dataJson['data'];
+          if(checkData != null){
+            listCredit = DataCreditHutang.parseList(dataJson['data']);
+          } else{
+            listCredit = [];
+          }
           yield LoadedState(listHutang: listCredit);
 
         } else{

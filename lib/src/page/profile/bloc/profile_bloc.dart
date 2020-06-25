@@ -4,8 +4,8 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:updateperutangan/src/model/api_response.dart';
 import 'package:updateperutangan/src/model/account.dart';
+import 'package:updateperutangan/src/model/data.dart';
 import 'package:updateperutangan/src/page/profile/bloc/profile_event.dart';
 import 'package:updateperutangan/src/page/profile/bloc/profile_state.dart';
 import 'package:bloc/bloc.dart';
@@ -32,9 +32,8 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState>{
         print(response.body);
         if(response.statusCode == 200){
          Map<String, dynamic> dataJson= json.decode(response.body);
-         var data = dataJson['data']['account'];
-         Account account = Account.fromJson(data);
-         yield SuccessFetchData(account: account);
+         DataUser dataUser = DataUser.fromJson(dataJson['data']);
+         yield SuccessFetchData(dataUser: dataUser);
         } else{
           yield FailedFetchData();
         }

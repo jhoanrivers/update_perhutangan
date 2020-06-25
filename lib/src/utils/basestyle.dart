@@ -27,6 +27,13 @@ class BaseStyle {
     fontWeight: bold
   );
 
+  static TextStyle ts18BlackBold = TextStyle(
+      fontFamily: fontFamily,
+      color: Colors.black,
+      fontSize: 18,
+      fontWeight: bold
+  );
+
   static TextStyle ts14Red = TextStyle(
       fontFamily: fontFamily,
       color: Colors.red,
@@ -117,6 +124,13 @@ class BaseStyle {
     fontSize: 16,
     fontWeight: FontWeight.w800,
     color: Colors.black
+  );
+
+  static var ts14GreyBlue = TextStyle(
+    fontFamily: fontFamily,
+    fontSize: 14,
+    color: Colors.black,
+
   );
 
 

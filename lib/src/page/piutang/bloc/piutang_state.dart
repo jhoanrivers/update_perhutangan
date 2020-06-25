@@ -21,6 +21,8 @@ class InitialState extends PiutangState{}
 
 class LoadingState extends PiutangState{}
 
+class CreatePiutangLoadingState extends PiutangState{}
+
 class SuccessFetchPiutang extends PiutangState{
   final List<DataCreditPiutang> dataCredit;
 
@@ -57,5 +59,3 @@ class SuccessPiutangBackState extends PiutangState{
   });
 
 }
-
-

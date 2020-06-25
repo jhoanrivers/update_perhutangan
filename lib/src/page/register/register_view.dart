@@ -51,7 +51,6 @@ class _RegisterViewState extends State<RegisterView> {
   }
 
 
-
   @override
   Widget build(BuildContext context) {
 
@@ -295,8 +294,10 @@ class _RegisterViewState extends State<RegisterView> {
                                     border: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(6),
                                         borderSide: BorderSide()
-                                    )
+                                    ),
+                      
                                 ),
+                                maxLength: 13,
                                 controller: gopayController,
                                 keyboardType: TextInputType.number,
                                 autovalidate: autoVal,
@@ -332,6 +333,7 @@ class _RegisterViewState extends State<RegisterView> {
                                 controller: ovoController,
                                 autovalidate: autoVal,
                                 keyboardType: TextInputType.number,
+                                maxLength: 13,
                                 validator: (value){
                                   if(value.isEmpty){
                                     return 'Ovo number cannot be empty';
@@ -362,9 +364,11 @@ class _RegisterViewState extends State<RegisterView> {
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(6)
                             ),
+                            color:  Colors.green,
                             padding: EdgeInsets.symmetric(vertical: 14),
                             onPressed: _onButtonRegisterPressed,
-                            child: Text('Register'),
+                            child: Text('Register',
+                            style: BaseStyle.ts14WhiteBold,),
                           ),
                         )
 

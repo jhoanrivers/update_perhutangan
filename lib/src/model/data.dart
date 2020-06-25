@@ -1,21 +1,24 @@
 
 import 'package:updateperutangan/src/model/account.dart';
 
-class Data{
+class DataUser{
 
   Account account;
   int credit;
   int debt;
 
 
-  Data({
+  DataUser({
     this.account,
     this.credit,
     this.debt
   });
 
-  Data.fromJson(Map<String, dynamic> json) {
-    this.account = json['account'];
+  DataUser.fromJson(Map<String, dynamic> json) {
+
+    if(json['account'] != null){
+      this.account = Account.fromJson(json['account']);
+    }
     this.credit = json['credit'];
     this.debt = json['debt'];
   }

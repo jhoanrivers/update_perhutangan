@@ -12,4 +12,4 @@ abstract class HomeEvent extends Equatable{
   }
 }
 
-class FetchAllDataAndRecentlyTransaction extends HomeEvent{}
+class GetUserCurrentHutPiut extends HomeEvent{}

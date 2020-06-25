@@ -62,9 +62,8 @@ class _SplashScreenState extends State<SplashScreen> {
         Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
       } else{
         //Navigator.pop(context);
-        Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage(),
-          settings: RouteSettings(name: ('/login'))
-        ));
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (context) => LoginPage()), (route)=> false);
       }
     });
 

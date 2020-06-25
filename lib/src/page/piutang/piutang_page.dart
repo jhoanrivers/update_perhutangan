@@ -10,9 +10,6 @@ class PiutangPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (BuildContext context) => PiutangBloc(),
-      child: PiutangView(),
-    );
+    return PiutangView();
   }
 }

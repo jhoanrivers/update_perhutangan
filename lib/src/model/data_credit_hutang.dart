@@ -17,10 +17,9 @@ class DataCreditHutang {
     if(dataJson['loan'] != null){
       this.loan = LoanHutang.fromJson(dataJson['loan']);
     }
-    this.lender_name = dataJson['borrower_name'];
-    this.lender_username = dataJson['borrower_username'];
+    this.lender_name = dataJson['lender_name'];
+    this.lender_username = dataJson['lender_username'];
   }
-
 
   static List<DataCreditHutang> parseList(List<dynamic> jsonList){
     List<DataCreditHutang> list = [];

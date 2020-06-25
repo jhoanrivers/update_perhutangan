@@ -75,7 +75,7 @@ class _ProfileViewState extends State<ProfileView> {
                     Container(
                       padding: EdgeInsets.fromLTRB(16, 0, 16, 10),
                       child: state is SuccessFetchData
-                        ? Text(state.account.name,
+                        ? Text(state.dataUser.account.name,
                       style: BaseStyle.ts14PrimaryBold,)
                         : Text('')
                     ),
@@ -100,8 +100,8 @@ class _ProfileViewState extends State<ProfileView> {
                     Divider(),
                     GestureDetector(
                       onTap: (){
-                        Navigator.of(context).popUntil((route) => route.isFirst);
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
+                        Navigator.of(context).pushAndRemoveUntil(
+                            MaterialPageRoute(builder: (context) => LoginPage()), (route)=> false);
                       },
                       child:  Container(
                         padding: EdgeInsets.fromLTRB(16, 10, 16, 10),
@@ -156,7 +156,7 @@ class _ProfileViewState extends State<ProfileView> {
                         Container(
                             width: 160,
                             child: state is SuccessFetchData
-                                ? Text(state.account.id.toString(),
+                                ? Text(state.dataUser.account.id.toString(),
                               style: BaseStyle.ts14PrimaryName,)
                                 : Text('-')
                         )
@@ -174,7 +174,7 @@ class _ProfileViewState extends State<ProfileView> {
                         Container(
                           width: 160,
                           child: state is SuccessFetchData
-                              ? Text(state.account.username,
+                              ? Text(state.dataUser.account.username,
                           style: BaseStyle.ts14PrimaryName,)
                               : Text('-')
                         )
@@ -192,7 +192,7 @@ class _ProfileViewState extends State<ProfileView> {
                         Container(
                           width: 160,
                           child: state is SuccessFetchData
-                              ? Text(state.account.name,
+                              ? Text(state.dataUser.account.name,
                           style: BaseStyle.ts14PrimaryName,)
                               : Text('-')
                         )
@@ -210,7 +210,7 @@ class _ProfileViewState extends State<ProfileView> {
                         Container(
                           width: 160,
                           child: state is SuccessFetchData
-                              ? Text(state.account.gopay,
+                              ? Text(state.dataUser.account.gopay,
                           style: BaseStyle.ts14PrimaryName,)
                               : Text('-')
                         )
@@ -228,7 +228,7 @@ class _ProfileViewState extends State<ProfileView> {
                         Container(
                           width: 160,
                           child: state is SuccessFetchData
-                              ? Text(state.account.ovo,
+                              ? Text(state.dataUser.account.ovo,
                             style: BaseStyle.ts14PrimaryName,)
                               : Text('-'),
                         )

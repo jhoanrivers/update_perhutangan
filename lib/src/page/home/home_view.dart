@@ -3,7 +3,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:updateperutangan/src/page/detail/detail_page.dart';
+import 'package:updateperutangan/src/page/detail_hutang/detail_page.dart';
+import 'package:updateperutangan/src/page/detail_piutang/detail_page.dart';
 import 'package:updateperutangan/src/page/home/bloc/home_bloc.dart';
 import 'package:updateperutangan/src/page/home/bloc/home_event.dart';
 import 'package:updateperutangan/src/page/home/bloc/home_state.dart';
@@ -25,7 +26,7 @@ class _HomeViewState extends State<HomeView> {
     // TODO: implement initState
     super.initState();
     homeBloc = BlocProvider.of<HomeBloc>(context);
-    homeBloc.add(FetchAllDataAndRecentlyTransaction());
+    homeBloc.add(GetUserCurrentHutPiut());
   }
 
   @override
@@ -39,8 +40,6 @@ class _HomeViewState extends State<HomeView> {
         ),
         body: BlocListener<HomeBloc,HomeState>(
           listener: (context, state){
-
-
           },
           child: BlocBuilder<HomeBloc,HomeState>(
             builder: (context, state){
@@ -96,10 +95,11 @@ class _HomeViewState extends State<HomeView> {
                                     Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: <Widget>[
-                                        Text(state.account.name,
+                                        Text(state.datauser.account.username,
                                           style: BaseStyle.ts14PrimaryName,),
                                         SizedBox(height: 6,),
-                                        Text('Ini gak tau isinya apa')
+                                        Text(state.datauser.account.name,
+                                          style: BaseStyle.ts14PrimaryLabel,)
                                       ],
                                     )
                                   ],
@@ -117,8 +117,8 @@ class _HomeViewState extends State<HomeView> {
                                           height: 6,
                                         ),
                                         Text(
-                                          state.data.debt != null
-                                              ? state.data.debt.toString()
+                                          state.datauser.debt != null
+                                              ? state.datauser.debt.toString()
                                               : '0',
                                           style: BaseStyle.ts16RedBold,)
                                       ],
@@ -131,9 +131,9 @@ class _HomeViewState extends State<HomeView> {
                                           height: 6,
                                         ),
                                         Text(
-                                        state.data.credit != null
-                                            ? state.data.credit.toString()
-                                            : '0',
+                                          state.datauser.credit != null
+                                              ? state.datauser.credit.toString()
+                                              : '0',
                                           style: BaseStyle.ts16GreenBold,)
                                       ],
                                     ),
@@ -145,53 +145,119 @@ class _HomeViewState extends State<HomeView> {
                           )
                       ),
                     ),
-
                     Padding(
                       padding: EdgeInsets.fromLTRB(16, 10, 16, 10),
                       child: Text('Recently Transaction',
                         style: BaseStyle.ts14PrimaryName,),
                     ),
 
-
-                    Container(
-                      height: 80.0 * 4,
-                      child: ListView.builder(
-                        itemBuilder: (context, index){
-                          return GestureDetector(
-                              onTap: (){
-                                Navigator.push(context, MaterialPageRoute(builder: (context) => DetailPage()));
-                              },
-                              child: Card(
-                                  margin: EdgeInsets.fromLTRB(16,6,16,0),
-                                  child: ListTile(
-                                      leading: CachedNetworkImage(
-                                        imageUrl: "https://i.pinimg.com/originals/bf/f4/4b/bff44b786d593a55c4033afe4eef7f84.jpg",
-                                        imageBuilder: (context, imageProvider) => Container(
-                                          height: 40,
-                                          width: 40,
-                                          decoration: BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            image: DecorationImage(
-                                                fit: BoxFit.fill,
-                                                image: imageProvider
-                                            ),
-                                          ),
+                    state.lasTransaction.length == 0
+                        ? Padding(
+                      padding: EdgeInsets.fromLTRB(16, 10, 16, 10),
+                      child: Text('No recently transaction',
+                        style: BaseStyle.ts14PrimaryLabel,),
+                    )
+                        : SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.5,
+                        child:  ListView.builder(
+                          itemBuilder: (context, index){
+                            return GestureDetector(
+                                onTap: (){},
+                                child: Card(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(6)),
+                                  margin:
+                                  EdgeInsets.symmetric(vertical: 4, horizontal: 4),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: <Widget>[
+                                      Container(
+                                        height: 80,
+                                        width: 8,
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.only(topLeft: Radius.circular(6), bottomLeft: Radius.circular(6)),
+                                          color: state.lasTransaction[index].loan.status_loan ==
+                                              'pending'
+                                              ? Colors.yellow
+                                              : state.lasTransaction[index].loan
+                                              .status_loan ==
+                                              'accepted'
+                                              ? Colors.orange
+                                              : state.lasTransaction[index].loan
+                                              .status_loan ==
+                                              'rejected'
+                                              ? Colors.red
+                                              : Colors.green,
                                         ),
                                       ),
-                                      title: Text('Nama User'),
-                                      subtitle: Text('16/Juni/2020'),
+                                      Expanded(
+                                        child: Row(
+                                          mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                          children: <Widget>[
+                                            state.lasTransaction[index].lender_username == state.datauser.account.username
+                                                ? Icon(Icons.call_made,
+                                            color: Colors.green,
+                                            size: 30,)
+                                                : Icon(Icons.call_received,
+                                              color: Colors.red,
+                                              size: 30,),
+                                            Container(
+                                              width: 160,
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                                crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                                children: <Widget>[
+                                                  Text(
+                                                    '${state.lasTransaction[index].lender_username} ' +
+                                                        "(${state.lasTransaction[index].lender_name})",
+                                                    style: BaseStyle.ts14PrimaryBold,
+                                                  ),
+                                                  SizedBox(
+                                                    height: 12,
+                                                  ),
+                                                  Text(
+                                                      state.lasTransaction[index].loan.item)
+                                                ],
+                                              ),
+                                            ),
+                                            Container(
+                                              width: 120,
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                CrossAxisAlignment.end,
+                                                children: <Widget>[
+                                                  Text(
+                                                    state.lasTransaction[index].loan
+                                                        .createdat,
+                                                    overflow: TextOverflow.ellipsis,
+                                                  ),
+                                                  SizedBox(
+                                                    height: 12,
+                                                  ),
+                                                  Text(
+                                                    state.lasTransaction[index].loan.amount
+                                                        .toString(),
+                                                    style: BaseStyle.ts16BlackBold,
+                                                  )
+                                                ],
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                )
+                            );
 
-                                      trailing: Icon(Icons.call_made,
-                                        color: Colors.green,)
-                                  )
+                          },
+                          itemCount: state.lasTransaction.length,
+                          controller: scrollController,
+                        )
 
-                              )
-                          );
-
-                        },
-                        itemCount: 4,
-                        controller: scrollController,
-                      ),
                     ),
                   ],
                 );

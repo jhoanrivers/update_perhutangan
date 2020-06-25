@@ -1,7 +1,7 @@
 
 
 import 'package:equatable/equatable.dart';
-import 'package:updateperutangan/src/model/account.dart';
+import 'package:updateperutangan/src/model/data.dart';
 
 abstract class ProfileState extends Equatable{
   const ProfileState();
@@ -21,13 +21,13 @@ class SuccessLogoutState extends ProfileState{}
 class FailedLogoutState extends ProfileState{}
 
 class SuccessFetchData extends ProfileState{
-final Account account;
+final DataUser dataUser;
 
-  SuccessFetchData({this.account});
+  SuccessFetchData({this.dataUser});
 
   @override
   List<Object> get props {
-    return [account];
+    return [dataUser];
   }
 }
 

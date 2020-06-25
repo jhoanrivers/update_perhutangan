@@ -26,13 +26,13 @@ class PiutangBloc extends Bloc<PiutangEvent,PiutangState>{
 
     final prefs = await SharedPreferences.getInstance();
     final value = prefs.getString('token');
-
+    List<DataCreditPiutang> listDataCredit;
 
     List<Account> listAccount = new List();
 
 
     if(event is CreatePiutang){
-      yield LoadingState();
+      yield CreatePiutangLoadingState();
       Map<String,dynamic> data = {
         'borrower' : event.id,
         'item' : event.item,
@@ -85,13 +85,6 @@ class PiutangBloc extends Bloc<PiutangEvent,PiutangState>{
 
     }
 
-
-    if(event is PiutangBackAfterSuccess){
-      yield LoadingState();
-    }
-
-
-
     if(event is FetchAllPiutang){
       yield LoadingState();
       try{
@@ -102,7 +95,13 @@ class PiutangBloc extends Bloc<PiutangEvent,PiutangState>{
 
         if(response.statusCode== 200){
          Map<String, dynamic> dataJson = json.decode(response.body);
-         List<DataCreditPiutang> listDataCredit = DataCreditPiutang.parseList(dataJson['data']);
+         var checkData = dataJson['data'];
+         if(checkData != null){
+           listDataCredit = DataCreditPiutang.parseList(dataJson['data']);
+         }
+          else{
+           listDataCredit = [];
+         }
 
          yield SuccessFetchPiutang(
            dataCredit: listDataCredit

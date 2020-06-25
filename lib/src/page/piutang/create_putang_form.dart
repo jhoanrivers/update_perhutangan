@@ -50,7 +50,7 @@ class _CreatePiutangFormState extends State<CreatePiutangForm> {
 
           listener: (BuildContext context, PiutangState state) {
 
-            if (state is LoadingState){
+            if (state is CreatePiutangLoadingState){
               showDialog(
                 context: context,
                 barrierDismissible: false,
@@ -77,21 +77,14 @@ class _CreatePiutangFormState extends State<CreatePiutangForm> {
 
             if(state is SuccessCreatePiutang){
               Navigator.pop(context);
-              Scaffold.of(context).showSnackBar(
-                SnackBar(
-                  content: Text('Create Piutang Successfull',
-                  style: BaseStyle.ts14White,),
-                  backgroundColor: Colors.green,
-                ),
-              );
-              Navigator.pop(context);
+              Navigator.pop(context, true);
             }
 
             if(state is ErrorCreatePiutang){
               Navigator.pop(context);
               Scaffold.of(context).showSnackBar(
                 SnackBar(
-                  content: Text('Login Failure',
+                  content: Text('Failed create piutang',
                   style: BaseStyle.ts14White,),
                   backgroundColor: Colors.red,
                 ),

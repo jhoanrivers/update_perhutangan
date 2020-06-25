@@ -8,9 +8,6 @@ import 'package:updateperutangan/src/page/login/login_form.dart';
 class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => LoginBloc(),
-      child: LoginForm(),
-    );
+    return LoginForm();
   }
 }
