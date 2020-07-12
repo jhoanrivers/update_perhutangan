@@ -1,12 +1,10 @@
-
-
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 import 'package:updateperutangan/src/model/account.dart';
-import 'package:updateperutangan/src/model/data.dart';
+import 'package:updateperutangan/src/model/dashboard.dart';
 import 'package:updateperutangan/src/model/data_credit_hutang.dart';
 
-abstract class HomeState extends Equatable{
+abstract class HomeState extends Equatable {
   const HomeState();
 
   @override
@@ -15,23 +13,19 @@ abstract class HomeState extends Equatable{
   }
 }
 
-class InitialState extends HomeState{}
+class InitialState extends HomeState {}
 
-class LoadingState extends HomeState{}
+class LoadingState extends HomeState {}
 
-class SuccessLoadData extends HomeState{
-  
-  final DataUser datauser;
-  List<DataCreditHutang> lasTransaction;
+class SuccessLoadData extends HomeState {
+  final Dashboard dashboard;
 
-  SuccessLoadData({ @required this.datauser,this.lasTransaction});
+  SuccessLoadData({this.dashboard});
 
   @override
   List<Object> get props {
-    return [datauser, lasTransaction];
+    return [dashboard];
   }
-
 }
 
-class FailedLoadData extends HomeState{}
-
+class FailedLoadData extends HomeState {}

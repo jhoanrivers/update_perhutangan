@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "658336320026",
+    "firebase_url": "https://update-perutangan.firebaseio.com",
+    "project_id": "update-perutangan",
+    "storage_bucket": "update-perutangan.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:658336320026:android:c275254efec67211705fa3",
+        "android_client_info": {
+          "package_name": "com.example.updateperutangan"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "658336320026-n4ge6b3pvm78uel1kp8635tvl521pnhb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDinectghM3vBlI_AivKWuT-w-2u3G7Fi4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "658336320026-n4ge6b3pvm78uel1kp8635tvl521pnhb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,47 +1,48 @@
-
-class Account{
+class Account {
   int id;
   String username;
   String password;
   String fcmtoken;
   String name;
   String gopay;
+  String gopayName;
   String ovo;
+  String ovoName;
   bool isSelected = false;
 
+  Account(
+      {this.id,
+      this.username,
+      this.password,
+      this.fcmtoken,
+      this.name,
+      this.gopay,
+      this.gopayName,
+      this.ovo,
+      this.ovoName,
+      this.isSelected});
 
-  Account({
-    this.id,
-    this.username,
-    this.password,
-    this.fcmtoken,
-    this.name,
-    this.gopay,
-    this.ovo,
-    this.isSelected
-  });
-
-
-   Account.fromJson(Map<String, dynamic> json) {
-     this.id = json['id'];
-     this.username =json['username'];
-     this.name = json['name'];
-     this.password = json['password'];
-     this.fcmtoken = json['fcmtoken'];
-     this.gopay = json['gopay'];
-     this.ovo = json['ovo'];
+  Account.fromJson(Map<String, dynamic> json) {
+    this.id = json['id'];
+    this.username = json['username'];
+    this.name = json['name'];
+    this.password = json['password'];
+    this.fcmtoken = json['fcm_token'];
+    this.gopay = json['gopay'];
+    this.gopayName = json['gopay_name'];
+    this.ovo = json['ovo'];
+    this.ovoName = json['ovo_name'];
   }
 
-
   Map<String, dynamic> toJson() => {
-     'id' : this.id,
-    'username' : this.username,
-    'password' : this.password,
-    'name' : this.name,
-    'fcmtoken' : this.fcmtoken,
-    'gopay' : this.gopay,
-    'ovo' : this.ovo
-  };
-
-
+        'id': this.id,
+        'username': this.username,
+        'password': this.password,
+        'name': this.name,
+        'fcm_token': this.fcmtoken,
+        'gopay': this.gopay,
+        'gopay_name': this.gopayName,
+        'ovo': this.ovo,
+        'ovo_name': this.ovoName
+      };
 }

@@ -53,9 +53,6 @@ class _SplashScreenState extends State<SplashScreen> {
 
   startSplashScreen() async{
 
-
-
-
     return Timer(Duration(seconds: 3),(){
       if(isUserLogin){
         //Navigator.pop(context);

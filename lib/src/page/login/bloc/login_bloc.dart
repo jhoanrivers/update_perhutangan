@@ -26,6 +26,7 @@ class LoginBloc extends Bloc<LoginEvent,LoginState>{
             'password' : event.password
           })
         );
+        print(response.body);
         if(response.statusCode == 200){
           Map<String, dynamic> tempData = json.decode(response.body);
           String dataToken = tempData['data'];

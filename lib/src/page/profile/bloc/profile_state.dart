@@ -1,9 +1,8 @@
-
-
 import 'package:equatable/equatable.dart';
-import 'package:updateperutangan/src/model/data.dart';
+import 'package:updateperutangan/src/model/account.dart';
+import 'package:updateperutangan/src/model/dashboard.dart';
 
-abstract class ProfileState extends Equatable{
+abstract class ProfileState extends Equatable {
   const ProfileState();
 
   @override
@@ -12,16 +11,16 @@ abstract class ProfileState extends Equatable{
   }
 }
 
-class InitialState extends ProfileState{}
+class InitialState extends ProfileState {}
 
-class LoadingState extends ProfileState{}
+class LoadingState extends ProfileState {}
 
-class SuccessLogoutState extends ProfileState{}
+class SuccessLogoutState extends ProfileState {}
 
-class FailedLogoutState extends ProfileState{}
+class FailedLogoutState extends ProfileState {}
 
-class SuccessFetchData extends ProfileState{
-final DataUser dataUser;
+class SuccessFetchData extends ProfileState {
+  final Account dataUser;
 
   SuccessFetchData({this.dataUser});
 
@@ -31,4 +30,4 @@ final DataUser dataUser;
   }
 }
 
-class FailedFetchData extends ProfileState{}
+class FailedFetchData extends ProfileState {}

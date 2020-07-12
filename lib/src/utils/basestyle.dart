@@ -126,6 +126,27 @@ class BaseStyle {
     color: Colors.black
   );
 
+  static var ts16Red = TextStyle(
+      fontFamily: fontFamily,
+      fontSize: 16,
+      color: Colors.red
+  );
+
+  static var ts16Green = TextStyle(
+      fontFamily: fontFamily,
+      fontSize: 16,
+      color: Colors.green
+  );
+
+  static var ts16Black  = TextStyle(
+      fontFamily: fontFamily,
+      fontSize: 16,
+      color: Colors.black
+  );
+
+
+
+
   static var ts14GreyBlue = TextStyle(
     fontFamily: fontFamily,
     fontSize: 14,

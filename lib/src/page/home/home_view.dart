@@ -1,5 +1,3 @@
-
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -16,7 +14,6 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-
   var scrollController = ScrollController();
 
   HomeBloc homeBloc;
@@ -32,248 +29,360 @@ class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text('Perhutangan',
-            style: BaseStyle.ts18WhiteBold,),
-          automaticallyImplyLeading: false,
-          backgroundColor: Colors.deepOrangeAccent,
-        ),
-        body: BlocListener<HomeBloc,HomeState>(
-          listener: (context, state){
-          },
-          child: BlocBuilder<HomeBloc,HomeState>(
-            builder: (context, state){
-              if(state is LoadingState){
+        body: BlocListener<HomeBloc, HomeState>(
+          listener: (context, state) {},
+          child: BlocBuilder<HomeBloc, HomeState>(
+            builder: (context, state) {
+              if (state is LoadingState) {
                 return Center(
                   child: CircularProgressIndicator(),
                 );
               }
-
-              if(state is FailedLoadData){
+              if (state is FailedLoadData) {
                 return Center(
                   child: Text('Failed Load data'),
                 );
               }
-
-              if(state is SuccessLoadData){
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+              if (state is SuccessLoadData) {
+                return ListView(
                   children: <Widget>[
-                    Container(
-                      padding: EdgeInsets.all(10),
-                      child: Card(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(6),
+                    Stack(
+                      children: <Widget>[
+                        Container(
+                          child: Column(
+                            children: <Widget>[
+                              Container(
+                                height: 150,
+                                width: double.infinity,
+                              ),
+                              Container(
+                                height: 210,
+                                width: double.infinity,
+                              )
+
+                            ],
                           ),
-                          child: Padding(
-                            padding: EdgeInsets.all(16),
+                        ),
+                        Container(
+                          height: 240,
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10)),
+                            gradient: LinearGradient(
+                              colors: [
+                                Color(0xFF2193b0),
+                                Color(0xFF6dd5ed)
+                              ],
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter
+                            )
+                          ),
+                        ),
+                        Positioned(
+                          top: 10,
+                          left: 10,
+                          right: 10,
+                          child: Container(
                             child: Column(
                               children: <Widget>[
                                 Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: <Widget>[
-                                    Container(
-                                      padding: EdgeInsets.only(right: 30),
-                                      child: Row(
-                                        children: <Widget>[
-                                          CachedNetworkImage(
-                                            imageUrl: "https://i.pinimg.com/originals/bf/f4/4b/bff44b786d593a55c4033afe4eef7f84.jpg",
-                                            imageBuilder: (context, imageProvider) => Container(
-                                              height: 40,
-                                              width: 40,
-                                              decoration: BoxDecoration(
-                                                shape: BoxShape.circle,
-                                                image: DecorationImage(
-                                                    fit: BoxFit.fill,
-                                                    image: imageProvider
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
+                                    IconButton(
+                                      onPressed: (){},
+                                      icon: Icon(Icons.dehaze),
                                     ),
-                                    Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: <Widget>[
-                                        Text(state.datauser.account.username,
-                                          style: BaseStyle.ts14PrimaryName,),
-                                        SizedBox(height: 6,),
-                                        Text(state.datauser.account.name,
-                                          style: BaseStyle.ts14PrimaryLabel,)
-                                      ],
+                                    Text('Update Perutangan',
+                                    style: BaseStyle.ts16WhiteBold,),
+                                    IconButton(
+                                      icon: Icon(Icons.notifications),
+                                      onPressed: (){
+                                        print('notif');
+                                      },
                                     )
                                   ],
                                 ),
                                 SizedBox(
-                                  height: 20,
+                                  height: 40,
                                 ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                  children: <Widget>[
-                                    Column(
-                                      children: <Widget>[
-                                        Text('Hutang'),
-                                        SizedBox(
-                                          height: 6,
-                                        ),
-                                        Text(
-                                          state.datauser.debt != null
-                                              ? state.datauser.debt.toString()
-                                              : '0',
-                                          style: BaseStyle.ts16RedBold,)
-                                      ],
+                                Card(
+                                  elevation: 4,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(6),
                                     ),
-                                    VerticalDivider(),
-                                    Column(
-                                      children: <Widget>[
-                                        Text('Piutang'),
-                                        SizedBox(
-                                          height: 6,
-                                        ),
-                                        Text(
-                                          state.datauser.credit != null
-                                              ? state.datauser.credit.toString()
-                                              : '0',
-                                          style: BaseStyle.ts16GreenBold,)
-                                      ],
-                                    ),
-                                  ],
-                                )
-
-                              ],
-                            ),
-                          )
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(16, 10, 16, 10),
-                      child: Text('Recently Transaction',
-                        style: BaseStyle.ts14PrimaryName,),
-                    ),
-
-                    state.lasTransaction.length == 0
-                        ? Padding(
-                      padding: EdgeInsets.fromLTRB(16, 10, 16, 10),
-                      child: Text('No recently transaction',
-                        style: BaseStyle.ts14PrimaryLabel,),
-                    )
-                        : SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.5,
-                        child:  ListView.builder(
-                          itemBuilder: (context, index){
-                            return GestureDetector(
-                                onTap: (){},
-                                child: Card(
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(6)),
-                                  margin:
-                                  EdgeInsets.symmetric(vertical: 4, horizontal: 4),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: <Widget>[
-                                      Container(
-                                        height: 80,
-                                        width: 8,
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.only(topLeft: Radius.circular(6), bottomLeft: Radius.circular(6)),
-                                          color: state.lasTransaction[index].loan.status_loan ==
-                                              'pending'
-                                              ? Colors.yellow
-                                              : state.lasTransaction[index].loan
-                                              .status_loan ==
-                                              'accepted'
-                                              ? Colors.orange
-                                              : state.lasTransaction[index].loan
-                                              .status_loan ==
-                                              'rejected'
-                                              ? Colors.red
-                                              : Colors.green,
-                                        ),
-                                      ),
-                                      Expanded(
-                                        child: Row(
-                                          mainAxisAlignment:
-                                          MainAxisAlignment.spaceAround,
-                                          children: <Widget>[
-                                            state.lasTransaction[index].lender_username == state.datauser.account.username
-                                                ? Icon(Icons.call_made,
-                                            color: Colors.green,
-                                            size: 30,)
-                                                : Icon(Icons.call_received,
-                                              color: Colors.red,
-                                              size: 30,),
-                                            Container(
-                                              width: 160,
-                                              child: Column(
-                                                mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                                crossAxisAlignment:
-                                                CrossAxisAlignment.start,
+                                    child: Padding(
+                                      padding: EdgeInsets.all(20),
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        children: <Widget>[
+                                          Container(
+                                            child: CachedNetworkImage(
+                                              imageUrl:
+                                              "https://i.pinimg.com/originals/bf/f4/4b/bff44b786d593a55c4033afe4eef7f84.jpg",
+                                              imageBuilder:
+                                                  (context, imageProvider) =>
+                                                  Container(
+                                                    height: 60,
+                                                    width: 60,
+                                                    decoration: BoxDecoration(
+                                                      shape: BoxShape.circle,
+                                                      image: DecorationImage(
+                                                          fit: BoxFit.fill,
+                                                          image: imageProvider),
+                                                    ),
+                                                  ),
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: 12,
+                                          ),
+                                          Column(
+                                            children: <Widget>[
+                                              Text(
+                                                state.dashboard.account.username,
+                                                style: BaseStyle.ts14PrimaryName,
+                                              ),
+                                              SizedBox(
+                                                height: 6,
+                                              ),
+                                              Text(
+                                                state.dashboard.account.name,
+                                                style: BaseStyle.ts14PrimaryLabel,
+                                              )
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: 20,
+                                          ),
+                                          Row(
+                                            mainAxisAlignment:
+                                            MainAxisAlignment.spaceAround,
+                                            children: <Widget>[
+                                              Column(
                                                 children: <Widget>[
-                                                  Text(
-                                                    '${state.lasTransaction[index].lender_username} ' +
-                                                        "(${state.lasTransaction[index].lender_name})",
-                                                    style: BaseStyle.ts14PrimaryBold,
+                                                  Text('Hutang',
+                                                  style: BaseStyle.ts16Red,),
+                                                  SizedBox(
+                                                    height: 6,
+                                                  ),
+                                                  Icon(
+                                                    Icons.call_received,
+                                                    color: Colors.red,
+                                                    size: 20,
                                                   ),
                                                   SizedBox(
-                                                    height: 12,
+                                                    height: 6,
                                                   ),
                                                   Text(
-                                                      state.lasTransaction[index].loan.item)
+                                                    state.dashboard.debt != null
+                                                        ? state.dashboard.debt.toString()
+                                                        : '0',
+                                                    style: BaseStyle.ts16BlackBold,
+                                                  )
                                                 ],
                                               ),
-                                            ),
-                                            Container(
-                                              width: 120,
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                CrossAxisAlignment.end,
+                                              VerticalDivider(),
+                                              Column(
                                                 children: <Widget>[
-                                                  Text(
-                                                    state.lasTransaction[index].loan
-                                                        .createdat,
-                                                    overflow: TextOverflow.ellipsis,
+                                                  Text('Piutang',
+                                                  style: BaseStyle.ts16Green,),
+                                                  SizedBox(
+                                                    height: 6,
+                                                  ),
+                                                  Icon(
+                                                    Icons.call_made,
+                                                    color: Colors.green,
+                                                    size: 20,
                                                   ),
                                                   SizedBox(
-                                                    height: 12,
+                                                    height: 6,
                                                   ),
                                                   Text(
-                                                    state.lasTransaction[index].loan.amount
-                                                        .toString(),
+                                                    state.dashboard.credit != null
+                                                        ? state.dashboard.credit
+                                                        .toString()
+                                                        : '0',
                                                     style: BaseStyle.ts16BlackBold,
+                                                  )
+                                                ],
+                                              ),
+                                            ],
+                                          )
+                                        ],
+                                      ),
+                                    )),
+                              ],
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(16, 10, 16, 10),
+                      child: Text(
+                        'Recently Transaction',
+                        style: BaseStyle.ts16Black,
+                      ),
+                    ),
+                    state.dashboard.lastTransaction.length == 0
+                        ? Padding(
+                            padding: EdgeInsets.fromLTRB(16, 10, 16, 10),
+                            child: Text(
+                              'No recently transaction',
+                              style: BaseStyle.ts14PrimaryLabel,
+                            ),
+                          )
+                        : SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.5,
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 10),
+                              child: ListView.builder(
+                                itemBuilder: (context, index) {
+                                  return GestureDetector(
+                                      onTap: () {},
+                                      child: Card(
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(6)),
+                                        margin: EdgeInsets.symmetric(
+                                            vertical: 4, horizontal: 4),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: <Widget>[
+                                            Container(
+                                              height: 80,
+                                              width: 8,
+                                              decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.only(
+                                                    topLeft: Radius.circular(6),
+                                                    bottomLeft:
+                                                        Radius.circular(6)),
+                                                color: state
+                                                            .dashboard
+                                                            .lastTransaction[
+                                                                index]
+                                                            .statusLoan ==
+                                                        'pending'
+                                                    ? Colors.yellow
+                                                    : state
+                                                                .dashboard
+                                                                .lastTransaction[
+                                                                    index]
+                                                                .statusLoan ==
+                                                            'accepted'
+                                                        ? Colors.orange
+                                                        : state
+                                                                    .dashboard
+                                                                    .lastTransaction[
+                                                                        index]
+                                                                    .statusLoan ==
+                                                                'rejected'
+                                                            ? Colors.red
+                                                            : Colors.green,
+                                              ),
+                                            ),
+                                            Expanded(
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.spaceAround,
+                                                children: <Widget>[
+                                                  state
+                                                              .dashboard
+                                                              .lastTransaction[
+                                                                  index]
+                                                              .lenderUsername ==
+                                                          state.dashboard.account
+                                                              .username
+                                                      ? Icon(
+                                                          Icons.call_made,
+                                                          color: Colors.green,
+                                                          size: 30,
+                                                        )
+                                                      : Icon(
+                                                          Icons.call_received,
+                                                          color: Colors.red,
+                                                          size: 30,
+                                                        ),
+                                                  Container(
+                                                    width: 160,
+                                                    child: Column(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: <Widget>[
+                                                        Text(
+                                                          '${state.dashboard.lastTransaction[index].lenderUsername} ' +
+                                                              "(${state.dashboard.lastTransaction[index].lenderName})",
+                                                          style: BaseStyle
+                                                              .ts14PrimaryBold,
+                                                        ),
+                                                        SizedBox(
+                                                          height: 12,
+                                                        ),
+                                                        Text(state
+                                                            .dashboard
+                                                            .lastTransaction[
+                                                                index]
+                                                            .item)
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  Container(
+                                                    width: 120,
+                                                    child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment.end,
+                                                      children: <Widget>[
+                                                        Text(
+                                                          state
+                                                              .dashboard
+                                                              .lastTransaction[
+                                                                  index]
+                                                              .created,
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                        ),
+                                                        SizedBox(
+                                                          height: 12,
+                                                        ),
+                                                        Text(
+                                                          state
+                                                              .dashboard
+                                                              .lastTransaction[
+                                                                  index]
+                                                              .amount
+                                                              .toString(),
+                                                          style: BaseStyle
+                                                              .ts16BlackBold,
+                                                        )
+                                                      ],
+                                                    ),
                                                   )
                                                 ],
                                               ),
                                             )
                                           ],
                                         ),
-                                      )
-                                    ],
-                                  ),
-                                )
-                            );
-
-                          },
-                          itemCount: state.lasTransaction.length,
-                          controller: scrollController,
-                        )
-
-                    ),
+                                      ));
+                                },
+                                itemCount: state.dashboard.lastTransaction.length,
+                                controller: scrollController,
+                              ),
+                            )),
                   ],
                 );
               }
 
-
               return Center(
                 child: CircularProgressIndicator(),
               );
-
-
-
             },
           ),
-        )
-    );
-
+        ));
   }
 }

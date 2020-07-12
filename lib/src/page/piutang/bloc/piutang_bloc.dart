@@ -6,7 +6,7 @@ import 'dart:io';
 
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:updateperutangan/src/model/account.dart';
-import 'package:updateperutangan/src/model/data.dart';
+import 'package:updateperutangan/src/model/dashboard.dart';
 import 'package:updateperutangan/src/model/data_credit_piutang.dart';
 import 'package:updateperutangan/src/page/piutang/bloc/piutang_event.dart';
 import 'package:updateperutangan/src/page/piutang/bloc/piutang_state.dart';
