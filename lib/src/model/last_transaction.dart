@@ -11,6 +11,8 @@ class LastTransaction {
   String ovo;
   String gopayName;
   String gopay;
+  String borrowerName;
+  String borrowerUsername;
   String lenderName;
   String lenderUsername;
 
@@ -27,6 +29,8 @@ class LastTransaction {
       this.ovo,
       this.gopayName,
       this.gopay,
+      this.borrowerName,
+      this.borrowerUsername,
       this.lenderName,
       this.lenderUsername);
 
@@ -43,8 +47,17 @@ class LastTransaction {
     this.ovo = dataJson['ovo'];
     this.gopay = dataJson['gopay'];
     this.gopayName = dataJson['gopay_name'];
-    this.lenderName = dataJson['lender_name'];
-    this.lenderUsername = dataJson['lender_username'];
+    if(dataJson['lender_name'] != null){
+      this.lenderName = dataJson['lender_name'];
+    } else if(dataJson['borrower_name'] != null){
+      this.borrowerName = dataJson['borrower_name'];
+    }
+    if(dataJson['lender_username'] != null){
+      this.lenderUsername = dataJson['lender_username'];
+    } else if(dataJson['borrower_username'] != null){
+      this.borrowerUsername = dataJson['borrower_username'];
+    }
+
   }
 
   static List<LastTransaction> parseList(List<dynamic> jsonList) {

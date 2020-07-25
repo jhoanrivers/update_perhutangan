@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:updateperutangan/src/page/detail_hutang/detail_page.dart';
@@ -15,7 +16,7 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
   var scrollController = ScrollController();
-
+  FirebaseMessaging firebaseMessaging = new FirebaseMessaging();
   HomeBloc homeBloc;
 
   @override
@@ -24,6 +25,7 @@ class _HomeViewState extends State<HomeView> {
     super.initState();
     homeBloc = BlocProvider.of<HomeBloc>(context);
     homeBloc.add(GetUserCurrentHutPiut());
+    firebaseCloudMessaging();
   }
 
   @override
@@ -288,13 +290,7 @@ class _HomeViewState extends State<HomeView> {
                                                 mainAxisAlignment:
                                                     MainAxisAlignment.spaceAround,
                                                 children: <Widget>[
-                                                  state
-                                                              .dashboard
-                                                              .lastTransaction[
-                                                                  index]
-                                                              .lenderUsername ==
-                                                          state.dashboard.account
-                                                              .username
+                                                  state.dashboard.lastTransaction[index].lenderUsername == state.dashboard.account.username
                                                       ? Icon(
                                                           Icons.call_made,
                                                           color: Colors.green,
@@ -316,8 +312,13 @@ class _HomeViewState extends State<HomeView> {
                                                               .start,
                                                       children: <Widget>[
                                                         Text(
-                                                          '${state.dashboard.lastTransaction[index].lenderUsername} ' +
-                                                              "(${state.dashboard.lastTransaction[index].lenderName})",
+                                                          state.dashboard.lastTransaction[index].lenderUsername != null
+                                                              ? '${state.dashboard.lastTransaction[index].lenderUsername} ' +
+                                                              "(${state.dashboard.lastTransaction[index].lenderName})"
+
+                                                              : '${state.dashboard.lastTransaction[index].borrowerUsername} ' +
+                                                              "(${state.dashboard.lastTransaction[index].borrowerName})"
+                                                          ,
                                                           style: BaseStyle
                                                               .ts14PrimaryBold,
                                                         ),
@@ -384,5 +385,19 @@ class _HomeViewState extends State<HomeView> {
             },
           ),
         ));
+  }
+
+  void firebaseCloudMessaging() {
+    firebaseMessaging.configure(
+      onMessage: (Map<String, dynamic> message) async{
+        print('on message $message');
+      },
+      onResume:  (Map<String, dynamic> message) async {
+        print('on resume $message');
+      },
+      onLaunch:  (Map<String, dynamic> message) async {
+        print('on launch $message');
+      });
+
   }
 }

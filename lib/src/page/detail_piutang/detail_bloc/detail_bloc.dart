@@ -21,14 +21,17 @@ class DetailPiutangBloc extends Bloc<DetailEvent, DetailState> {
       yield LoadingState();
 
       try{
-        var response = await http.post(
+        var response = await http.put(
           'https://dev-hutangku.herokuapp.com/confirm/request',
-          headers: {HttpHeaders.authorizationHeader : 'Basic $value'},
+          headers: {HttpHeaders.authorizationHeader : 'Bearer $value'},
           body: jsonEncode(<String, dynamic> {
             'loan_id' : event.loan_id,
             'status_loan' : event.status_loan
           })
         );
+
+        print(response.body);
+
         if(response.statusCode == 200){
           yield SuccessState();
         } else{

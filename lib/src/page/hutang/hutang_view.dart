@@ -78,9 +78,7 @@ class _HutangViewState extends State<HutangView> {
                                       )));
 
                           if (hutangUpdated) {
-                            setState(() async {
-                              hutangBloc.add(FetchAllHutang());
-                            });
+                            hutangBloc.add(FetchAllHutang());
                             hutangUpdated = false;
                           }
                         },
