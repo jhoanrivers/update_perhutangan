@@ -20,7 +20,6 @@ class _SearchUserViewState extends State<SearchUserView> {
   PiutangBloc piutangBloc;
   var searchUserController = TextEditingController();
   List<Account> resultList = new List();
-  Map<int, Account> listSearchUser;
 
   @override
   void initState() {
@@ -44,6 +43,7 @@ class _SearchUserViewState extends State<SearchUserView> {
             style: BaseStyle.ts14WhiteBold,),
             onPressed: (){
               Navigator.pop(context,resultList);
+              print(resultList.length);
             },
           )
         ],

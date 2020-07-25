@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:updateperutangan/src/model/data_credit_piutang.dart';
+import 'package:updateperutangan/src/model/loan_piutang.dart';
 import 'package:updateperutangan/src/page/detail_piutang/detail_bloc/detail_bloc.dart';
 import 'package:updateperutangan/src/page/detail_piutang/detail_bloc/detail_event.dart';
 import 'package:updateperutangan/src/page/detail_piutang/detail_bloc/detail_state.dart';
@@ -9,7 +9,7 @@ import 'package:updateperutangan/src/utils/basestyle.dart';
 
 class DetailPiutangPage extends StatefulWidget {
 
-  final DataCreditPiutang dataCredit;
+  final LoanPiutang dataCredit;
 
   const DetailPiutangPage({Key key, this.dataCredit}) : super(key: key);
 
@@ -29,8 +29,8 @@ class _DetailPiutangPageState extends State<DetailPiutangPage> {
   void initState() {
     super.initState();
     detailBloc = BlocProvider.of<DetailPiutangBloc>(context);
-    date = widget.dataCredit.loan.createdat.substring(0,10);
-    time = widget.dataCredit.loan.createdat.substring(12, 16);
+    date = widget.dataCredit.created.substring(0,10);
+    time = widget.dataCredit.created.substring(12, 16);
   }
 
 
@@ -118,16 +118,16 @@ class _DetailPiutangPageState extends State<DetailPiutangPage> {
                 children: <Widget>[
                   Container(
                     width: double.infinity,
-                    color: widget.dataCredit.loan.status_loan == 'pending'
+                    color: widget.dataCredit.status_loan == 'pending'
                         ? Colors.yellow
-                        : widget.dataCredit.loan.status_loan == 'accepted'
+                        : widget.dataCredit.status_loan == 'accepted'
                         ? Colors.orange
-                        : widget.dataCredit.loan.status_loan =='paid'
+                        : widget.dataCredit.status_loan =='paid'
                         ? Colors.green
                         : Colors.red,
                     padding: EdgeInsets.all(20),
                     child: Text(
-                      'Rp. ' + widget.dataCredit.loan.amount.toString(),
+                      'Rp. ' + widget.dataCredit.amount.toString(),
                       style: BaseStyle.ts18BlackBold,
                     ),
                   ),
@@ -146,10 +146,7 @@ class _DetailPiutangPageState extends State<DetailPiutangPage> {
                               SizedBox(
                                 height: 6,
                               ),
-                              Text(
-                                widget.dataCredit.borrower_username +
-                                    " " +
-                                    "(${widget.dataCredit.borrower_name})",
+                              Text(widget.dataCredit.borrower.toString(),
                                 style: BaseStyle.ts14PrimaryName,
                               )
                             ],
@@ -169,7 +166,7 @@ class _DetailPiutangPageState extends State<DetailPiutangPage> {
                                 height: 6,
                               ),
                               Text(
-                                widget.dataCredit.loan.item,
+                                widget.dataCredit.item,
                                 style: BaseStyle.ts14PrimaryName,
                               )
                             ],
@@ -189,7 +186,7 @@ class _DetailPiutangPageState extends State<DetailPiutangPage> {
                                 height: 6,
                               ),
                               Text(
-                                widget.dataCredit.loan.status_loan,
+                                widget.dataCredit.status_loan,
                                 style: BaseStyle.ts14PrimaryName,
                               )
                             ],
@@ -229,9 +226,9 @@ class _DetailPiutangPageState extends State<DetailPiutangPage> {
                                 height: 6,
                               ),
                               Text(
-                                widget.dataCredit.loan.description.isEmpty
+                                widget.dataCredit.description.isEmpty
                                     ? '-'
-                                    : widget.dataCredit.loan.description,
+                                    : widget.dataCredit.description,
                                 style: BaseStyle.ts14PrimaryName,
                               )
                             ],
@@ -257,12 +254,12 @@ class _DetailPiutangPageState extends State<DetailPiutangPage> {
         contentPadding: EdgeInsets.all(10),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         children: <Widget>[
-          widget.dataCredit.loan.status_loan != 'paid'
+          widget.dataCredit.status_loan != 'paid'
               ? ListTile(
             onTap: (){
               detailBloc.add(ActionForRequest(
                 status_loan: 'paid',
-                loan_id: widget.dataCredit.loan.id
+                loan_id: widget.dataCredit.id
               ));
             },
             leading: Icon(Icons.play_circle_filled,

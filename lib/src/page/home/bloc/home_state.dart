@@ -2,7 +2,6 @@ import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 import 'package:updateperutangan/src/model/account.dart';
 import 'package:updateperutangan/src/model/dashboard.dart';
-import 'package:updateperutangan/src/model/data_credit_hutang.dart';
 
 abstract class HomeState extends Equatable {
   const HomeState();

@@ -27,10 +27,8 @@ class _RegisterViewState extends State<RegisterView> {
   bool autoVal = false;
   bool obsecurePass = true;
   bool autoValConfirm = false;
-  var userToken = '';
 
   RegisterBloc registerBloc;
-  FirebaseMessaging firebaseMessaging = FirebaseMessaging();
 
 //  final numericRegex = RegExp(r'^(?:[620]81)?[0-9]{9,12}');
   var regExpName = RegExp(r'[!@#<>?":_`~;[\]\\|=+)(*&^%0-9-]');
@@ -40,7 +38,7 @@ class _RegisterViewState extends State<RegisterView> {
     // TODO: implement initState
     super.initState();
     registerBloc = BlocProvider.of<RegisterBloc>(context);
-    firebaseCloudMessagingListener();
+
   }
 
   @override
@@ -429,27 +427,9 @@ class _RegisterViewState extends State<RegisterView> {
         ovo: ovoController.text,
         gopayName: gopayNameController.text,
         ovoName: ovoNameController.text,
-        fcmToken: userToken
       ));
     }
   }
 
-  void firebaseCloudMessagingListener() {
-    if (Platform.isIOS) {
-      iosPermission();
-    }
-    firebaseMessaging.getToken().then((token) {
-      userToken = token;
-      print(userToken);
-    });
-  }
 
-  void iosPermission() {
-    firebaseMessaging.requestNotificationPermissions(
-        IosNotificationSettings(sound: true, badge: true, alert: true));
-
-    firebaseMessaging.onIosSettingsRegistered.listen((event) {
-      print('Setting registered : $event');
-    });
-  }
 }

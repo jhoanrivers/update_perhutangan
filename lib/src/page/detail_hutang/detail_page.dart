@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:updateperutangan/src/model/data_credit_hutang.dart';
+import 'package:updateperutangan/src/model/loan_hutang.dart';
 import 'package:updateperutangan/src/page/detail_hutang/detail_bloc/detail_bloc.dart';
 import 'package:updateperutangan/src/page/detail_hutang/detail_bloc/detail_event.dart';
 import 'package:updateperutangan/src/page/detail_hutang/detail_bloc/detail_state.dart';
 import 'package:updateperutangan/src/utils/basestyle.dart';
 
 class DetailPage extends StatefulWidget {
-  final DataCreditHutang dataHutang;
+  final LoanHutang dataHutang;
 
   DetailPage({this.dataHutang});
 
@@ -27,8 +27,8 @@ class _DetailPageState extends State<DetailPage> {
   void initState() {
     super.initState();
     detailBloc = BlocProvider.of<DetailBloc>(context);
-    date = widget.dataHutang.loan.createdat.substring(0,10);
-    time = widget.dataHutang.loan.createdat.substring(12, 16);
+    date = widget.dataHutang.created.substring(0,10);
+    time = widget.dataHutang.created.substring(12, 16);
   }
 
 
@@ -91,7 +91,7 @@ class _DetailPageState extends State<DetailPage> {
                 elevation: 0,
                 iconTheme: IconThemeData(color: Colors.white),
                 title: Text(
-                  widget.dataHutang.loan.item,
+                  widget.dataHutang.item,
                   style: BaseStyle.ts16WhiteBold,
                 ),
                 actions: <Widget>[
@@ -107,16 +107,16 @@ class _DetailPageState extends State<DetailPage> {
                 children: <Widget>[
                   Container(
                     width: double.infinity,
-                    color: widget.dataHutang.loan.status_loan == 'pending'
+                    color: widget.dataHutang.status_loan == 'pending'
                         ? Colors.yellow
-                        : widget.dataHutang.loan.status_loan == 'accepted'
+                        : widget.dataHutang.status_loan == 'accepted'
                         ? Colors.orange
-                        : widget.dataHutang.loan.status_loan =='paid'
+                        : widget.dataHutang.status_loan =='paid'
                         ? Colors.green
                         : Colors.red,
                     padding: EdgeInsets.all(20),
                     child: Text(
-                      'Rp. ' + widget.dataHutang.loan.amount.toString(),
+                      'Rp. ' + widget.dataHutang.amount.toString(),
                       style: BaseStyle.ts18BlackBold,
                     ),
                   ),
@@ -135,10 +135,7 @@ class _DetailPageState extends State<DetailPage> {
                               SizedBox(
                                 height: 6,
                               ),
-                              Text(
-                                widget.dataHutang.lender_username +
-                                    " " +
-                                    "(${widget.dataHutang.lender_name})",
+                              Text(widget.dataHutang.borrower.toString(),
                                 style: BaseStyle.ts14PrimaryName,
                               )
                             ],
@@ -158,7 +155,7 @@ class _DetailPageState extends State<DetailPage> {
                                 height: 6,
                               ),
                               Text(
-                                widget.dataHutang.loan.status_loan,
+                                widget.dataHutang.status_loan,
                                 style: BaseStyle.ts14PrimaryName,
                               )
                             ],
@@ -198,9 +195,9 @@ class _DetailPageState extends State<DetailPage> {
                                 height: 6,
                               ),
                               Text(
-                                widget.dataHutang.loan.description.isEmpty
+                                widget.dataHutang.description.isEmpty
                                     ? '-'
-                                    : widget.dataHutang.loan.description,
+                                    : widget.dataHutang.description,
                                 style: BaseStyle.ts14PrimaryName,
                               )
                             ],
@@ -226,11 +223,11 @@ class _DetailPageState extends State<DetailPage> {
         contentPadding: EdgeInsets.all(10),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         children: <Widget>[
-          widget.dataHutang.loan.status_loan == 'pending'
+          widget.dataHutang.status_loan == 'pending'
               ? ListTile(
             onTap: (){
               detailBloc.add(ActionForRequest(
-                  loan_id: widget.dataHutang.loan.id,
+                  loan_id: widget.dataHutang.id,
                   status_loan: 'accepted'
               ));
             },
@@ -242,11 +239,11 @@ class _DetailPageState extends State<DetailPage> {
             ),)
               : Container(),
 
-          widget.dataHutang.loan.status_loan == 'pending'
+          widget.dataHutang.status_loan == 'pending'
               ? ListTile(
             onTap: (){
               detailBloc.add(ActionForRequest(
-                  loan_id: widget.dataHutang.loan.id,
+                  loan_id: widget.dataHutang.id,
                   status_loan: 'rejected'
               ));
             },

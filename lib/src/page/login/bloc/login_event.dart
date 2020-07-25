@@ -16,11 +16,12 @@ abstract class LoginEvent extends Equatable{
 class LoginButtonPressed extends LoginEvent{
   final String username;
   final String password;
+  final String userToken;
 
-  LoginButtonPressed({@required this.username,@required this.password});
+  LoginButtonPressed({@required this.userToken, @required this.username,@required this.password});
 
   @override
   List<Object> get props {
-    return [username,password];
+    return [username,password, userToken];
   }
 }

@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:updateperutangan/src/model/data_credit_hutang.dart';
+import 'package:updateperutangan/src/model/loan_hutang.dart';
 import 'package:updateperutangan/src/page/hutang/bloc/hutang_event.dart';
 import 'package:updateperutangan/src/page/hutang/bloc/hutang_state.dart';
 import 'package:bloc/bloc.dart';
@@ -19,7 +19,7 @@ class HutangBloc extends Bloc<HutangEvent, HutangState> {
   Stream<HutangState> mapEventToState(HutangEvent event) async* {
     final prefs = await SharedPreferences.getInstance();
     final value = prefs.getString('token');
-    List<DataCreditHutang> listCredit;
+    List<LoanHutang> listHutang;
 
     if(event is FetchAllHutang){
       yield LoadingState();
@@ -27,7 +27,7 @@ class HutangBloc extends Bloc<HutangEvent, HutangState> {
       try{
         var response = await http.get(
           'https://dev-hutangku.herokuapp.com/all/debt',
-          headers: {HttpHeaders.authorizationHeader : 'Basic $value'}
+          headers: {HttpHeaders.authorizationHeader : 'Bearer $value'}
         );
 
         if(response.statusCode == 200){
@@ -35,11 +35,11 @@ class HutangBloc extends Bloc<HutangEvent, HutangState> {
           Map<String, dynamic> dataJson = json.decode(response.body);
           var checkData = dataJson['data'];
           if(checkData != null){
-            listCredit = DataCreditHutang.parseList(dataJson['data']);
+            listHutang = LoanHutang.parseList(dataJson['data']);
           } else{
-            listCredit = [];
+            listHutang = [];
           }
-          yield LoadedState(listHutang: listCredit);
+          yield LoadedState(listHutang: listHutang);
 
         } else{
           yield ErrorState();

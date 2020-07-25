@@ -106,11 +106,11 @@ class _PiutangViewState extends State<PiutangView> {
                             width: 10,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.only(topLeft: Radius.circular(6), bottomLeft: Radius.circular(6)),
-                              color: state.dataCredit[index].loan.status_loan == 'pending'
+                              color: state.dataCredit[index].status_loan == 'pending'
                                   ? Colors.yellow
-                                  : state.dataCredit[index].loan.status_loan =='accepted'
+                                  : state.dataCredit[index].status_loan =='accepted'
                                   ? Colors.orange
-                                  : state.dataCredit[index].loan.status_loan == 'rejected'
+                                  : state.dataCredit[index].status_loan == 'rejected'
                                   ? Colors.red
                                   : Colors.green,
                             ),
@@ -139,12 +139,12 @@ class _PiutangViewState extends State<PiutangView> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: <Widget>[
-                                      Text('${state.dataCredit[index].borrower_username} ' +"(${state.dataCredit[index].borrower_name})",
+                                      Text('${state.dataCredit[index].borrower.toString()}',
                                       style: BaseStyle.ts14PrimaryBold,),
                                       SizedBox(
                                         height: 12,
                                       ),
-                                      Text(state.dataCredit[index].loan.item)
+                                      Text(state.dataCredit[index].item)
                                     ],
                                   ),
                                 ),
@@ -153,12 +153,12 @@ class _PiutangViewState extends State<PiutangView> {
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.end,
                                     children: <Widget>[
-                                      Text(state.dataCredit[index].loan.createdat,
+                                      Text(state.dataCredit[index].created,
                                       overflow: TextOverflow.ellipsis,),
                                       SizedBox(
                                         height: 12,
                                       ),
-                                      Text(state.dataCredit[index].loan.amount.toString(),
+                                      Text(state.dataCredit[index].amount.toString(),
                                       style: BaseStyle.ts16BlackBold,)
                                     ],
                                   ),

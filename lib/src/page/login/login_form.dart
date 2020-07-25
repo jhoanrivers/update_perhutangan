@@ -1,5 +1,8 @@
 
 
+import 'dart:io';
+
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:updateperutangan/src/page/home/home_page.dart';
@@ -23,15 +26,19 @@ class _LoginFormState extends State<LoginForm> {
   var loginBloc;
   bool obsecurePass = true;
   bool autoVal = false;
+  FirebaseMessaging firebaseMessaging = new FirebaseMessaging();
 
 
   final _formKey = GlobalKey<FormState>();
+  var userToken = '';
+
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     loginBloc = BlocProvider.of<LoginBloc>(context);
+    firebaseCloudMessagingListener();
 
   }
 
@@ -230,10 +237,35 @@ class _LoginFormState extends State<LoginForm> {
           LoginButtonPressed(
             username: usernameController.text,
             password: passwordController.text,
+            userToken: userToken
           )
       );
     }
 
 
   }
+
+
+  void firebaseCloudMessagingListener() {
+    if (Platform.isIOS) {
+      iosPermission();
+    }
+    firebaseMessaging.getToken().then((token) {
+      userToken = token;
+      print(userToken);
+    });
+  }
+
+  void iosPermission() {
+    firebaseMessaging.requestNotificationPermissions(
+        IosNotificationSettings(sound: true, badge: true, alert: true));
+
+    firebaseMessaging.onIosSettingsRegistered.listen((event) {
+      print('Setting registered : $event');
+    });
+  }
+
+
+
+
 }

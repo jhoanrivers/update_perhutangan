@@ -8,11 +8,11 @@ class LoanPiutang {
   String description;
   String status_loan;
   int amount;
-  String createdat;
+  String created;
 
 
   LoanPiutang(this.id, this.lender,this.borrower, this.item, this.description, this.status_loan,
-      this.amount, this.createdat);
+      this.amount, this.created);
 
   LoanPiutang.fromJson(Map<String, dynamic> json) {
     this.id = json['id'];
@@ -22,6 +22,16 @@ class LoanPiutang {
     this.description = json['description'];
     this.status_loan = json['status_loan'];
     this.amount = json['amount'];
-    this.createdat = json['createdat'];
+    this.created = json['created'];
   }
+
+  static List<LoanPiutang> parseList (List<dynamic> jsonList){
+    List<LoanPiutang> newList = [];
+
+    jsonList.forEach((element) {
+      newList.add(LoanPiutang.fromJson(element));
+    });
+    return newList;
+  }
+
 }

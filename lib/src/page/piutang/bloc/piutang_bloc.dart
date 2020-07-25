@@ -7,7 +7,7 @@ import 'dart:io';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:updateperutangan/src/model/account.dart';
 import 'package:updateperutangan/src/model/dashboard.dart';
-import 'package:updateperutangan/src/model/data_credit_piutang.dart';
+import 'package:updateperutangan/src/model/loan_piutang.dart';
 import 'package:updateperutangan/src/page/piutang/bloc/piutang_event.dart';
 import 'package:updateperutangan/src/page/piutang/bloc/piutang_state.dart';
 import 'package:bloc/bloc.dart';
@@ -26,8 +26,7 @@ class PiutangBloc extends Bloc<PiutangEvent,PiutangState>{
 
     final prefs = await SharedPreferences.getInstance();
     final value = prefs.getString('token');
-    List<DataCreditPiutang> listDataCredit;
-
+    List<LoanPiutang> listPiutang;
     List<Account> listAccount = new List();
 
 
@@ -45,8 +44,10 @@ class PiutangBloc extends Bloc<PiutangEvent,PiutangState>{
         http.Response response = await http.post(
           'https://dev-hutangku.herokuapp.com/new/request',
           body: json.encode(data),
-          headers: {HttpHeaders.authorizationHeader: 'Basic $value'}
+          headers: {HttpHeaders.authorizationHeader: 'Bearer $value'}
         );
+
+        print(response.body);
 
         if(response.statusCode == 200){
           yield SuccessCreatePiutang();
@@ -63,8 +64,8 @@ class PiutangBloc extends Bloc<PiutangEvent,PiutangState>{
       yield LoadingState();
       try{
         var response = await http.get(
-          'https://dev-hutangku.herokuapp.com/all/account',
-          headers: {HttpHeaders.authorizationHeader: 'Basic $value'}
+          'https://dev-hutangku.herokuapp.com/all/user',
+          headers: {HttpHeaders.authorizationHeader: 'Bearer $value'}
         );
         if(response.statusCode == 200){
           var dataJson = json.decode(response.body);
@@ -90,21 +91,21 @@ class PiutangBloc extends Bloc<PiutangEvent,PiutangState>{
       try{
         var response = await http.get(
           'https://dev-hutangku.herokuapp.com/all/credit',
-          headers: {HttpHeaders.authorizationHeader : 'Basic $value'}
+          headers: {HttpHeaders.authorizationHeader : 'Bearer $value'}
         );
 
         if(response.statusCode== 200){
          Map<String, dynamic> dataJson = json.decode(response.body);
          var checkData = dataJson['data'];
          if(checkData != null){
-           listDataCredit = DataCreditPiutang.parseList(dataJson['data']);
+           listPiutang = LoanPiutang.parseList(dataJson['data']);
          }
           else{
-           listDataCredit = [];
+           listPiutang = [];
          }
 
          yield SuccessFetchPiutang(
-           dataCredit: listDataCredit
+           dataCredit: listPiutang
          );
         } else{
           yield ErrorFetchPiutang();

@@ -24,7 +24,10 @@ class LoginBloc extends Bloc<LoginEvent,LoginState>{
           body: jsonEncode(<String, String>{
             'username' : event.username,
             'password' : event.password
-          })
+          }),
+          headers: {
+            'fcm_token' : event.userToken
+          }
         );
         print(response.body);
         if(response.statusCode == 200){
