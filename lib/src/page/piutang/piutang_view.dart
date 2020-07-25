@@ -209,10 +209,7 @@ class _PiutangViewState extends State<PiutangView> {
           );
 
           if(anyUpdate) {
-            setState(() async{
-              piutangBloc.add(FetchAllPiutang());
-              
-            });
+            piutangBloc.add(FetchAllPiutang());
             anyUpdate = false;
           }
 

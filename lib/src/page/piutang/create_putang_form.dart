@@ -143,12 +143,12 @@ class _CreatePiutangFormState extends State<CreatePiutangForm> {
                                 onTap: () async {
                                   listUser = await Navigator.push(context,
                                       MaterialPageRoute(builder: (context) => SearchUserPage()));
-
                                   if(listUser != null){
                                     for (var key in listUser){
                                       setState(() {
                                         mapResult.putIfAbsent(key.id, () => key);
                                       });
+                                      print(mapResult);
                                     }
                                   }
                                 },

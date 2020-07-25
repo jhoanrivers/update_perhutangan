@@ -46,9 +46,7 @@ class PiutangBloc extends Bloc<PiutangEvent,PiutangState>{
           body: json.encode(data),
           headers: {HttpHeaders.authorizationHeader: 'Bearer $value'}
         );
-
-        print(response.body);
-
+        
         if(response.statusCode == 200){
           yield SuccessCreatePiutang();
         } else{
