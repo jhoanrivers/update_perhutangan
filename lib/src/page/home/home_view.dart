@@ -26,13 +26,19 @@ class _HomeViewState extends State<HomeView> {
     homeBloc = BlocProvider.of<HomeBloc>(context);
     homeBloc.add(GetUserCurrentHutPiut());
     firebaseCloudMessaging();
+    initLocalNotification();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: BlocListener<HomeBloc, HomeState>(
-          listener: (context, state) {},
+          listener: (context, state) {
+
+
+
+
+          },
           child: BlocBuilder<HomeBloc, HomeState>(
             builder: (context, state) {
               if (state is LoadingState) {
@@ -96,11 +102,32 @@ class _HomeViewState extends State<HomeView> {
                                     ),
                                     Text('Update Perutangan',
                                     style: BaseStyle.ts16WhiteBold,),
-                                    IconButton(
-                                      icon: Icon(Icons.notifications),
-                                      onPressed: (){
-                                        print('notif');
-                                      },
+                                    Stack(
+                                      children: <Widget>[
+                                        IconButton(
+                                          icon: Icon(Icons.notifications),
+                                          onPressed: (){
+                                            print('notif');
+                                          },
+                                        ),
+                                        Positioned(
+                                          top: 4,
+                                          left: 4,
+                                          child: Container(
+                                            width: 20,
+                                            height: 20,
+                                            decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.circular(90),
+                                              color: Colors.pink
+                                            ),
+                                            padding: EdgeInsets.only(left: 6, top: 2, bottom: 2),
+                                            child: Text('1',
+                                            style: TextStyle(
+                                              color: Colors.white
+                                            ),),
+                                          ),
+                                        )
+                                      ],
                                     )
                                   ],
                                 ),
@@ -399,6 +426,18 @@ class _HomeViewState extends State<HomeView> {
       onLaunch:  (Map<String, dynamic> message) async {
         print('on launch $message');
       });
+
+  }
+
+  void initLocalNotification() {
+    var initializationSettingsAndroid =
+    AndroidInitializationSettings('app_icon');
+    var initializationSettingsIOS = IOSInitializationSettings(
+        onDidReceiveLocalNotification: onDidReceiveLocalNotification);
+    var initializationSettings = InitializationSettings(
+        initializationSettingsAndroid, initializationSettingsIOS);
+    flutterLocalNotificationsPlugin.initialize(initializationSettings,
+        onSelectNotification: onSelectNotification);
 
   }
 }

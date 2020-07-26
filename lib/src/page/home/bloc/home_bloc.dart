@@ -19,7 +19,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     final prefs = await SharedPreferences.getInstance();
     final key = 'token';
     final value = prefs.getString(key);
-    DbClient dbClient = DbClient();
 
     if (event is GetUserCurrentHutPiut) {
       yield LoadingState();
@@ -31,7 +30,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           Map<String, dynamic> dataJson = json.decode(response.body);
           Dashboard dashboard = Dashboard.fromJson(dataJson['data']);
           prefs.setString('username', dashboard.account.username);
-          dbClient.insert(dashboard.account);
           yield SuccessLoadData(dashboard: dashboard);
         } else {
           yield FailedLoadData();
