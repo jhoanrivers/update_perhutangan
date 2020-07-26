@@ -246,14 +246,16 @@ class _LoginFormState extends State<LoginForm> {
   }
 
 
-  void firebaseCloudMessagingListener() {
-    if (Platform.isIOS) {
-      iosPermission();
-    }
-    firebaseMessaging.getToken().then((token) {
-      userToken = token;
-      print(userToken);
+  void firebaseCloudMessagingListener() async {
+    firebaseMessaging.requestNotificationPermissions(
+      const IosNotificationSettings(sound: true, badge: true, alert: true, provisional: true),
+    );
+    firebaseMessaging.onIosSettingsRegistered.listen((settings) {
+      debugPrint('Settings registered: $settings');
     });
+    firebaseMessaging.getToken().then((token) => setState(() {
+      this.userToken = token;
+    }));
   }
 
   void iosPermission() {

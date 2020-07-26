@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:updateperutangan/src/model/account.dart';
 import 'package:updateperutangan/src/model/loan_piutang.dart';
 import 'package:updateperutangan/src/page/detail_piutang/detail_bloc/detail_bloc.dart';
 import 'package:updateperutangan/src/page/detail_piutang/detail_bloc/detail_event.dart';
@@ -10,8 +11,9 @@ import 'package:updateperutangan/src/utils/basestyle.dart';
 class DetailPiutangPage extends StatefulWidget {
 
   final LoanPiutang dataCredit;
+  final Account dataAccount;
 
-  const DetailPiutangPage({Key key, this.dataCredit}) : super(key: key);
+  const DetailPiutangPage({Key key, this.dataCredit, this.dataAccount}) : super(key: key);
 
   @override
   _DetailPiutangPageState createState() => _DetailPiutangPageState();
@@ -146,7 +148,7 @@ class _DetailPiutangPageState extends State<DetailPiutangPage> {
                               SizedBox(
                                 height: 6,
                               ),
-                              Text(widget.dataCredit.borrower.toString(),
+                              Text(widget.dataAccount.name,
                                 style: BaseStyle.ts14PrimaryName,
                               )
                             ],

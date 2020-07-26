@@ -85,7 +85,7 @@ class _PiutangViewState extends State<PiutangView> {
                   return GestureDetector(
                     onTap: () async{
                       anyUpdate = await Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => DetailPiutangPage(dataCredit: state.dataCredit[index])));
+                          MaterialPageRoute(builder: (context) => DetailPiutangPage(dataCredit: state.dataCredit[index].loanPiutang, dataAccount: state.dataCredit[index].dataAccount,)));
 
                       if(anyUpdate){
                         setState(() {
@@ -103,14 +103,14 @@ class _PiutangViewState extends State<PiutangView> {
                         children: <Widget>[
                           Container(
                             height: 80,
-                            width: 10,
+                            width: 8,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.only(topLeft: Radius.circular(6), bottomLeft: Radius.circular(6)),
-                              color: state.dataCredit[index].status_loan == 'pending'
+                              color: state.dataCredit[index].loanPiutang.status_loan == 'pending'
                                   ? Colors.yellow
-                                  : state.dataCredit[index].status_loan =='accepted'
+                                  : state.dataCredit[index].loanPiutang.status_loan =='accepted'
                                   ? Colors.orange
-                                  : state.dataCredit[index].status_loan == 'rejected'
+                                  : state.dataCredit[index].loanPiutang.status_loan == 'rejected'
                                   ? Colors.red
                                   : Colors.green,
                             ),
@@ -139,12 +139,12 @@ class _PiutangViewState extends State<PiutangView> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: <Widget>[
-                                      Text('${state.dataCredit[index].borrower.toString()}',
+                                      Text('${state.dataCredit[index].dataAccount.name}',
                                       style: BaseStyle.ts14PrimaryBold,),
                                       SizedBox(
                                         height: 12,
                                       ),
-                                      Text(state.dataCredit[index].item)
+                                      Text(state.dataCredit[index].loanPiutang.item)
                                     ],
                                   ),
                                 ),
@@ -153,12 +153,12 @@ class _PiutangViewState extends State<PiutangView> {
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.end,
                                     children: <Widget>[
-                                      Text(state.dataCredit[index].created,
+                                      Text(state.dataCredit[index].loanPiutang.created,
                                       overflow: TextOverflow.ellipsis,),
                                       SizedBox(
                                         height: 12,
                                       ),
-                                      Text(state.dataCredit[index].amount.toString(),
+                                      Text(state.dataCredit[index].loanPiutang.amount.toString(),
                                       style: BaseStyle.ts16BlackBold,)
                                     ],
                                   ),

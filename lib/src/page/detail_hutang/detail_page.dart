@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:updateperutangan/src/model/account.dart';
 import 'package:updateperutangan/src/model/loan_hutang.dart';
 import 'package:updateperutangan/src/page/detail_hutang/detail_bloc/detail_bloc.dart';
 import 'package:updateperutangan/src/page/detail_hutang/detail_bloc/detail_event.dart';
@@ -8,8 +9,9 @@ import 'package:updateperutangan/src/utils/basestyle.dart';
 
 class DetailPage extends StatefulWidget {
   final LoanHutang dataHutang;
+  final Account dataAccount;
 
-  DetailPage({this.dataHutang});
+  DetailPage({this.dataHutang, this.dataAccount});
 
   @override
   _DetailPageState createState() => _DetailPageState();
@@ -90,8 +92,7 @@ class _DetailPageState extends State<DetailPage> {
                 backgroundColor: Colors.deepOrangeAccent,
                 elevation: 0,
                 iconTheme: IconThemeData(color: Colors.white),
-                title: Text(
-                  widget.dataHutang.item,
+                title: Text("Detail Hutang",
                   style: BaseStyle.ts16WhiteBold,
                 ),
                 actions: <Widget>[
@@ -129,13 +130,32 @@ class _DetailPageState extends State<DetailPage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Text(
-                                'Nama Pemberi Uang',
+                                'Item',
                                 style: BaseStyle.ts12PrimaryLabel,
                               ),
                               SizedBox(
                                 height: 6,
                               ),
-                              Text(widget.dataHutang.borrower.toString(),
+                              Text(widget.dataHutang.item,
+                                style: BaseStyle.ts14PrimaryName,
+                              )
+                            ],
+                          ),
+                        ),
+                        Divider(),
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(16, 10, 16, 0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                'Pemberi',
+                                style: BaseStyle.ts12PrimaryLabel,
+                              ),
+                              SizedBox(
+                                height: 6,
+                              ),
+                              Text(widget.dataAccount.name,
                                 style: BaseStyle.ts14PrimaryName,
                               )
                             ],
@@ -199,6 +219,59 @@ class _DetailPageState extends State<DetailPage> {
                                     ? '-'
                                     : widget.dataHutang.description,
                                 style: BaseStyle.ts14PrimaryName,
+                              )
+                            ],
+                          ),
+                        ),
+                        Divider(),
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(16, 10, 16, 0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                'Gopay',
+                                style: BaseStyle.ts12PrimaryLabel,
+                              ),
+
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Text(widget.dataAccount.gopayName + " - " + widget.dataAccount.gopay,
+                                    style: BaseStyle.ts14PrimaryName,
+                                  ),
+                                  IconButton(
+                                    icon: Icon(Icons.content_copy),
+                                    color: Colors.grey,
+                                    onPressed: (){},
+                                  )
+                                ],
+                              )
+                            ],
+                          ),
+                        ),
+                        Divider(),
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(16, 10, 16, 0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                'OVO',
+                                style: BaseStyle.ts12PrimaryLabel,
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Text(widget.dataAccount.ovoName + " - "+ widget.dataAccount.ovo,
+                                    style: BaseStyle.ts14PrimaryName,
+                                  ),
+                                  IconButton(
+                                    onPressed: (){},
+                                    color: Colors.grey,
+                                    icon: Icon(Icons.content_copy),
+                                  )
+                                ],
                               )
                             ],
                           ),

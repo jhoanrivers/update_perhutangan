@@ -74,7 +74,8 @@ class _HutangViewState extends State<HutangView> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) => DetailPage(
-                                        dataHutang: state.listHutang[index],
+                                    dataHutang: state.listHutang[index].loanHutang,
+                                    dataAccount: state.listHutang[index].account,
                                       )));
 
                           if (hutangUpdated) {
@@ -95,14 +96,14 @@ class _HutangViewState extends State<HutangView> {
                                 width: 8,
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.only(topLeft: Radius.circular(6), bottomLeft: Radius.circular(6)),
-                                  color: state.listHutang[index].status_loan ==
+                                  color: state.listHutang[index].loanHutang.status_loan ==
                                       'pending'
                                       ? Colors.yellow
-                                      : state.listHutang[index]
+                                      : state.listHutang[index].loanHutang
                                       .status_loan ==
                                       'accepted'
                                       ? Colors.orange
-                                      : state.listHutang[index]
+                                      : state.listHutang[index].loanHutang
                                       .status_loan ==
                                       'rejected'
                                       ? Colors.red
@@ -138,14 +139,14 @@ class _HutangViewState extends State<HutangView> {
                                             CrossAxisAlignment.start,
                                         children: <Widget>[
                                           Text(
-                                            '${state.listHutang[index].lender} ',
+                                            '${state.listHutang[index].account.name} ',
                                             style: BaseStyle.ts14PrimaryBold,
                                           ),
                                           SizedBox(
                                             height: 12,
                                           ),
                                           Text(
-                                              state.listHutang[index].item)
+                                              state.listHutang[index].loanHutang.item)
                                         ],
                                       ),
                                     ),
@@ -157,14 +158,14 @@ class _HutangViewState extends State<HutangView> {
                                         children: <Widget>[
                                           Text(
                                             state.listHutang[index]
-                                                .created,
+                                                .loanHutang.created,
                                             overflow: TextOverflow.ellipsis,
                                           ),
                                           SizedBox(
                                             height: 12,
                                           ),
                                           Text(
-                                            state.listHutang[index].amount
+                                            state.listHutang[index].loanHutang.amount
                                                 .toString(),
                                             style: BaseStyle.ts16BlackBold,
                                           )

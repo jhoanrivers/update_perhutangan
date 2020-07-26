@@ -1,5 +1,6 @@
 
 import 'package:equatable/equatable.dart';
+import 'package:updateperutangan/src/model/data_loan_hutang.dart';
 import 'package:updateperutangan/src/model/loan_hutang.dart';
 
 abstract class HutangState extends Equatable{
@@ -17,7 +18,7 @@ class InitialState extends HutangState{}
 class LoadingState extends HutangState{}
 
 class LoadedState extends HutangState{
-  final List<LoanHutang> listHutang;
+  final List<DataLoanHutang> listHutang;
 
   LoadedState({this.listHutang});
 

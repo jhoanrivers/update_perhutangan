@@ -139,27 +139,7 @@ class _ProfileViewState extends State<ProfileView> {
                     SizedBox(
                       height: 64,
                     ),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Text(
-                          'Id',
-                          style: BaseStyle.ts14PrimaryLabel,
-                        ),
-                        Container(
-                            width: 160,
-                            child: state is SuccessFetchData
-                                ? Text(
-                                    state.dataUser.id.toString(),
-                                    style: BaseStyle.ts14PrimaryName,
-                                  )
-                                : Text('-'))
-                      ],
-                    ),
-                    Divider(
-                      height: 20,
-                    ),
+                    
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,

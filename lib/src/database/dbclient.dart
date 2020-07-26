@@ -1,56 +1,99 @@
+
+
 import 'dart:convert';
 import 'dart:io';
-import 'dart:async';
-import 'package:path/path.dart';
+
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:sqflite/sqflite.dart';
+import 'package:updateperutangan/src/model/account.dart';
 
-class DBClient {
-  static final _databaseName = 'updateperhutangan.db';
-  static final _databaseVersion = 1;
-  static final tableUser = 'table_user';
+class DbClient {
 
-//  User Table
-
-  static final columnId = 'idLocal';
-  static final columnUsername = 'username';
-  static final columnName = 'name';
-  static final columnFcmToken = 'token';
-  static final columnOvo = 'ovo';
-  static final columnOvoName = 'ovo_name';
-  static final columnGopay = 'gopay';
-  static final columnGopayName = 'gopay_name';
-
-  DBClient._privateConstructor();
-
-  static final DBClient instance = DBClient._privateConstructor();
-
+  static DbClient _dbClient;
   static Database _database;
 
-  Future<Database> get database async {
-    if (_database != null) {
-      return _database;
+
+
+
+  static var id;
+  static const name = 'name';
+  static const userName = 'userName';
+  static const gopay = 'goapy';
+  static const gopayName = 'gopay_name';
+  static const ovo ='ovo';
+  static const ovoName = 'ovo_name';
+
+
+  DbClient._createObject();
+
+
+  factory DbClient() {
+    if(_dbClient == null){
+      _dbClient = DbClient._createObject();
     }
-    _database = await _initDatabase();
-    return _database;
+    return _dbClient;
   }
 
-  _initDatabase() async {
-    Directory documentDirectory = await getApplicationDocumentsDirectory();
-    String path = join(documentDirectory.path, _databaseName);
-    return await openDatabase(path,
-        version: _databaseVersion, onCreate: _onCreate);
+
+  Future<Database> initDb() async {
+
+    Directory directory = await getApplicationDocumentsDirectory();
+    String path = directory.path +"account.db";
+
+    var todoDatabase = openDatabase(path, version: 1, onCreate: _createDb);
+    return todoDatabase;
+
   }
 
-  Future _onCreate(Database db, int version) async {
-    db.execute('''CREATE TABLE $tableUser (
-       $columnId STRING PRIMARY KEY,
-       $columnUsername STRING,
 
+  void _createDb (Database db, int version) async {
+    await db.execute(
+      '''CREATE TABLE account (
+        $id INTEGER PRIMARY KEY AUTOINCREMENT,
+        $name TEXT,
+        $userName TEXT,
+        $gopayName TEXT,
+        $gopay TEXT,
+        $ovo TEXT,
+        $ovoName TEXT
+      
+      )'''
+    );
 
-
-
-     )''');
   }
+
+
+  Future<Database> get database async{
+    if(_database == null){
+      _database = await initDb();
+
+    }
+  }
+
+  Future<void> insert (Account account) async{
+    Database db = await this.database;
+    db.insert('account', account.toJson());
+    
+  }
+
+  Future<Account> getUser (String username) async {
+    Database db = await this.database;
+    Account account;
+    var res = await db.query('account', where: '$username = ? ', whereArgs: [username]);
+
+    if(res.isNotEmpty){
+      var firstAcc = res.first;
+      account= Account.fromJson(firstAcc);
+    }
+    return account;
+
+  }
+
+
+  Future<int> deleteDatabase() async {
+    Database db = await this.database;
+    return await db.delete('account');
+  }
+
+
 }

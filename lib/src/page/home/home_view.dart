@@ -236,10 +236,11 @@ class _HomeViewState extends State<HomeView> {
                             ),
                           )
                         : SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.5,
+                            height: 90.0 * state.dashboard.lastTransaction.length,
                             child: Padding(
                               padding: EdgeInsets.symmetric(horizontal: 10),
                               child: ListView.builder(
+                                physics: NeverScrollableScrollPhysics(),
                                 itemBuilder: (context, index) {
                                   return GestureDetector(
                                       onTap: () {},
@@ -290,7 +291,7 @@ class _HomeViewState extends State<HomeView> {
                                                 mainAxisAlignment:
                                                     MainAxisAlignment.spaceAround,
                                                 children: <Widget>[
-                                                  state.dashboard.lastTransaction[index].lenderUsername == state.dashboard.account.username
+                                                  state.dashboard.lastTransaction[index].lender == state.dashboard.account.id
                                                       ? Icon(
                                                           Icons.call_made,
                                                           color: Colors.green,

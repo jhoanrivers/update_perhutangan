@@ -3,6 +3,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 import 'package:updateperutangan/src/model/account.dart';
+import 'package:updateperutangan/src/model/data_loan_piutang.dart';
 import 'package:updateperutangan/src/model/loan_piutang.dart';
 
 abstract class PiutangState extends Equatable {
@@ -23,7 +24,7 @@ class LoadingState extends PiutangState{}
 class CreatePiutangLoadingState extends PiutangState{}
 
 class SuccessFetchPiutang extends PiutangState{
-  final List<LoanPiutang> dataCredit;
+  final List<DataLoanPiutang> dataCredit;
 
   SuccessFetchPiutang({
     @required this.dataCredit,
@@ -51,7 +52,7 @@ class ErrorFetchUser extends PiutangState{}
 
 
 class SuccessPiutangBackState extends PiutangState{
-  final List<LoanPiutang> dataCredit;
+  final List<DataLoanPiutang> dataCredit;
 
   SuccessPiutangBackState({
     @required this.dataCredit,

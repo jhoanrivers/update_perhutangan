@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:updateperutangan/src/model/data_loan_hutang.dart';
 import 'package:updateperutangan/src/model/loan_hutang.dart';
 import 'package:updateperutangan/src/page/hutang/bloc/hutang_event.dart';
 import 'package:updateperutangan/src/page/hutang/bloc/hutang_state.dart';
@@ -19,7 +20,7 @@ class HutangBloc extends Bloc<HutangEvent, HutangState> {
   Stream<HutangState> mapEventToState(HutangEvent event) async* {
     final prefs = await SharedPreferences.getInstance();
     final value = prefs.getString('token');
-    List<LoanHutang> listHutang;
+    List<DataLoanHutang> listDataHutang;
 
     if(event is FetchAllHutang){
       yield LoadingState();
@@ -35,11 +36,11 @@ class HutangBloc extends Bloc<HutangEvent, HutangState> {
           Map<String, dynamic> dataJson = json.decode(response.body);
           var checkData = dataJson['data'];
           if(checkData != null){
-            listHutang = LoanHutang.parseList(dataJson['data']);
+            listDataHutang = DataLoanHutang.parseListDataLoan(dataJson['data']);
           } else{
-            listHutang = [];
+            listDataHutang = [];
           }
-          yield LoadedState(listHutang: listHutang);
+          yield LoadedState(listHutang: listDataHutang);
 
         } else{
           yield ErrorState();

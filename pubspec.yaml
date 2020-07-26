@@ -35,7 +35,7 @@ dependencies:
   path: ^1.6.4
   flutter_typeahead: ^1.8.3
   toast: ^0.1.5
-  firebase_messaging: ^6.0.16
+  firebase_messaging: ^6.0.13
   get_it: ^4.0.2
 
 

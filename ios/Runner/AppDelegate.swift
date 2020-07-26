@@ -12,6 +12,7 @@ import Flutter
     UNUserNotificationCenter.current().delegate = self as? UNUserNotificationCenterDelegate
   }
 
+    FirebaseApp.configure()
     GeneratedPluginRegistrant.register(with: self)
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }

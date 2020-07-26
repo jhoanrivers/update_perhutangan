@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:updateperutangan/src/database/dbclient.dart';
 import 'package:updateperutangan/src/model/account.dart';
 import 'package:updateperutangan/src/model/dashboard.dart';
 import 'package:updateperutangan/src/page/profile/bloc/profile_event.dart';
@@ -25,8 +26,8 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
       try {
         final response = await http.get(
-            'https://dev-hutangku.herokuapp.com/account',
-            headers: {HttpHeaders.authorizationHeader: 'Basic $value'});
+            'https://dev-hutangku.herokuapp.com/my-account',
+            headers: {HttpHeaders.authorizationHeader: 'Bearer $value'});
         print(response.body);
         if (response.statusCode == 200) {
           Map<String, dynamic> dataJson = json.decode(response.body);

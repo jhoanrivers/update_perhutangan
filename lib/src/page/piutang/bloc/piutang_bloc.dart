@@ -7,6 +7,7 @@ import 'dart:io';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:updateperutangan/src/model/account.dart';
 import 'package:updateperutangan/src/model/dashboard.dart';
+import 'package:updateperutangan/src/model/data_loan_piutang.dart';
 import 'package:updateperutangan/src/model/loan_piutang.dart';
 import 'package:updateperutangan/src/page/piutang/bloc/piutang_event.dart';
 import 'package:updateperutangan/src/page/piutang/bloc/piutang_state.dart';
@@ -26,7 +27,7 @@ class PiutangBloc extends Bloc<PiutangEvent,PiutangState>{
 
     final prefs = await SharedPreferences.getInstance();
     final value = prefs.getString('token');
-    List<LoanPiutang> listPiutang;
+    List<DataLoanPiutang> listDataLoanPiutang;
     List<Account> listAccount = new List();
 
 
@@ -95,14 +96,14 @@ class PiutangBloc extends Bloc<PiutangEvent,PiutangState>{
          Map<String, dynamic> dataJson = json.decode(response.body);
          var checkData = dataJson['data'];
          if(checkData != null){
-           listPiutang = LoanPiutang.parseList(dataJson['data']);
+           listDataLoanPiutang = DataLoanPiutang.parseListDataLoanPiutang(dataJson['data']);
          }
           else{
-           listPiutang = [];
+           listDataLoanPiutang = [];
          }
 
          yield SuccessFetchPiutang(
-           dataCredit: listPiutang
+           dataCredit: listDataLoanPiutang
          );
         } else{
           yield ErrorFetchPiutang();
