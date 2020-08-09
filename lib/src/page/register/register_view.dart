@@ -27,8 +27,10 @@ class _RegisterViewState extends State<RegisterView> {
   bool autoVal = false;
   bool obsecurePass = true;
   bool autoValConfirm = false;
+  var fcm_token = '';
 
   RegisterBloc registerBloc;
+  FirebaseMessaging firebaseMessaging = new FirebaseMessaging();
 
 //  final numericRegex = RegExp(r'^(?:[620]81)?[0-9]{9,12}');
   var regExpName = RegExp(r'[!@#<>?":_`~;[\]\\|=+)(*&^%0-9-]');
@@ -38,7 +40,7 @@ class _RegisterViewState extends State<RegisterView> {
     // TODO: implement initState
     super.initState();
     registerBloc = BlocProvider.of<RegisterBloc>(context);
-
+    getTokenFirebaseMessaging();
   }
 
   @override
@@ -127,12 +129,10 @@ class _RegisterViewState extends State<RegisterView> {
                           padding: EdgeInsets.symmetric(vertical: 14),
                           color: Colors.green,
                           onPressed: () {
-                            Navigator.pop(context);
-                            Navigator.pop(context);
-                            Navigator.push(
+                            Navigator.pushAndRemoveUntil(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => LoginPage()));
+                                    builder: (context) => LoginPage()), (Route<dynamic> route) => false);
                           },
                           child: Text(
                             'Login',
@@ -304,7 +304,7 @@ class _RegisterViewState extends State<RegisterView> {
                                     return 'Gopay number at least 9 digit';
                                   }
                                   if (gopayController.text.length > 13) {
-                                    return 'Gopay number maximum 12 digit';
+                                    return 'Gopay number maximum 13 digit';
                                   }
                                   return null;
                                 },
@@ -354,8 +354,8 @@ class _RegisterViewState extends State<RegisterView> {
                                   if (ovoController.text.length < 9) {
                                     return 'Ovo number at least 9 digit';
                                   }
-                                  if (ovoController.text.length > 12) {
-                                    return 'Ovo number maximum 12 digit';
+                                  if (ovoController.text.length > 13) {
+                                    return 'Ovo number maximum 13 digit';
                                   }
                                   return null;
                                 },
@@ -427,8 +427,13 @@ class _RegisterViewState extends State<RegisterView> {
         ovo: ovoController.text,
         gopayName: gopayNameController.text,
         ovoName: ovoNameController.text,
+        fcm_token: fcm_token
       ));
     }
+  }
+
+  void getTokenFirebaseMessaging() {
+    firebaseMessaging.getToken().then((value) => fcm_token = value);
   }
 
 
