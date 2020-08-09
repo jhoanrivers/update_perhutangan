@@ -21,10 +21,7 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
   var scrollController = ScrollController();
-  FirebaseMessaging firebaseMessaging = new FirebaseMessaging();
   HomeBloc homeBloc;
-  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = new FlutterLocalNotificationsPlugin();
-
 
   @override
   void initState() {
@@ -32,8 +29,6 @@ class _HomeViewState extends State<HomeView> {
     super.initState();
     homeBloc = BlocProvider.of<HomeBloc>(context);
     homeBloc.add(GetUserCurrentHutPiut());
-    firebaseCloudMessaging();
-    initLocalNotification();
   }
 
   @override
@@ -440,98 +435,4 @@ class _HomeViewState extends State<HomeView> {
           ),
         ));
   }
-
-  void firebaseCloudMessaging() {
-    firebaseMessaging.configure(
-      onMessage: (Map<String, dynamic> message) async{
-        print('on message $message');
-        showNotification(message);
-      },
-      onResume:  (Map<String, dynamic> message) async {
-        print('on resume $message');
-      },
-      onLaunch:  (Map<String, dynamic> message) async {
-        print('on launch $message');
-      });
-
-  }
-
-  void initLocalNotification() {
-    var initializationSettingsAndroid =
-    AndroidInitializationSettings('@mipmap/ic_launcher');
-    var initializationSettingsIOS = IOSInitializationSettings(
-        onDidReceiveLocalNotification: onDidReceiveLocalNotification);
-    var initializationSettings = InitializationSettings(
-        initializationSettingsAndroid, initializationSettingsIOS);
-    flutterLocalNotificationsPlugin.initialize(initializationSettings,
-        onSelectNotification: selectNotification);
-
-  }
-
-
-  Future selectNotification(String payload) async {
-
-    var dataDecode = json.decode(payload);
-    var tempLoanHutang = json.decode(dataDecode['data']['body']);
-    DataLoanHutang dataLoanHutang = DataLoanHutang.fromJson(tempLoanHutang);
-
-    Navigator.push(context, MaterialPageRoute(
-      builder: (context) => DetailPage(
-        dataLoanHutang: dataLoanHutang
-      )
-    ));
-  }
-
-  void showNotification(Map<String, dynamic> message) async{
-
-    String dataToEncode = json.encode(message);
-    var tempDataHutang = json.decode(message['data']['body']);
-
-    DataLoanHutang dataLoanHutang = DataLoanHutang.fromJson(tempDataHutang);
-
-    var androidPlatformChannelSpecifics = AndroidNotificationDetails(
-        'your channel id', 'your channel name', 'your channel description',
-        importance: Importance.Max, priority: Priority.High, ticker: 'ticker');
-    var iOSPlatformChannelSpecifics = IOSNotificationDetails();
-    var platformChannelSpecifics = NotificationDetails(
-        androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
-    await flutterLocalNotificationsPlugin.show(
-        0, dataLoanHutang.account.name, 'Menambahkan hutang ${dataLoanHutang.loanHutang.amount}', platformChannelSpecifics,
-        payload: dataToEncode);
-  }
-
-
-  Future onDidReceiveLocalNotification(int id, String title, String body, String payload) async {
-    // display a dialog with the notification details, tap ok to go to another page
-    showDialog(
-      context: context,
-      builder: (BuildContext context) => CupertinoAlertDialog(
-        title: Text(title),
-        content: Text(body),
-        actions: [
-          CupertinoDialogAction(
-            isDefaultAction: true,
-            child: Text('Ok'),
-            onPressed: () async {
-              Navigator.of(context, rootNavigator: true).pop();
-//              await Navigator.push(
-//                context,
-//                MaterialPageRoute(
-//                  builder: (context) => SecondScreen(payload),
-//                ),
-//              );
-            },
-          )
-        ],
-      ),
-    );
-  }
-
-
-
-
-
-
-
-
 }

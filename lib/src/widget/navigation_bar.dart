@@ -31,7 +31,6 @@ class _NavigationBarState extends State<NavigationBar> {
   FirebaseMessaging firebaseMessaging = new FirebaseMessaging();
 
 
-
   int _selectedIndex = 0;
   static const List<Widget> _widgetOptions = <Widget>[
     Center(
@@ -125,10 +124,11 @@ class _NavigationBarState extends State<NavigationBar> {
     firebaseMessaging.configure(
         onMessage: (Map<String, dynamic> message) async {
           print('on message $message');
-
           if(Platform.isAndroid){
             Map<String, dynamic> dataMessage = json.decode(message['data']['body']);
             showNotificationDefaultSound(dataMessage);
+          } else{
+
           }
         },
         onResume: (Map<String, dynamic> message) async {
