@@ -26,7 +26,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.green,
+      backgroundColor: Colors.white,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -35,9 +35,9 @@ class _SplashScreenState extends State<SplashScreen> {
               padding: EdgeInsets.all(100),
               child: Column(
                 children: <Widget>[
-                  Image.asset('assets/logo.png'),
+                  Image.asset('assets/newlogo.png'),
                   Text('Perhutangan',
-                  style: BaseStyle.ts18WhiteBold,)
+                  style: BaseStyle.ts16BlackBold,)
                 ],
               )
             )

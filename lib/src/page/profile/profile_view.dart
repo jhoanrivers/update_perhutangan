@@ -79,6 +79,7 @@ class _ProfileViewState extends State<ProfileView> {
           return Scaffold(
               backgroundColor: Colors.white,
               appBar: AppBar(
+                automaticallyImplyLeading: false,
                 title: Text(
                   'Profile',
                   style: BaseStyle.ts18WhiteBold,

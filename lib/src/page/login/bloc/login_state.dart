@@ -18,4 +18,11 @@ class LoadingLogin extends LoginState{}
 
 class SuccessLogin extends LoginState{}
 
-class ErrorLogin extends LoginState{}
+class ErrorLogin extends LoginState{
+  final String message;
+
+  ErrorLogin({this.message});
+
+  @override
+  List<Object> get props => [message];
+}

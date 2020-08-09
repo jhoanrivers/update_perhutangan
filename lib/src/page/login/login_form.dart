@@ -60,7 +60,7 @@ class _LoginFormState extends State<LoginForm> {
             Navigator.pop(context);
             Scaffold.of(context).showSnackBar(
               SnackBar(
-                content: Text('Login Failure'),
+                content: Text(state.message),
                 backgroundColor: Colors.red,
               ),
             );
@@ -113,14 +113,20 @@ class _LoginFormState extends State<LoginForm> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         SizedBox(
-                          height: 140,
+                          height: 60,
                         ),
                         Container(
-                            height: 100,
-                            width: 100,
-                            child: Image.asset('assets/logo.png')
+                            child: Image.asset('assets/newlogo.png',
+                              height: 160,
+                              fit: BoxFit.fill,
+                            )
                         ),
-                        SizedBox(height: 20,),
+                        SizedBox(
+                          height: 12,
+                        ),
+                        Text('Update Perutangan',
+                        style: BaseStyle.ts16BlackBold,),
+                        SizedBox(height: 64,),
                         TextFormField(
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
@@ -171,7 +177,7 @@ class _LoginFormState extends State<LoginForm> {
                           },
                         ),
                         SizedBox(
-                          height: 80,
+                          height: 34,
                         ),
 
                         SizedBox(

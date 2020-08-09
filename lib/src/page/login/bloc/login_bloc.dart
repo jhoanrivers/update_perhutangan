@@ -5,9 +5,11 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:updateperutangan/src/page/login/api_response.dart';
 import 'package:updateperutangan/src/page/login/bloc/login_event.dart';
 import 'package:updateperutangan/src/page/login/bloc/login_state.dart';
 import 'package:updateperutangan/src/service/service_client.dart';
+import 'package:updateperutangan/src/utils/constant.dart';
 
 class LoginBloc extends Bloc<LoginEvent,LoginState>{
 
@@ -32,7 +34,19 @@ class LoginBloc extends Bloc<LoginEvent,LoginState>{
             'fcm_token' : event.userToken
           }
         );
-        if(response.statusCode == 200){
+
+        Map<String, dynamic> dataJson = json.decode(response.body);
+        ApiResponse apiResponse = ApiResponse.fromJson(dataJson);
+
+        if(apiResponse.data == Constant.userNameDoesntExist){
+          yield ErrorLogin(
+            message: Constant.wrongUsernameOrPassword
+          );
+        } else if(apiResponse.data == Constant.wrongPassword){
+          yield ErrorLogin(
+            message: Constant.wrongPassword
+          );
+        } else{
           Map<String, dynamic> tempData = json.decode(response.body);
           String dataToken = tempData['data'];
           final prefs = await SharedPreferences.getInstance();
@@ -40,11 +54,11 @@ class LoginBloc extends Bloc<LoginEvent,LoginState>{
           final value = dataToken;
           prefs.setString(key, value);
           yield SuccessLogin();
-        } else{
-          yield ErrorLogin();
         }
       } catch(_){
-        yield ErrorLogin();
+        yield ErrorLogin(
+          message: Constant.loginError
+        );
       }
 
     }
