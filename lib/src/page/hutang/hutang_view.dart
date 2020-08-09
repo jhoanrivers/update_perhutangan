@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:updateperutangan/src/model/data_loan_hutang.dart';
 import 'package:updateperutangan/src/page/detail_hutang/detail_page.dart';
 import 'package:updateperutangan/src/page/hutang/bloc/hutang_bloc.dart';
 import 'package:updateperutangan/src/page/hutang/bloc/hutang_event.dart';
@@ -30,17 +31,24 @@ class _HutangViewState extends State<HutangView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.deepOrangeAccent,
+        backgroundColor: Colors.white,
+        elevation: 2,
         title: Text(
           'Hutang',
-          style: BaseStyle.ts16WhiteBold,
+          style: BaseStyle.ts16Black,
+        ),
+        iconTheme: IconThemeData(
+          color: Colors.black
         ),
         actions: <Widget>[
           IconButton(
+            onPressed: (){},
+            icon: Icon(Icons.search),
+          ),
+          IconButton(
             onPressed: (){
-              helpDialog(context);
             },
-            icon: Icon(Icons.help),
+            icon: Icon(Icons.chat),
           )
         ],
       ),
@@ -50,7 +58,15 @@ class _HutangViewState extends State<HutangView> {
           hutangBloc.add(FetchAllHutang());
         },
         child: BlocListener<HutangBloc, HutangState>(
-          listener: (context, state) {},
+          listener: (context, state) {
+
+
+            if(state is SuccessChangeItemViewed){
+              doNavigateToHutangDetail(state.dataLoanHutang);
+            }
+
+
+          },
           child: BlocBuilder<HutangBloc, HutangState>(
             builder: (context, state) {
               if (state is LoadingState) {
@@ -59,6 +75,7 @@ class _HutangViewState extends State<HutangView> {
                 );
               }
 
+
               if (state is LoadedState) {
                 if (state.listHutang.length == 0) {
                   return Center(
@@ -66,22 +83,18 @@ class _HutangViewState extends State<HutangView> {
                   );
                 }
 
+
+
                 return ListView.builder(
                   itemBuilder: (context, index) {
                     return GestureDetector(
                         onTap: () async {
-                          hutangUpdated = await Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => DetailPage(
-                                    dataHutang: state.listHutang[index].loanHutang,
-                                    dataAccount: state.listHutang[index].account,
-                                      )));
-
-                          if (hutangUpdated) {
-                            hutangBloc.add(FetchAllHutang());
-                            hutangUpdated = false;
+                          if(state.listHutang[index].loanHutang.is_new == 't'){
+                            hutangBloc.add(ChangeItemAlreadyViewed(dataLoanHutang: state.listHutang[index]));
+                          } else{
+                            doNavigateToHutangDetail(state.listHutang[index]);
                           }
+
                         },
                         child: Card(
                           shape: RoundedRectangleBorder(
@@ -131,16 +144,31 @@ class _HutangViewState extends State<HutangView> {
                                       ),
                                     ),
                                     Container(
-                                      width: 160,
+                                      width: 180,
                                       child: Column(
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: <Widget>[
-                                          Text(
-                                            '${state.listHutang[index].account.name} ',
-                                            style: BaseStyle.ts14PrimaryBold,
+                                          Row(
+                                            children: <Widget>[
+                                              Text(
+                                                '${state.listHutang[index].account.name} ',
+                                                style: BaseStyle.ts14PrimaryBold,
+                                              ),
+                                              state.listHutang[index].loanHutang.is_new == 't'
+                                                  ? Container(
+                                                decoration: BoxDecoration(
+                                                  borderRadius: BorderRadius.circular(90),
+                                                  color: Colors.green
+                                                ),
+                                                padding: EdgeInsets.all(4),
+                                                child: Text('New',
+                                                style: BaseStyle.ts11White,),
+                                              )
+                                                  : Container()
+                                            ],
                                           ),
                                           SizedBox(
                                             height: 12,
@@ -281,6 +309,20 @@ class _HutangViewState extends State<HutangView> {
       ),
     );
 
+
+  }
+
+  Future<void> doNavigateToHutangDetail(DataLoanHutang dataLoanHutang) async {
+    hutangUpdated = await Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => DetailPage(
+              dataLoanHutang: dataLoanHutang,
+            )));
+    if (hutangUpdated) {
+      hutangBloc.add(FetchAllHutang());
+      hutangUpdated = false;
+    }
 
   }
 }

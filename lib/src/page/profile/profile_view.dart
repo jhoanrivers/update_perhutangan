@@ -35,6 +35,38 @@ class _ProfileViewState extends State<ProfileView> {
             child: CircularProgressIndicator(),
           );
         }
+
+        if(state is LoadingLogoutState) {
+          showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (BuildContext context) {
+              return Dialog(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(6)
+                ),
+                child: Padding(
+                  padding: EdgeInsets.all(20),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      CircularProgressIndicator(),
+                      SizedBox(width: 20,),
+                      Text("Loading"),
+                    ],
+                  ),
+                ),
+              );
+            },
+          );
+        }
+        if(state is SuccessLogoutState){
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                  builder: (context) => LoginPage()),
+                  (route) => false);
+        }
+
       },
       child: BlocBuilder<ProfileBloc, ProfileState>(
         builder: (context, state) {
@@ -90,10 +122,8 @@ class _ProfileViewState extends State<ProfileView> {
                       Divider(),
                       GestureDetector(
                         onTap: () {
-                          Navigator.of(context).pushAndRemoveUntil(
-                              MaterialPageRoute(
-                                  builder: (context) => LoginPage()),
-                              (route) => false);
+                          Navigator.pop(context);
+                          profileBloc.add(UserLogoutEvent());
                         },
                         child: Container(
                           padding: EdgeInsets.fromLTRB(16, 10, 16, 10),

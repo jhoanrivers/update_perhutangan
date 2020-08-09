@@ -27,6 +27,13 @@ class DataLoanHutang {
   }
 
 
+  Map<String, dynamic> toJson() =>
+      {
+        'request' : loanHutang,
+        'account' : account
+      };
+
+
 
 
 }

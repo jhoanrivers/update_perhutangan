@@ -13,6 +13,7 @@ import 'package:updateperutangan/src/page/piutang/bloc/piutang_event.dart';
 import 'package:updateperutangan/src/page/piutang/bloc/piutang_state.dart';
 import 'package:bloc/bloc.dart';
 import 'package:http/http.dart' as http;
+import 'package:updateperutangan/src/service/service_client.dart';
 
 
 class PiutangBloc extends Bloc<PiutangEvent,PiutangState>{
@@ -43,7 +44,7 @@ class PiutangBloc extends Bloc<PiutangEvent,PiutangState>{
 
       try{
         http.Response response = await http.post(
-          'https://dev-hutangku.herokuapp.com/new/request',
+           ServiceClient.baseUrl + '/new/request',
           body: json.encode(data),
           headers: {HttpHeaders.authorizationHeader: 'Bearer $value'}
         );
@@ -62,7 +63,7 @@ class PiutangBloc extends Bloc<PiutangEvent,PiutangState>{
       yield LoadingState();
       try{
         var response = await http.get(
-          'https://dev-hutangku.herokuapp.com/all/user',
+          ServiceClient.baseUrl + '/all/user',
           headers: {HttpHeaders.authorizationHeader: 'Bearer $value'}
         );
         if(response.statusCode == 200){
@@ -88,7 +89,7 @@ class PiutangBloc extends Bloc<PiutangEvent,PiutangState>{
       yield LoadingState();
       try{
         var response = await http.get(
-          'https://dev-hutangku.herokuapp.com/all/credit',
+           ServiceClient.baseUrl + '/all/credit',
           headers: {HttpHeaders.authorizationHeader : 'Bearer $value'}
         );
 
@@ -103,7 +104,7 @@ class PiutangBloc extends Bloc<PiutangEvent,PiutangState>{
          }
 
          yield SuccessFetchPiutang(
-           dataCredit: listDataLoanPiutang
+           dataLoanPiutang: listDataLoanPiutang
          );
         } else{
           yield ErrorFetchPiutang();
@@ -111,8 +112,29 @@ class PiutangBloc extends Bloc<PiutangEvent,PiutangState>{
       } catch(_){
         yield ErrorFetchPiutang();
       }
-
-
+    }
+    
+    
+    if(event is ChangeItemAlreadyViewed){
+      yield LoadingState();
+      var baseUrl = ServiceClient.baseUrl + "/set/status/false" +"?id=${event.dataLoanPiutang.loanPiutang.id}";
+      try{
+        var response = await http.put(
+          baseUrl,
+          headers: {HttpHeaders.authorizationHeader : "Bearer $value"
+          }
+        );
+        print(baseUrl);
+        if(response.statusCode == 200){
+          yield SuccessChangeItemAlreadyViewed(
+            dataLoanPiutang: event.dataLoanPiutang
+          );
+        } else{
+          yield FailedChangeItemAlreadyViewed();
+        }
+      } catch(_){
+        yield FailedChangeItemAlreadyViewed();
+      }
     }
 
 

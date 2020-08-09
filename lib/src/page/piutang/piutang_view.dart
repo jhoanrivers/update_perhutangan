@@ -3,6 +3,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:updateperutangan/src/model/data_loan_piutang.dart';
 import 'package:updateperutangan/src/page/detail_piutang/detail_page.dart';
 import 'package:updateperutangan/src/page/piutang/bloc/piutang_bloc.dart';
 import 'package:updateperutangan/src/page/piutang/bloc/piutang_event.dart';
@@ -37,9 +38,24 @@ class _PiutangViewState extends State<PiutangView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.deepOrangeAccent,
+        automaticallyImplyLeading: false,
+        backgroundColor: Colors.white,
         title: Text('Piutang',
-        style: BaseStyle.ts18WhiteBold,),
+        style: BaseStyle.ts16Black,),
+        iconTheme: IconThemeData(
+          color: Colors.black
+        ),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.search),
+            onPressed: (){},
+          ),
+          IconButton(
+            onPressed: (){},
+            icon: Icon(Icons.chat),
+          )
+        ],
+
       ),
       body: RefreshIndicator(
         key: _refreshIndicator,
@@ -65,6 +81,10 @@ class _PiutangViewState extends State<PiutangView> {
               );
             }
 
+            if(state is SuccessChangeItemAlreadyViewed){
+              doNavigateToDetailPiutang(state.dataLoanPiutang);
+            }
+
           },
 
           child: BlocBuilder<PiutangBloc, PiutangState>(
@@ -75,7 +95,7 @@ class _PiutangViewState extends State<PiutangView> {
                   child: CircularProgressIndicator(),
                 );
               }else if(state is SuccessFetchPiutang){
-                if(state.dataCredit.isEmpty){
+                if(state.dataLoanPiutang.isEmpty){
                   return Center(
                     child: Text('No any credit'),
                   );
@@ -83,16 +103,25 @@ class _PiutangViewState extends State<PiutangView> {
                 return ListView.builder(
                   itemBuilder: (context, index){
                   return GestureDetector(
-                    onTap: () async{
-                      anyUpdate = await Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => DetailPiutangPage(dataCredit: state.dataCredit[index].loanPiutang, dataAccount: state.dataCredit[index].dataAccount,)));
+//                    onTap: () async{
+//                      anyUpdate = await Navigator.push(context,
+//                          MaterialPageRoute(builder: (context) => DetailPiutangPage(dataCredit: state.dataCredit[index].loanPiutang, dataAccount: state.dataCredit[index].dataAccount,)));
+//
+//                      if(anyUpdate){
+//                        setState(() {
+//                          piutangBloc.add(FetchAllPiutang());
+//                        });
+//                      }
+//                      },
+                  
+                  onTap: (){
+                    if(state.dataLoanPiutang[index].loanPiutang.is_new == 't') {
+                      piutangBloc.add(ChangeItemAlreadyViewed(state.dataLoanPiutang[index]));
+                    } else{
+                      doNavigateToDetailPiutang(state.dataLoanPiutang[index]);
+                    }
 
-                      if(anyUpdate){
-                        setState(() {
-                          piutangBloc.add(FetchAllPiutang());
-                        });
-                      }
-                      },
+                  },
                     child: Card(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(6)
@@ -106,11 +135,11 @@ class _PiutangViewState extends State<PiutangView> {
                             width: 8,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.only(topLeft: Radius.circular(6), bottomLeft: Radius.circular(6)),
-                              color: state.dataCredit[index].loanPiutang.status_loan == 'pending'
+                              color: state.dataLoanPiutang[index].loanPiutang.status_loan == 'pending'
                                   ? Colors.yellow
-                                  : state.dataCredit[index].loanPiutang.status_loan =='accepted'
+                                  : state.dataLoanPiutang[index].loanPiutang.status_loan =='accepted'
                                   ? Colors.orange
-                                  : state.dataCredit[index].loanPiutang.status_loan == 'rejected'
+                                  : state.dataLoanPiutang[index].loanPiutang.status_loan == 'rejected'
                                   ? Colors.red
                                   : Colors.green,
                             ),
@@ -134,17 +163,36 @@ class _PiutangViewState extends State<PiutangView> {
                                   ),
                                 ),
                                 Container(
-                                  width :160,
+                                  width :180,
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: <Widget>[
-                                      Text('${state.dataCredit[index].dataAccount.name}',
-                                      style: BaseStyle.ts14PrimaryBold,),
+                                      Row(
+                                        children: <Widget>[
+                                          Text('${state.dataLoanPiutang[index].dataAccount.name}',
+                                          style: BaseStyle.ts14PrimaryBold,),
+                                          SizedBox(
+                                            width: 12,
+                                          ),
+                                          state.dataLoanPiutang[index].loanPiutang.is_new == 't'
+                                              ? Container(
+                                            decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.circular(90),
+                                                color: Colors.green
+                                            ),
+                                            padding: EdgeInsets.all(4),
+                                            child: Text('New',
+                                              style: BaseStyle.ts11White,),
+                                          )
+                                              : Container()
+
+                                        ],
+                                      ),
                                       SizedBox(
                                         height: 12,
                                       ),
-                                      Text(state.dataCredit[index].loanPiutang.item)
+                                      Text(state.dataLoanPiutang[index].loanPiutang.item)
                                     ],
                                   ),
                                 ),
@@ -153,17 +201,16 @@ class _PiutangViewState extends State<PiutangView> {
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.end,
                                     children: <Widget>[
-                                      Text(state.dataCredit[index].loanPiutang.created,
+                                      Text(state.dataLoanPiutang[index].loanPiutang.created,
                                       overflow: TextOverflow.ellipsis,),
                                       SizedBox(
                                         height: 12,
                                       ),
-                                      Text(state.dataCredit[index].loanPiutang.amount.toString(),
+                                      Text(state.dataLoanPiutang[index].loanPiutang.amount.toString(),
                                       style: BaseStyle.ts16BlackBold,)
                                     ],
                                   ),
                                 )
-
                               ],
                             ),
                           )
@@ -172,7 +219,7 @@ class _PiutangViewState extends State<PiutangView> {
                     )
                   );
                 },
-                  itemCount: state.dataCredit.length,
+                  itemCount: state.dataLoanPiutang.length,
                 );
               }
 
@@ -223,5 +270,17 @@ class _PiutangViewState extends State<PiutangView> {
       ),
 
     );
+  }
+
+  Future<void> doNavigateToDetailPiutang(DataLoanPiutang dataCredit) async {
+
+    anyUpdate = await Navigator.push(context,
+        MaterialPageRoute(builder: (context) => DetailPiutangPage(dataCredit: dataCredit.loanPiutang, dataAccount: dataCredit.dataAccount,)));
+
+    if(anyUpdate){
+      setState(() {
+        piutangBloc.add(FetchAllPiutang());
+      });
+    }
   }
 }

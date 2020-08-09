@@ -1,17 +1,23 @@
+import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:toast/toast.dart';
 import 'package:updateperutangan/src/model/account.dart';
+import 'package:updateperutangan/src/model/data_loan_hutang.dart';
 import 'package:updateperutangan/src/model/loan_hutang.dart';
 import 'package:updateperutangan/src/page/detail_hutang/detail_bloc/detail_bloc.dart';
 import 'package:updateperutangan/src/page/detail_hutang/detail_bloc/detail_event.dart';
 import 'package:updateperutangan/src/page/detail_hutang/detail_bloc/detail_state.dart';
+import 'package:updateperutangan/src/page/hutang/bloc/hutang_bloc.dart';
+import 'package:updateperutangan/src/page/hutang/bloc/hutang_event.dart';
 import 'package:updateperutangan/src/utils/basestyle.dart';
 
 class DetailPage extends StatefulWidget {
-  final LoanHutang dataHutang;
-  final Account dataAccount;
 
-  DetailPage({this.dataHutang, this.dataAccount});
+  final DataLoanHutang dataLoanHutang;
+
+  DetailPage({this.dataLoanHutang});
 
   @override
   _DetailPageState createState() => _DetailPageState();
@@ -22,18 +28,23 @@ class _DetailPageState extends State<DetailPage> {
 
 
   DetailBloc detailBloc;
-  String date;
-  String time;
+  HutangBloc hutangBloc;
+
 
   @override
   void initState() {
     super.initState();
     detailBloc = BlocProvider.of<DetailBloc>(context);
-    date = widget.dataHutang.created.substring(0,10);
-    time = widget.dataHutang.created.substring(12, 16);
+    hutangBloc = BlocProvider.of<HutangBloc>(context);
+    BackButtonInterceptor.add(backInterceptor);
   }
 
-
+@override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    BackButtonInterceptor.remove(backInterceptor);
+  }
 
 
   @override
@@ -58,7 +69,7 @@ class _DetailPageState extends State<DetailPage> {
                     children: [
                       CircularProgressIndicator(),
                       SizedBox(width: 20,),
-                      Text("Loading Progress"),
+                      Text("Loading"),
                     ],
                   ),
                 ),
@@ -68,20 +79,11 @@ class _DetailPageState extends State<DetailPage> {
         }
         if(state is SuccessState){
           Navigator.pop(context);
-          Navigator.pop(context, true);
+          widget.dataLoanHutang.loanHutang.status_loan = state.status;
         }
 
         if(state is ErrorState){
           Navigator.pop(context);
-          Scaffold.of(context).showSnackBar(
-            SnackBar(
-              content: Text('You just rejected piutang confirmation'),
-              backgroundColor: Colors.red,
-            ),
-          );
-          Future.delayed(Duration(milliseconds: 500), (){
-            Navigator.pop(context);
-          });
         }
       },
       child: BlocBuilder<DetailBloc, DetailState>(
@@ -89,11 +91,23 @@ class _DetailPageState extends State<DetailPage> {
           return Scaffold(
               backgroundColor: Colors.white,
               appBar: AppBar(
-                backgroundColor: Colors.deepOrangeAccent,
+                backgroundColor: widget.dataLoanHutang.loanHutang.status_loan == 'pending'
+              ? Colors.yellow
+                  : widget.dataLoanHutang.loanHutang.status_loan == 'accepted'
+              ? Colors.orange
+                  : widget.dataLoanHutang.loanHutang.status_loan =='paid'
+              ? Colors.green
+                : Colors.red,
                 elevation: 0,
-                iconTheme: IconThemeData(color: Colors.white),
+                leading: IconButton(
+                  onPressed: (){
+                    Navigator.pop(context, true);
+                  },
+                  icon: Icon(Icons.keyboard_arrow_left),
+                ),
+                iconTheme: IconThemeData(color: Colors.black),
                 title: Text("Detail Hutang",
-                  style: BaseStyle.ts16WhiteBold,
+                  style: BaseStyle.ts16Black,
                 ),
                 actions: <Widget>[
                   IconButton(
@@ -108,21 +122,22 @@ class _DetailPageState extends State<DetailPage> {
                 children: <Widget>[
                   Container(
                     width: double.infinity,
-                    color: widget.dataHutang.status_loan == 'pending'
+                    color: widget.dataLoanHutang.loanHutang.status_loan == 'pending'
                         ? Colors.yellow
-                        : widget.dataHutang.status_loan == 'accepted'
+                        : widget.dataLoanHutang.loanHutang.status_loan == 'accepted'
                         ? Colors.orange
-                        : widget.dataHutang.status_loan =='paid'
+                        : widget.dataLoanHutang.loanHutang.status_loan =='paid'
                         ? Colors.green
                         : Colors.red,
                     padding: EdgeInsets.all(20),
                     child: Text(
-                      'Rp. ' + widget.dataHutang.amount.toString(),
+                      'Rp. ' + widget.dataLoanHutang.loanHutang.amount.toString(),
                       style: BaseStyle.ts18BlackBold,
                     ),
                   ),
                   Expanded(
                     child: ListView(
+                      physics: NeverScrollableScrollPhysics(),
                       children: <Widget>[
                         Padding(
                           padding: EdgeInsets.fromLTRB(16, 10, 16, 0),
@@ -136,7 +151,7 @@ class _DetailPageState extends State<DetailPage> {
                               SizedBox(
                                 height: 6,
                               ),
-                              Text(widget.dataHutang.item,
+                              Text(widget.dataLoanHutang.loanHutang.item,
                                 style: BaseStyle.ts14PrimaryName,
                               )
                             ],
@@ -155,7 +170,7 @@ class _DetailPageState extends State<DetailPage> {
                               SizedBox(
                                 height: 6,
                               ),
-                              Text(widget.dataAccount.name,
+                              Text(widget.dataLoanHutang.account.name,
                                 style: BaseStyle.ts14PrimaryName,
                               )
                             ],
@@ -175,7 +190,7 @@ class _DetailPageState extends State<DetailPage> {
                                 height: 6,
                               ),
                               Text(
-                                widget.dataHutang.status_loan,
+                                widget.dataLoanHutang.loanHutang.status_loan,
                                 style: BaseStyle.ts14PrimaryName,
                               )
                             ],
@@ -195,7 +210,7 @@ class _DetailPageState extends State<DetailPage> {
                                 height: 6,
                               ),
                               Text(
-                                date + " " + time,
+                                 widget.dataLoanHutang.loanHutang.created,
                                 style: BaseStyle.ts14PrimaryName,
                               )
                             ],
@@ -215,9 +230,9 @@ class _DetailPageState extends State<DetailPage> {
                                 height: 6,
                               ),
                               Text(
-                                widget.dataHutang.description.isEmpty
+                                widget.dataLoanHutang.loanHutang.description.isEmpty
                                     ? '-'
-                                    : widget.dataHutang.description,
+                                    : widget.dataLoanHutang.loanHutang.description,
                                 style: BaseStyle.ts14PrimaryName,
                               )
                             ],
@@ -237,13 +252,16 @@ class _DetailPageState extends State<DetailPage> {
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
-                                  Text(widget.dataAccount.gopayName + " - " + widget.dataAccount.gopay,
+                                  Text(widget.dataLoanHutang.account.gopayName + " - " + widget.dataLoanHutang.account.gopay,
                                     style: BaseStyle.ts14PrimaryName,
                                   ),
                                   IconButton(
                                     icon: Icon(Icons.content_copy),
                                     color: Colors.grey,
-                                    onPressed: (){},
+                                    onPressed: (){
+                                      Clipboard.setData(ClipboardData(text: widget.dataLoanHutang.account.gopay));
+                                      Toast.show("Nomor Gopay telah disalin", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
+                                    },
                                   )
                                 ],
                               )
@@ -263,11 +281,14 @@ class _DetailPageState extends State<DetailPage> {
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
-                                  Text(widget.dataAccount.ovoName + " - "+ widget.dataAccount.ovo,
+                                  Text(widget.dataLoanHutang.account.ovoName + " - "+ widget.dataLoanHutang.account.ovo,
                                     style: BaseStyle.ts14PrimaryName,
                                   ),
                                   IconButton(
-                                    onPressed: (){},
+                                    onPressed: (){
+                                      Clipboard.setData(ClipboardData(text: widget.dataLoanHutang.account.ovo));
+                                      Toast.show("Nomor Ovo telah disalin", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
+                                    },
                                     color: Colors.grey,
                                     icon: Icon(Icons.content_copy),
                                   )
@@ -296,11 +317,11 @@ class _DetailPageState extends State<DetailPage> {
         contentPadding: EdgeInsets.all(10),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         children: <Widget>[
-          widget.dataHutang.status_loan == 'pending'
+          widget.dataLoanHutang.loanHutang.status_loan == 'pending'
               ? ListTile(
             onTap: (){
               detailBloc.add(ActionForRequest(
-                  loan_id: widget.dataHutang.id,
+                  loan_id: widget.dataLoanHutang.loanHutang.id,
                   status_loan: 'accepted'
               ));
             },
@@ -312,11 +333,11 @@ class _DetailPageState extends State<DetailPage> {
             ),)
               : Container(),
 
-          widget.dataHutang.status_loan == 'pending'
+          widget.dataLoanHutang.loanHutang.status_loan == 'pending'
               ? ListTile(
             onTap: (){
               detailBloc.add(ActionForRequest(
-                  loan_id: widget.dataHutang.id,
+                  loan_id: widget.dataLoanHutang.loanHutang.id,
                   status_loan: 'rejected'
               ));
             },
@@ -327,6 +348,16 @@ class _DetailPageState extends State<DetailPage> {
                 style: BaseStyle.ts14GreyBlue
             ),)
               : Container(),
+
+          widget.dataLoanHutang.loanHutang.status_loan == 'accepted'
+              ? ListTile(
+            onTap: (){},
+            leading: Icon(Icons.monetization_on,
+            color: Colors.black,),
+            title: Text('Pay',
+            style: BaseStyle.ts14GreyBlue,),
+          )
+              : Container()
 
         ],
       ),
@@ -340,4 +371,9 @@ class _DetailPageState extends State<DetailPage> {
 
 
 
+
+  bool backInterceptor(bool stopDefaultButtonEvent) {
+    Navigator.pop(context, true);
+    return true;
+  }
 }

@@ -154,6 +154,12 @@ class BaseStyle {
 
   );
 
+  static var ts11White = TextStyle(
+    fontFamily: fontFamily,
+    fontSize: 11,
+    color: Colors.white
+  );
+
 
 
 

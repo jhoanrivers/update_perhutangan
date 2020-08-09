@@ -34,15 +34,14 @@ class Account {
     this.ovoName = json['ovo_name'];
   }
 
-  Map<String, dynamic> toJson() => {
-        'id': this.id,
+  Map<String, dynamic> toMap() => {
+        'id_user': this.id,
         'username': this.username,
-        'password': this.password,
         'name': this.name,
         'fcm_token': this.fcmtoken,
         'gopay': this.gopay,
         'gopay_name': this.gopayName,
         'ovo': this.ovo,
-        'ovo_name': this.ovoName
+        'ovo_name': this.ovoName,
       };
 }

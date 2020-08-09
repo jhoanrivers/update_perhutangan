@@ -9,6 +9,7 @@ import 'package:updateperutangan/src/page/hutang/bloc/hutang_event.dart';
 import 'package:updateperutangan/src/page/hutang/bloc/hutang_state.dart';
 import 'package:bloc/bloc.dart';
 import 'package:http/http.dart' as http;
+import 'package:updateperutangan/src/service/service_client.dart';
 
 
 class HutangBloc extends Bloc<HutangEvent, HutangState> {
@@ -27,7 +28,7 @@ class HutangBloc extends Bloc<HutangEvent, HutangState> {
 
       try{
         var response = await http.get(
-          'https://dev-hutangku.herokuapp.com/all/debt',
+          ServiceClient.baseUrl + '/all/debt',
           headers: {HttpHeaders.authorizationHeader : 'Bearer $value'}
         );
 
@@ -49,6 +50,33 @@ class HutangBloc extends Bloc<HutangEvent, HutangState> {
         yield ErrorState();
       }
     }
+
+
+    if(event is ChangeItemAlreadyViewed){
+      yield LoadingState();
+      String baseUrl = ServiceClient.baseUrl + "/set/status/false" +"?id=${event.dataLoanHutang.loanHutang.id}";
+
+      try{
+        final response = await http.put(baseUrl,
+        headers: {HttpHeaders.authorizationHeader : "Bearer $value"}
+        );
+
+        if(response.statusCode == 200){
+          yield SuccessChangeItemViewed(
+            dataLoanHutang: event.dataLoanHutang
+          );
+        } else{
+          yield FailedChangeItemViewed();
+        }
+
+
+      } catch(_){
+        yield FailedChangeItemViewed();
+      }
+
+
+    }
+
 
   }
 

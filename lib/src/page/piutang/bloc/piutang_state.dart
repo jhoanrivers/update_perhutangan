@@ -24,10 +24,10 @@ class LoadingState extends PiutangState{}
 class CreatePiutangLoadingState extends PiutangState{}
 
 class SuccessFetchPiutang extends PiutangState{
-  final List<DataLoanPiutang> dataCredit;
+  final List<DataLoanPiutang> dataLoanPiutang;
 
   SuccessFetchPiutang({
-    @required this.dataCredit,
+    @required this.dataLoanPiutang,
   });
 
 }
@@ -59,3 +59,16 @@ class SuccessPiutangBackState extends PiutangState{
   });
 
 }
+
+
+class SuccessChangeItemAlreadyViewed extends PiutangState{
+  final DataLoanPiutang dataLoanPiutang;
+
+  SuccessChangeItemAlreadyViewed({this.dataLoanPiutang});
+
+  @override
+  List<Object> get props => [dataLoanPiutang];
+
+}
+
+class FailedChangeItemAlreadyViewed extends PiutangState{}

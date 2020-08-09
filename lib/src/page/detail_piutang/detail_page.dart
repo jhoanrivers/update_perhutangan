@@ -1,4 +1,5 @@
 
+import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:updateperutangan/src/model/account.dart';
@@ -30,9 +31,17 @@ class _DetailPiutangPageState extends State<DetailPiutangPage> {
   @override
   void initState() {
     super.initState();
+    BackButtonInterceptor.add(backButtonIndicator);
     detailBloc = BlocProvider.of<DetailPiutangBloc>(context);
     date = widget.dataCredit.created.substring(0,10);
     time = widget.dataCredit.created.substring(12, 16);
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    BackButtonInterceptor.remove(backButtonIndicator);
   }
 
 
@@ -91,19 +100,25 @@ class _DetailPiutangPageState extends State<DetailPiutangPage> {
           return Scaffold(
               backgroundColor: Colors.white,
               appBar: AppBar(
-                backgroundColor: Colors.deepOrangeAccent,
+                backgroundColor: widget.dataCredit.status_loan == 'pending'
+                    ? Colors.yellow
+                    : widget.dataCredit.status_loan == 'accepted'
+                    ? Colors.orange
+                    : widget.dataCredit.status_loan =='paid'
+                    ? Colors.green
+                    : Colors.red,
                 elevation: 0,
-                iconTheme: IconThemeData(color: Colors.white),
+                iconTheme: IconThemeData(color: Colors.black),
                 title: Text(
                   'Detail Piutang',
-                  style: BaseStyle.ts16WhiteBold,
+                  style: BaseStyle.ts16Black,
                 ),
                 leading: IconButton(
                   onPressed: (){
-                    Navigator.pop(context, false);
+                    Navigator.pop(context, true);
                   },
                   icon: Icon(
-                    Icons.arrow_back_ios
+                    Icons.keyboard_arrow_left
                   ),
                 ),
 
@@ -135,6 +150,7 @@ class _DetailPiutangPageState extends State<DetailPiutangPage> {
                   ),
                   Expanded(
                     child: ListView(
+                      physics: NeverScrollableScrollPhysics(),
                       children: <Widget>[
                         Padding(
                           padding: EdgeInsets.fromLTRB(16, 10, 16, 0),
@@ -284,4 +300,9 @@ class _DetailPiutangPageState extends State<DetailPiutangPage> {
 
 
 
+
+  bool backButtonIndicator(bool stopDefaultButtonEvent) {
+    Navigator.pop(context, true);
+    return true;
+  }
 }

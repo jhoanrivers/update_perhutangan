@@ -15,6 +15,8 @@ class InitialState extends ProfileState {}
 
 class LoadingState extends ProfileState {}
 
+class LoadingLogoutState extends ProfileState{}
+
 class SuccessLogoutState extends ProfileState {}
 
 class FailedLogoutState extends ProfileState {}

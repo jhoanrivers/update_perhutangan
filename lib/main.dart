@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:bloc/bloc.dart';
-import 'package:updateperutangan/locator.dart';
 import 'package:updateperutangan/src/ext/simple_bloc_delegate.dart';
 import 'package:updateperutangan/src/page/detail_hutang/detail_bloc/detail_bloc.dart';
 import 'package:updateperutangan/src/page/detail_piutang/detail_bloc/detail_bloc.dart';
@@ -9,21 +8,16 @@ import 'package:updateperutangan/src/page/home/bloc/home_bloc.dart';
 import 'package:updateperutangan/src/page/hutang/bloc/hutang_bloc.dart';
 import 'package:updateperutangan/src/page/login/bloc/login_bloc.dart';
 import 'package:updateperutangan/src/page/piutang/bloc/piutang_bloc.dart';
-import 'package:updateperutangan/src/page/piutang/create_putang_form.dart';
 import 'package:updateperutangan/src/page/profile/bloc/profile_bloc.dart';
 import 'package:updateperutangan/src/page/register/bloc/register_bloc.dart';
-import 'package:updateperutangan/src/service/push_notification_service.dart';
 import 'package:updateperutangan/src/widget/splash_screen.dart';
 
 void main() {
   BlocSupervisor.delegate = SimpleBlocDelegate();
-  setupLocator();
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  final PushNotificationService pushNotificationService =
-      locator<PushNotificationService>();
 
   // This widget is the root of your application.
   @override
@@ -57,13 +51,6 @@ class MyApp extends StatelessWidget {
         ],
         child: MaterialApp(
           title: 'Flutter Demo',
-          theme: ThemeData(
-            iconTheme: IconThemeData(
-              color: Colors.white,
-              size: 24,
-            ),
-            primarySwatch: Colors.blue,
-          ),
           home: SplashScreen(),
         ));
   }

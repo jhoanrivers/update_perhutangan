@@ -31,10 +31,10 @@ class DetailBloc extends Bloc<DetailEvent, DetailState> {
           })
         );
 
-        print(response.body);
-
         if(response.statusCode == 200){
-          yield SuccessState();
+          yield SuccessState(
+            status: event.status_loan
+          );
         } else{
           yield ErrorState();
         }

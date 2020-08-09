@@ -6,6 +6,7 @@ import 'package:updateperutangan/src/page/register/bloc/register_event.dart';
 import 'package:updateperutangan/src/page/register/bloc/register_state.dart';
 import 'package:bloc/bloc.dart';
 import 'package:http/http.dart' as http;
+import 'package:updateperutangan/src/service/service_client.dart';
 
 class RegisterBloc extends Bloc<RegisterEvent, RegisterState>{
   @override
@@ -19,7 +20,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState>{
 
       try{
         final http.Response response = await  http.post(
-            "https://dev-hutangku.herokuapp.com/register",
+             ServiceClient.baseUrl + "/register",
           body: jsonEncode(<String, String>{
             'username' : event.username,
             'name' : event.name,

@@ -37,6 +37,8 @@ dependencies:
   toast: ^0.1.5
   firebase_messaging: ^6.0.13
   get_it: ^4.0.2
+  flutter_local_notifications: ^1.4.4+2
+  back_button_interceptor: ^4.2.4
 
 
 dev_dependencies:
