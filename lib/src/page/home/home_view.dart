@@ -1,17 +1,11 @@
-import 'dart:convert';
-
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:updateperutangan/src/model/data_loan_hutang.dart';
-import 'package:updateperutangan/src/page/detail_hutang/detail_page.dart';
-import 'package:updateperutangan/src/page/detail_piutang/detail_page.dart';
 import 'package:updateperutangan/src/page/home/bloc/home_bloc.dart';
 import 'package:updateperutangan/src/page/home/bloc/home_event.dart';
 import 'package:updateperutangan/src/page/home/bloc/home_state.dart';
+import 'package:updateperutangan/src/page/login/login_page.dart';
 import 'package:updateperutangan/src/utils/basestyle.dart';
 
 class HomeView extends StatefulWidget {
@@ -37,6 +31,11 @@ class _HomeViewState extends State<HomeView> {
         body: BlocListener<HomeBloc, HomeState>(
           listener: (context, state) {
 
+            if(state is GoToLoginPage){
+              Navigator.pushReplacement(context, MaterialPageRoute(
+                  builder: (context) => LoginPage()
+              ));
+            }
 
           },
           child: BlocBuilder<HomeBloc, HomeState>(
@@ -51,6 +50,7 @@ class _HomeViewState extends State<HomeView> {
                   child: Text('Failed Load data'),
                 );
               }
+
               if (state is SuccessLoadData) {
                 return ListView(
                   children: <Widget>[

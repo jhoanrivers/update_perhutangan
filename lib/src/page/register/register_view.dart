@@ -29,6 +29,16 @@ class _RegisterViewState extends State<RegisterView> {
   bool autoValConfirm = false;
   var fcm_token = '';
 
+
+
+  bool isUsernameEnable = false;
+  bool isNameEnable = false;
+  bool isOvoEnable = false;
+  bool isOvoNameEnable = false;
+  bool isGopayEnable = false;
+  bool isGopayNameEnable = false;
+
+
   RegisterBloc registerBloc;
   FirebaseMessaging firebaseMessaging = new FirebaseMessaging();
 
@@ -168,10 +178,9 @@ class _RegisterViewState extends State<RegisterView> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        Container(
-                            height: 100,
-                            width: 100,
-                            child: Image.asset('assets/logo.png')),
+                        Image.asset('assets/newlogo.png',
+                        height: 160,
+                        fit: BoxFit.cover,),
                         SizedBox(
                           height: 20,
                         ),
@@ -192,6 +201,7 @@ class _RegisterViewState extends State<RegisterView> {
                                   }
                                   return null;
                                 },
+                                onChanged: isUsernameExist,
                                 controller: usernameController,
                                 keyboardType: TextInputType.text,
                               ),
@@ -215,6 +225,7 @@ class _RegisterViewState extends State<RegisterView> {
                                   }
                                   return null;
                                 },
+                                onChanged: isNameExist,
                                 controller: nameController,
                               ),
                               SizedBox(
@@ -393,12 +404,14 @@ class _RegisterViewState extends State<RegisterView> {
                           child: RaisedButton(
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(6)),
-                            color: Colors.green,
+                            color: isUsernameEnable
+                            ? Colors.green
+                            : Colors.grey,
                             padding: EdgeInsets.symmetric(vertical: 14),
                             onPressed: _onButtonRegisterPressed,
                             child: Text(
                               'Register',
-                              style: BaseStyle.ts14WhiteBold,
+                              style: BaseStyle.ts16WhiteBold,
                             ),
                           ),
                         )
@@ -435,6 +448,82 @@ class _RegisterViewState extends State<RegisterView> {
   void getTokenFirebaseMessaging() {
     firebaseMessaging.getToken().then((value) => fcm_token = value);
   }
+
+
+  void isUsernameExist(String value) {
+    if(value.isNotEmpty){
+      setState(() {
+        isUsernameEnable = true;
+      });
+    } else{
+      setState(() {
+        isUsernameEnable = false;
+      });
+    }
+  }
+
+  void isNameExist(String value) {
+    if(value.isNotEmpty){
+      setState(() {
+        isNameEnable = true;
+      });
+    } else{
+      setState(() {
+        isNameEnable = false;
+      });
+    }
+  }
+
+  void isOvoExist(String value) {
+    if(value.isNotEmpty){
+      setState(() {
+        isOvoEnable = true;
+      });
+    } else{
+      setState(() {
+        isOvoEnable = false;
+      });
+    }
+  }
+
+  void isOvoNameExist(String value) {
+    if(value.isNotEmpty){
+      setState(() {
+        isOvoNameEnable = true;
+      });
+    } else{
+      setState(() {
+        isOvoNameEnable = false;
+      });
+    }
+  }
+
+  void isGopayExist(String value) {
+    if(value.isNotEmpty){
+      setState(() {
+        isGopayEnable = true;
+      });
+    } else{
+      setState(() {
+        isGopayEnable = false;
+      });
+    }
+  }
+
+  void isGopayNameExist(String value) {
+    if(value.isNotEmpty){
+      setState(() {
+        isGopayNameEnable = true;
+      });
+    } else{
+      setState(() {
+        isGopayNameEnable = false;
+      });
+    }
+  }
+
+
+
 
 
 }

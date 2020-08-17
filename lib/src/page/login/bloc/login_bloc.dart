@@ -50,9 +50,8 @@ class LoginBloc extends Bloc<LoginEvent,LoginState>{
           Map<String, dynamic> tempData = json.decode(response.body);
           String dataToken = tempData['data'];
           final prefs = await SharedPreferences.getInstance();
-          final key = 'token';
           final value = dataToken;
-          prefs.setString(key, value);
+          prefs.setString(Constant.token, value);
           yield SuccessLogin();
         }
       } catch(_){

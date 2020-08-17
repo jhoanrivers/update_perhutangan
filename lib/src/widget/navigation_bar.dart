@@ -8,8 +8,11 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:updateperutangan/src/model/data_loan_hutang.dart';
+import 'package:updateperutangan/src/model/data_loan_piutang.dart';
 import 'package:updateperutangan/src/page/detail_hutang/detail_page.dart';
+import 'package:updateperutangan/src/page/detail_piutang/detail_page.dart';
 import 'package:updateperutangan/src/page/home/home_page.dart';
 import 'package:updateperutangan/src/page/hutang/hutang_page.dart';
 import 'package:updateperutangan/src/page/hutang/hutang_view.dart';
@@ -17,6 +20,7 @@ import 'package:updateperutangan/src/page/notification/notification_page.dart';
 import 'package:updateperutangan/src/page/piutang/piutang_page.dart';
 import 'package:updateperutangan/src/page/piutang/piutang_view.dart';
 import 'package:updateperutangan/src/page/profile/profile_page.dart';
+import 'package:updateperutangan/src/utils/constant.dart';
 
 class NavigationBar extends StatefulWidget {
   @override
@@ -29,6 +33,7 @@ class _NavigationBarState extends State<NavigationBar> {
 
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = new FlutterLocalNotificationsPlugin();
   FirebaseMessaging firebaseMessaging = new FirebaseMessaging();
+  var accountId;
 
 
   int _selectedIndex = 0;
@@ -117,6 +122,16 @@ class _NavigationBarState extends State<NavigationBar> {
   void initState() {
     firebaseCloudMessaging();
     initLocalNotification();
+    getSharedPreference();
+  }
+
+  // get Id account user
+
+  void getSharedPreference() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      accountId = prefs.getInt(Constant.account_id);
+    });
   }
 
 
@@ -125,10 +140,10 @@ class _NavigationBarState extends State<NavigationBar> {
         onMessage: (Map<String, dynamic> message) async {
           print('on message $message');
           if(Platform.isAndroid){
-            Map<String, dynamic> dataMessage = json.decode(message['data']['body']);
-            showNotificationDefaultSound(dataMessage);
+            showNotificationDefaultSound(message);
           } else{
-
+            Map<String, dynamic> dataMessage = json.decode(message['body']);
+            showNotificationDefaultSound(dataMessage);
           }
         },
         onResume: (Map<String, dynamic> message) async {
@@ -157,15 +172,24 @@ class _NavigationBarState extends State<NavigationBar> {
 
   Future onSelectNotification(String payload) async {
 
-    var dataHutang = json.decode(payload);
+    var decodePayload = json.decode(payload);
+    var tempData = decodePayload['data']['body'];
+    var afterPayload = json.decode(tempData);
 
-    DataLoanHutang tempDataLoanHutang = DataLoanHutang.fromJson(dataHutang);
+    var idDataAccount = afterPayload['request']['borrower'];
 
-    Navigator.push(context, MaterialPageRoute(
-        builder: (context) => DetailPage(
-          dataLoanHutang: tempDataLoanHutang,
-        )
-    ));
+    if(idDataAccount == accountId){
+      DataLoanHutang dataLoanHutang = DataLoanHutang.fromJson(afterPayload);
+      doNavigateToDetailHutang(context, dataLoanHutang);
+    } else {
+      DataLoanPiutang dataLoanPiutang = DataLoanPiutang.fromJson(afterPayload);
+      doNavigateToDetailPiutang(context,dataLoanPiutang);
+    }
+
+
+    //DataLoanHutang tempDataLoanHutang = DataLoanHutang.fromJson(dataHutang);
+    //doNavigateToDetailHutang(context,tempDataLoanHutang);
+
   }
 
 
@@ -199,7 +223,6 @@ class _NavigationBarState extends State<NavigationBar> {
 
   Future showNotificationDefaultSound(Map<String, dynamic> message) async {
 
-    DataLoanHutang dataLoanHutang = DataLoanHutang.fromJson(message);
 
     var androidPlatformChannelSpecifics = new AndroidNotificationDetails(
         'your channel id', 'your channel name', 'your channel description',
@@ -210,10 +233,27 @@ class _NavigationBarState extends State<NavigationBar> {
 
     await flutterLocalNotificationsPlugin.show(
       0,
-      dataLoanHutang.account.name +" "+ "Menambahkan Hutang",
-      dataLoanHutang.loanHutang.item + " " + dataLoanHutang.loanHutang.amount.toString(),
+      message['notification']['title'],
+      message['notification']['body'],
       platformChannelSpecifics,
       payload: json.encode(message),
     );
   }
 }
+
+  void doNavigateToDetailHutang(BuildContext context,DataLoanHutang dataHutang) {
+    Navigator.push(context, MaterialPageRoute(
+        builder: (context) => DetailPage(
+          dataLoanHutang: dataHutang,
+        )
+    ));
+}
+
+void doNavigateToDetailPiutang(BuildContext context, DataLoanPiutang dataLoanPiutang){
+  Navigator.push(context, MaterialPageRoute(
+      builder: (context) => DetailPiutangPage(
+        dataLoanPiutang: dataLoanPiutang,
+      )
+  ));
+}
+

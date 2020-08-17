@@ -10,5 +10,11 @@ class Constant{
   static var loginError= "Login error, please check your internet connection";
 
 
+  static var account_id = 'account_id';
+  static var token = 'token';
+  static var fcm_token = 'fcm_token';
+
+
+
 
 }

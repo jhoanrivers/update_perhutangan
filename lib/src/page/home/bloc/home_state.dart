@@ -28,3 +28,6 @@ class SuccessLoadData extends HomeState {
 }
 
 class FailedLoadData extends HomeState {}
+
+
+class GoToLoginPage extends HomeState{}
