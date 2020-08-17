@@ -2,9 +2,12 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:updateperutangan/src/page/home/home_page.dart';
 import 'package:updateperutangan/src/page/login/login_page.dart';
 import 'package:updateperutangan/src/utils/basestyle.dart';
+import 'package:updateperutangan/src/utils/constant.dart';
+import 'package:updateperutangan/src/widget/navigation_bar.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -14,14 +17,32 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
 
   bool isUserLogin = false;
+  String perhutangan = "Perhutangan";
+  var value;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    getPrefs();
     startSplashScreen();
   }
 
+
+  void getPrefs() async{
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      value = prefs.getString(Constant.token);
+
+      if(value =='' || value== null){
+        isUserLogin = false;
+      } else{
+        isUserLogin = true;
+      }
+    });
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +57,7 @@ class _SplashScreenState extends State<SplashScreen> {
               child: Column(
                 children: <Widget>[
                   Image.asset('assets/newlogo.png'),
-                  Text('Perhutangan',
+                  Text(perhutangan,
                   style: BaseStyle.ts16BlackBold,)
                 ],
               )
@@ -56,7 +77,7 @@ class _SplashScreenState extends State<SplashScreen> {
     return Timer(Duration(seconds: 3),(){
       if(isUserLogin){
         //Navigator.pop(context);
-        Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
+        Navigator.push(context, MaterialPageRoute(builder: (context) => NavigationBar()));
       } else{
         //Navigator.pop(context);
         Navigator.of(context).pushAndRemoveUntil(
@@ -65,4 +86,5 @@ class _SplashScreenState extends State<SplashScreen> {
     });
 
   }
+
 }
