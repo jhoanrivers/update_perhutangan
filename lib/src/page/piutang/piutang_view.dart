@@ -272,10 +272,10 @@ class _PiutangViewState extends State<PiutangView> {
     );
   }
 
-  Future<void> doNavigateToDetailPiutang(DataLoanPiutang dataCredit) async {
+  Future<void> doNavigateToDetailPiutang(DataLoanPiutang dataLoanPiutang) async {
 
     anyUpdate = await Navigator.push(context,
-        MaterialPageRoute(builder: (context) => DetailPiutangPage(dataCredit: dataCredit.loanPiutang, dataAccount: dataCredit.dataAccount,)));
+        MaterialPageRoute(builder: (context) => DetailPiutangPage(dataLoanPiutang: dataLoanPiutang)));
 
     if(anyUpdate){
       setState(() {
