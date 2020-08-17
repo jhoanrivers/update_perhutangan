@@ -10,6 +10,7 @@ import 'package:updateperutangan/src/page/profile/bloc/profile_state.dart';
 import 'package:bloc/bloc.dart';
 import 'package:http/http.dart' as http;
 import 'package:updateperutangan/src/service/service_client.dart';
+import 'package:updateperutangan/src/utils/constant.dart';
 
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   @override
@@ -51,6 +52,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         );
         if(response.statusCode == 200){
           prefs.setString(key, '');
+          prefs.setInt(Constant.account_id, null);
           yield SuccessLogoutState();
         } else{
           yield FailedLogoutState();
