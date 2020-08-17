@@ -26,7 +26,6 @@ class DetailPage extends StatefulWidget {
 class _DetailPageState extends State<DetailPage> {
 
 
-
   DetailBloc detailBloc;
   HutangBloc hutangBloc;
 
