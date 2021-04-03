@@ -42,6 +42,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         yield FailedFetchData();
       }
     }
+
     if (event is UserLogoutEvent) {
       yield LoadingLogoutState();
       try {
@@ -52,7 +53,6 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         );
         if(response.statusCode == 200){
           prefs.setString(key, '');
-          prefs.setInt(Constant.account_id, null);
           yield SuccessLogoutState();
         } else{
           yield FailedLogoutState();

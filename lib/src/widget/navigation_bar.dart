@@ -8,19 +8,17 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:updateperutangan/src/model/data_loan_hutang.dart';
 import 'package:updateperutangan/src/model/data_loan_piutang.dart';
+import 'package:updateperutangan/src/page/belanja_directory/belanja/belanja_page.dart';
 import 'package:updateperutangan/src/page/detail_hutang/detail_page.dart';
 import 'package:updateperutangan/src/page/detail_piutang/detail_page.dart';
 import 'package:updateperutangan/src/page/home/home_page.dart';
 import 'package:updateperutangan/src/page/hutang/hutang_page.dart';
-import 'package:updateperutangan/src/page/hutang/hutang_view.dart';
-import 'package:updateperutangan/src/page/notification/notification_page.dart';
 import 'package:updateperutangan/src/page/piutang/piutang_page.dart';
-import 'package:updateperutangan/src/page/piutang/piutang_view.dart';
 import 'package:updateperutangan/src/page/profile/profile_page.dart';
 import 'package:updateperutangan/src/utils/constant.dart';
+import 'package:updateperutangan/src/utils/globals.dart';
 
 class NavigationBar extends StatefulWidget {
   @override
@@ -33,8 +31,6 @@ class _NavigationBarState extends State<NavigationBar> {
 
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = new FlutterLocalNotificationsPlugin();
   FirebaseMessaging firebaseMessaging = new FirebaseMessaging();
-  var accountId;
-
 
   int _selectedIndex = 0;
   static const List<Widget> _widgetOptions = <Widget>[
@@ -48,7 +44,7 @@ class _NavigationBarState extends State<NavigationBar> {
       child: PiutangPage(),
     ),
     Center(
-      child: NotificationPage(),
+      child: BelanjaPage(),
     ),
     Center(
       child: ProfilePage(),
@@ -71,23 +67,23 @@ class _NavigationBarState extends State<NavigationBar> {
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
-            title: Text('Home')
+            label: Constant.home
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.call_received),
-            title: Text('Hutang')
+            label: Constant.hutang
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.call_made,),
-            title: Text('Piutang')
+            label: Constant.piutang
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.notifications),
-            title: Text('Notification')
+            icon: Icon(Icons.local_grocery_store_rounded),
+            label: Constant.belanja
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
-            title: Text('Profile')
+            label: 'Profile'
           )
         ],
         currentIndex: _selectedIndex,
@@ -122,16 +118,6 @@ class _NavigationBarState extends State<NavigationBar> {
   void initState() {
     firebaseCloudMessaging();
     initLocalNotification();
-    getSharedPreference();
-  }
-
-  // get Id account user
-
-  void getSharedPreference() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      accountId = prefs.getInt(Constant.account_id);
-    });
   }
 
 
@@ -178,6 +164,8 @@ class _NavigationBarState extends State<NavigationBar> {
 
     var idDataAccount = afterPayload['request']['borrower'];
 
+    print(idDataAccount);
+
     if(idDataAccount == accountId){
       DataLoanHutang dataLoanHutang = DataLoanHutang.fromJson(afterPayload);
       doNavigateToDetailHutang(context, dataLoanHutang);
@@ -185,11 +173,6 @@ class _NavigationBarState extends State<NavigationBar> {
       DataLoanPiutang dataLoanPiutang = DataLoanPiutang.fromJson(afterPayload);
       doNavigateToDetailPiutang(context,dataLoanPiutang);
     }
-
-
-    //DataLoanHutang tempDataLoanHutang = DataLoanHutang.fromJson(dataHutang);
-    //doNavigateToDetailHutang(context,tempDataLoanHutang);
-
   }
 
 

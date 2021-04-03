@@ -33,6 +33,7 @@ class _HutangViewState extends State<HutangView> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 2,
+        automaticallyImplyLeading: false,
         title: Text(
           'Hutang',
           style: BaseStyle.ts16Black,
@@ -40,17 +41,17 @@ class _HutangViewState extends State<HutangView> {
         iconTheme: IconThemeData(
           color: Colors.black
         ),
-        actions: <Widget>[
-          IconButton(
-            onPressed: (){},
-            icon: Icon(Icons.search),
-          ),
-          IconButton(
-            onPressed: (){
-            },
-            icon: Icon(Icons.chat),
-          )
-        ],
+        // actions: <Widget>[
+        //   IconButton(
+        //     onPressed: (){},
+        //     icon: Icon(Icons.search),
+        //   ),
+        //   IconButton(
+        //     onPressed: (){
+        //     },
+        //     icon: Icon(Icons.chat),
+        //   )
+        // ],
       ),
       body: RefreshIndicator(
         key: _refreshIndicatorKey,
@@ -101,6 +102,7 @@ class _HutangViewState extends State<HutangView> {
                               borderRadius: BorderRadius.circular(6)),
                           margin:
                               EdgeInsets.symmetric(vertical: 4, horizontal: 4),
+
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
@@ -124,83 +126,89 @@ class _HutangViewState extends State<HutangView> {
                                 ),
                               ),
                               Expanded(
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  children: <Widget>[
-                                    CachedNetworkImage(
-                                      imageUrl:
-                                          "https://i.pinimg.com/originals/bf/f4/4b/bff44b786d593a55c4033afe4eef7f84.jpg",
-                                      imageBuilder: (context, imageProvider) =>
-                                          Container(
-                                        height: 40,
-                                        width: 40,
-                                        decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          image: DecorationImage(
-                                              fit: BoxFit.fill,
-                                              image: imageProvider),
-                                        ),
-                                      ),
-                                    ),
-                                    Container(
-                                      width: 180,
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                child: Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: 10),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: <Widget>[
+                                      Row(
                                         children: <Widget>[
-                                          Row(
-                                            children: <Widget>[
-                                              Text(
-                                                '${state.listHutang[index].account.name} ',
-                                                style: BaseStyle.ts14PrimaryBold,
-                                              ),
-                                              state.listHutang[index].loanHutang.is_new == 't'
-                                                  ? Container(
-                                                decoration: BoxDecoration(
-                                                  borderRadius: BorderRadius.circular(90),
-                                                  color: Colors.green
+                                          CachedNetworkImage(
+                                            imageUrl:
+                                            "https://i.pinimg.com/originals/bf/f4/4b/bff44b786d593a55c4033afe4eef7f84.jpg",
+                                            imageBuilder: (context, imageProvider) =>
+                                                Container(
+                                                  height: 40,
+                                                  width: 40,
+                                                  decoration: BoxDecoration(
+                                                    shape: BoxShape.circle,
+                                                    image: DecorationImage(
+                                                        fit: BoxFit.fill,
+                                                        image: imageProvider),
+                                                  ),
                                                 ),
-                                                padding: EdgeInsets.all(4),
-                                                child: Text('New',
-                                                style: BaseStyle.ts11White,),
-                                              )
-                                                  : Container()
-                                            ],
                                           ),
                                           SizedBox(
-                                            height: 12,
+                                            width: 20,
                                           ),
-                                          Text(
-                                              state.listHutang[index].loanHutang.item)
+                                          Container(
+                                            child: Column(
+                                              mainAxisAlignment: MainAxisAlignment.start,
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: <Widget>[
+                                                Row(
+                                                  children: <Widget>[
+                                                    Text(
+                                                      '${state.listHutang[index].account.name} ',
+                                                      style: BaseStyle.ts14PrimaryBold,
+                                                    ),
+                                                    state.listHutang[index].loanHutang.is_new == 't'
+                                                        ? Container(
+                                                      decoration: BoxDecoration(
+                                                          borderRadius: BorderRadius.circular(90),
+                                                          color: Colors.green
+                                                      ),
+                                                      padding: EdgeInsets.all(4),
+                                                      child: Text('New',
+                                                        style: BaseStyle.ts11White,),
+                                                    )
+                                                        : Container()
+                                                  ],
+                                                ),
+                                                SizedBox(
+                                                  height: 12,
+                                                ),
+                                                Text(
+                                                    state.listHutang[index].loanHutang.item)
+                                              ],
+                                            ),
+                                          ),
                                         ],
                                       ),
-                                    ),
-                                    Container(
-                                      width: 120,
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.end,
-                                        children: <Widget>[
-                                          Text(
-                                            state.listHutang[index]
-                                                .loanHutang.created,
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                          SizedBox(
-                                            height: 12,
-                                          ),
-                                          Text(
-                                            state.listHutang[index].loanHutang.amount
-                                                .toString(),
-                                            style: BaseStyle.ts16BlackBold,
-                                          )
-                                        ],
-                                      ),
-                                    )
-                                  ],
+                                      Container(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.end,
+                                          children: <Widget>[
+                                            Text(
+                                              state.listHutang[index]
+                                                  .loanHutang.created,
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                            SizedBox(
+                                              height: 12,
+                                            ),
+                                            Text(
+                                              state.listHutang[index].loanHutang.amount
+                                                  .toString(),
+                                              style: BaseStyle.ts16BlackBold,
+                                            )
+                                          ],
+                                        ),
+                                      )
+                                    ],
+                                  ),
                                 ),
                               )
                             ],

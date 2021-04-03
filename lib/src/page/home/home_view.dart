@@ -273,100 +273,99 @@ class _HomeViewState extends State<HomeView> {
                         style: BaseStyle.ts14PrimaryLabel,
                       ),
                     )
-                        : SizedBox(
-                        height: 90.0 * state.dashboard.lastTransaction.length,
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 10),
-                          child: ListView.builder(
-                            physics: NeverScrollableScrollPhysics(),
-                            itemBuilder: (context, index) {
-                              return GestureDetector(
-                                  onTap: () {},
-                                  child: Card(
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                        BorderRadius.circular(6)),
-                                    margin: EdgeInsets.symmetric(
-                                        vertical: 4, horizontal: 4),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                      children: <Widget>[
-                                        Container(
-                                          height: 80,
-                                          width: 8,
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.only(
-                                                topLeft: Radius.circular(6),
-                                                bottomLeft:
-                                                Radius.circular(6)),
-                                            color: state.dashboard.lastTransaction[index]
-                                                .statusLoan == 'pending'
-                                                ? Colors.yellow
-                                                : state
-                                                .dashboard
-                                                .lastTransaction[
-                                            index]
-                                                .statusLoan ==
-                                                'accepted'
-                                                ? Colors.orange
-                                                : state
-                                                .dashboard
-                                                .lastTransaction[
-                                            index]
-                                                .statusLoan ==
-                                                'rejected'
-                                                ? Colors.red
-                                                : Colors.green,
+                        : SingleChildScrollView(
+                      physics: ScrollPhysics(),
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 10),
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemBuilder: (context, index) {
+                            return GestureDetector(
+                                onTap: () {
+                                },
+                                child: Card(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius:
+                                      BorderRadius.circular(6)),
+                                  margin: EdgeInsets.symmetric(
+                                      vertical: 4,
+                                      horizontal: 4),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                    children: <Widget>[
+                                      Row(
+                                        children: <Widget>[
+                                          Container(
+                                            height: 80,
+                                            width: 6,
+                                            decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.only(
+                                                  topLeft: Radius.circular(6),
+                                                  bottomLeft:
+                                                  Radius.circular(6)),
+                                              color: state.dashboard.lastTransaction[index]
+                                                  .statusLoan == 'pending'
+                                                  ? Colors.yellow
+                                                  : state
+                                                  .dashboard
+                                                  .lastTransaction[
+                                              index]
+                                                  .statusLoan ==
+                                                  'accepted'
+                                                  ? Colors.orange
+                                                  : state
+                                                  .dashboard
+                                                  .lastTransaction[
+                                              index]
+                                                  .statusLoan ==
+                                                  'rejected'
+                                                  ? Colors.red
+                                                  : Colors.green,
+                                            ),
                                           ),
-                                        ),
-                                        Expanded(
+                                          Padding(
+                                            padding: EdgeInsets.symmetric(horizontal: 16),
+                                            child:  state.dashboard
+                                                .lastTransaction[index]
+                                                .lender == state.dashboard.account.id
+                                                ? Icon(
+                                              Icons.call_made,
+                                              color: Colors.green,
+                                              size: 30,
+                                            )
+                                                : Icon(
+                                              Icons.call_received,
+                                              color: Colors.red,
+                                              size: 30,
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                      Expanded(
+                                        child: Padding(
+                                          padding: EdgeInsets.symmetric(horizontal: 10),
                                           child: Row(
-                                            mainAxisAlignment:
-                                            MainAxisAlignment.spaceAround,
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                             children: <Widget>[
-                                              state.dashboard
-                                                  .lastTransaction[index]
-                                                  .lender ==
-                                                  state.dashboard.account.id
-                                                  ? Icon(
-                                                Icons.call_made,
-                                                color: Colors.green,
-                                                size: 30,
-                                              )
-                                                  : Icon(
-                                                Icons.call_received,
-                                                color: Colors.red,
-                                                size: 30,
-                                              ),
                                               Container(
-                                                width: 160,
                                                 child: Column(
-                                                  mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .center,
-                                                  crossAxisAlignment:
-                                                  CrossAxisAlignment
-                                                      .start,
+                                                  mainAxisAlignment: MainAxisAlignment.center,
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
                                                   children: <Widget>[
                                                     Text(
                                                       state.dashboard
                                                           .lastTransaction[index]
                                                           .lenderUsername !=
                                                           null
-                                                          ? '${state.dashboard
+                                                          ? state.dashboard
                                                           .lastTransaction[index]
-                                                          .lenderUsername} ' +
-                                                          "(${state.dashboard
-                                                              .lastTransaction[index]
-                                                              .lenderName})"
+                                                          .lenderName
 
-                                                          : '${state.dashboard
+                                                          : state.dashboard
                                                           .lastTransaction[index]
-                                                          .borrowerUsername} ' +
-                                                          "(${state.dashboard
-                                                              .lastTransaction[index]
-                                                              .borrowerName})"
+                                                          .borrowerName
                                                       ,
                                                       style: BaseStyle
                                                           .ts14PrimaryBold,
@@ -383,7 +382,6 @@ class _HomeViewState extends State<HomeView> {
                                                 ),
                                               ),
                                               Container(
-                                                width: 120,
                                                 child: Column(
                                                   crossAxisAlignment:
                                                   CrossAxisAlignment.end,
@@ -415,15 +413,17 @@ class _HomeViewState extends State<HomeView> {
                                               )
                                             ],
                                           ),
-                                        )
-                                      ],
-                                    ),
-                                  ));
-                            },
-                            itemCount: state.dashboard.lastTransaction.length,
-                            controller: scrollController,
-                          ),
-                        )),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ));
+                          },
+                          itemCount: state.dashboard.lastTransaction.length,
+                          controller: scrollController,
+                        ),
+                      ),
+                    )
                   ],
                 );
               }

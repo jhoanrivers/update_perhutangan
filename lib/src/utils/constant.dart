@@ -14,6 +14,22 @@ class Constant{
   static var token = 'token';
   static var fcm_token = 'fcm_token';
 
+  static String successSignUp = "Registration is successful, Please log-in with your new account";
+
+  static String register="Register";
+
+  static String home="Home";
+
+  static String hutang="Hutang";
+
+  static String piutang="Piutang";
+
+  static String belanja="Belanja";
+
+  static String daftarBelanja="Daftar Belanja";
+
+  static String createNewBelanja="Create New Belanja";
+
 
 
 

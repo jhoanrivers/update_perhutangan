@@ -74,7 +74,12 @@ class _SearchUserViewState extends State<SearchUserView> {
                         ),
                       ),
                     ),
-                    Expanded(
+                    state.listAccount.length == 0
+                        ? Container(
+                      height: 60,
+                      child: Text('User is empty'),
+                    )
+                        : Expanded(
                       child: ListView.builder(
                         itemBuilder: (context, index){
                           return GestureDetector(

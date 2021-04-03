@@ -44,4 +44,16 @@ class Account {
         'ovo': this.ovo,
         'ovo_name': this.ovoName,
       };
+
+
+
+  static List<Account> parseList(List<dynamic> dataJson) {
+    List<Account> listBelanja = [];
+    dataJson.forEach((element) {
+      listBelanja.add(Account.fromJson(element));
+    });
+    return listBelanja;
+  }
+
+
 }

@@ -45,16 +45,16 @@ class _PiutangViewState extends State<PiutangView> {
         iconTheme: IconThemeData(
           color: Colors.black
         ),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.search),
-            onPressed: (){},
-          ),
-          IconButton(
-            onPressed: (){},
-            icon: Icon(Icons.chat),
-          )
-        ],
+        // actions: <Widget>[
+        //   IconButton(
+        //     icon: Icon(Icons.search),
+        //     onPressed: (){},
+        //   ),
+        //   IconButton(
+        //     onPressed: (){},
+        //     icon: Icon(Icons.chat),
+        //   )
+        // ],
 
       ),
       body: RefreshIndicator(
@@ -145,73 +145,77 @@ class _PiutangViewState extends State<PiutangView> {
                             ),
                           ),
                           Expanded(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: <Widget>[
-                                CachedNetworkImage(
-                                  imageUrl: "https://i.pinimg.com/originals/bf/f4/4b/bff44b786d593a55c4033afe4eef7f84.jpg",
-                                  imageBuilder: (context, imageProvider) => Container(
-                                    height: 40,
-                                    width: 40,
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      image: DecorationImage(
-                                          fit: BoxFit.fill,
-                                          image: imageProvider
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Container(
-                                  width :180,
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 10),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Row(
                                     children: <Widget>[
-                                      Row(
-                                        children: <Widget>[
-                                          Text('${state.dataLoanPiutang[index].dataAccount.name}',
-                                          style: BaseStyle.ts14PrimaryBold,),
-                                          SizedBox(
-                                            width: 12,
-                                          ),
-                                          state.dataLoanPiutang[index].loanPiutang.is_new == 't'
-                                              ? Container(
-                                            decoration: BoxDecoration(
-                                                borderRadius: BorderRadius.circular(90),
-                                                color: Colors.green
+                                      CachedNetworkImage(
+                                        imageUrl: "https://i.pinimg.com/originals/bf/f4/4b/bff44b786d593a55c4033afe4eef7f84.jpg",
+                                        imageBuilder: (context, imageProvider) => Container(
+                                          height: 40,
+                                          width: 40,
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            image: DecorationImage(
+                                                fit: BoxFit.fill,
+                                                image: imageProvider
                                             ),
-                                            padding: EdgeInsets.all(4),
-                                            child: Text('New',
-                                              style: BaseStyle.ts11White,),
-                                          )
-                                              : Container()
-
-                                        ],
+                                          ),
+                                        ),
                                       ),
                                       SizedBox(
-                                        height: 12,
+                                        width: 20,
                                       ),
-                                      Text(state.dataLoanPiutang[index].loanPiutang.item)
+                                      Column(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: <Widget>[
+                                          Row(
+                                            children: <Widget>[
+                                              Text('${state.dataLoanPiutang[index].dataAccount.name}',
+                                                style: BaseStyle.ts14PrimaryBold,),
+                                              SizedBox(
+                                                width: 12,
+                                              ),
+                                              state.dataLoanPiutang[index].loanPiutang.is_new == 't'
+                                                  ? Container(
+                                                decoration: BoxDecoration(
+                                                    borderRadius: BorderRadius.circular(90),
+                                                    color: Colors.green
+                                                ),
+                                                padding: EdgeInsets.all(4),
+                                                child: Text('New',
+                                                  style: BaseStyle.ts11White,),
+                                              )
+                                                  : Container()
+
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: 12,
+                                          ),
+                                          Text(state.dataLoanPiutang[index].loanPiutang.item)
+                                        ],
+                                      ),
                                     ],
                                   ),
-                                ),
-                                Container(
-                                  width: 120,
-                                  child: Column(
+                                  Column(
                                     crossAxisAlignment: CrossAxisAlignment.end,
                                     children: <Widget>[
                                       Text(state.dataLoanPiutang[index].loanPiutang.created,
-                                      overflow: TextOverflow.ellipsis,),
+                                        overflow: TextOverflow.ellipsis,),
                                       SizedBox(
                                         height: 12,
                                       ),
                                       Text(state.dataLoanPiutang[index].loanPiutang.amount.toString(),
-                                      style: BaseStyle.ts16BlackBold,)
+                                        style: BaseStyle.ts16BlackBold,)
                                     ],
                                   ),
-                                )
-                              ],
+                                ],
+                              ),
                             ),
                           )
                         ],

@@ -35,7 +35,6 @@ class _LoginFormState extends State<LoginForm> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     loginBloc = BlocProvider.of<LoginBloc>(context);
     firebaseCloudMessagingListener();

@@ -2,7 +2,6 @@
 import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
-import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:updateperutangan/src/page/login/api_response.dart';
@@ -51,6 +50,7 @@ class LoginBloc extends Bloc<LoginEvent,LoginState>{
           String dataToken = tempData['data'];
           final prefs = await SharedPreferences.getInstance();
           final value = dataToken;
+          print(value);
           prefs.setString(Constant.token, value);
           yield SuccessLogin();
         }

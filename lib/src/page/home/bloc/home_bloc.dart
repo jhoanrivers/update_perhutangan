@@ -14,6 +14,7 @@ import 'package:http/http.dart' as http;
 import 'package:updateperutangan/src/page/login/login_page.dart';
 import 'package:updateperutangan/src/service/service_client.dart';
 import 'package:updateperutangan/src/utils/constant.dart';
+import 'package:updateperutangan/src/utils/globals.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   @override
@@ -35,8 +36,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           Map<String, dynamic> dataJson = json.decode(response.body);
           Dashboard dashboard = Dashboard.fromJson(dataJson['data']);
 
-          //save user to local database
-          prefs.setInt(Constant.account_id, dashboard.account.id);
+          //save id global variable
+          accountId = dashboard.account.id;
 
           //dbClient.insertUserToDatabase(dashboard.account.toMap());
           yield SuccessLoadData(dashboard: dashboard);

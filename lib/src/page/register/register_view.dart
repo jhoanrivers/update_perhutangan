@@ -3,11 +3,13 @@ import 'dart:io';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:toast/toast.dart';
 import 'package:updateperutangan/src/page/login/login_page.dart';
 import 'package:updateperutangan/src/page/register/bloc/register_bloc.dart';
 import 'package:updateperutangan/src/page/register/bloc/register_event.dart';
 import 'package:updateperutangan/src/page/register/bloc/register_state.dart';
 import 'package:updateperutangan/src/utils/basestyle.dart';
+import 'package:updateperutangan/src/utils/constant.dart';
 
 class RegisterView extends StatefulWidget {
   @override
@@ -105,57 +107,40 @@ class _RegisterViewState extends State<RegisterView> {
 
         if (state is SuccessRegister) {
           Navigator.pop(context);
-          showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return Dialog(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(6)),
-                child: Container(
-                  height: 240,
-                  padding: EdgeInsets.all(20),
-                  child: Column(
-                    children: [
-                      Icon(
-                        Icons.check_circle,
-                        size: 60,
-                        color: Colors.green,
-                      ),
-                      SizedBox(
-                        height: 24,
-                      ),
-                      Text(
-                        'Registration successful, Please log-in with your new account',
-                        style: BaseStyle.ts14PrimaryBold,
-                      ),
-                      SizedBox(
-                        height: 24,
-                      ),
-                      SizedBox(
-                        width: double.infinity,
-                        child: FlatButton(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(6)),
-                          padding: EdgeInsets.symmetric(vertical: 14),
-                          color: Colors.green,
-                          onPressed: () {
-                            Navigator.pushAndRemoveUntil(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => LoginPage()), (Route<dynamic> route) => false);
-                          },
-                          child: Text(
-                            'Login',
-                            style: BaseStyle.ts14White,
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
+          showDialog(context: context,
+          barrierDismissible: false,
+          builder: (BuildContext context) {
+            return Dialog(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(6)),
+              child: Container(
+                height: 180,
+                padding: EdgeInsets.all(16),
+                child: Column(
+                  children: [
+                    Icon(
+                      Icons.check_circle,
+                      size: 60,
+                      color: Colors.green,
+                    ),
+                    SizedBox(
+                      height: 24,
+                    ),
+                    Text(
+                      Constant.successSignUp,
+                      style: BaseStyle.ts14PrimaryName,
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
                 ),
-              );
-            },
-          );
+              ),
+            );
+          });
+
+          Future.delayed(Duration(seconds: 2), () {
+            Navigator.pop(context);
+            Navigator.pop(context);
+          });
         }
       },
       child: BlocBuilder<RegisterBloc, RegisterState>(
@@ -165,7 +150,7 @@ class _RegisterViewState extends State<RegisterView> {
               appBar: AppBar(
                 backgroundColor: Colors.white,
                 title: Text(
-                  'Register',
+                  Constant.register,
                   style: BaseStyle.ts14PrimaryBold,
                 ),
                 centerTitle: true,

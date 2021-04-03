@@ -60,9 +60,8 @@ class BaseStyle {
       fontFamily: fontFamily,
       fontSize: 12,
       color: Colors.blue,
-      fontWeight: bold
+      fontWeight: FontWeight.w600
   );
-
 
   static TextStyle ts14PrimaryName = TextStyle(
       fontFamily: fontFamily,
@@ -78,11 +77,20 @@ class BaseStyle {
   );
 
 
+  static TextStyle ts14PrimaryLabelGreen = TextStyle(
+      fontFamily: fontFamily,
+      fontSize: 14,
+      color: Colors.green,
+      fontWeight: FontWeight.w600
+  );
+
+
+
   static TextStyle ts14PrimaryBold = TextStyle(
       fontFamily: fontFamily,
       fontSize: 14,
       color: Colors.black,
-      fontWeight: bold
+      fontWeight: FontWeight.w600
   );
 
   static TextStyle tsAppBar = TextStyle(

@@ -40,270 +40,276 @@ class _CreatePiutangFormState extends State<CreatePiutangForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.deepOrangeAccent,
-        title: Text('Create New Piutang',
-        style: BaseStyle.ts18WhiteBold,),
-      ),
-        body: BlocListener<PiutangBloc, PiutangState>(
+    return WillPopScope(
+      onWillPop: onWillPopScope,
+      child: Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+            onPressed: onWillPopScope,
+            icon: Icon(Icons.arrow_back_ios),
+          ),
+          backgroundColor: Colors.deepOrangeAccent,
+          title: Text('Create New Piutang',
+          style: BaseStyle.ts18WhiteBold,),
+        ),
+          body: BlocListener<PiutangBloc, PiutangState>(
+            listener: (BuildContext context, PiutangState state) {
 
-          listener: (BuildContext context, PiutangState state) {
-
-            if (state is CreatePiutangLoadingState){
-              showDialog(
-                context: context,
-                barrierDismissible: false,
-                builder: (BuildContext context) {
-                  return Dialog(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(6)
-                    ),
-                    child: Padding(
-                      padding: EdgeInsets.all(20),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          CircularProgressIndicator(),
-                          SizedBox(width: 20,),
-                          Text("Login Process"),
-                        ],
+              if (state is CreatePiutangLoadingState){
+                showDialog(
+                  context: context,
+                  barrierDismissible: false,
+                  builder: (BuildContext context) {
+                    return Dialog(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(6)
                       ),
-                    ),
-                  );
-                },
-              );
-            }
+                      child: Padding(
+                        padding: EdgeInsets.all(20),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            CircularProgressIndicator(),
+                            SizedBox(width: 20,),
+                            Text("Login Process"),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                );
+              }
 
-            if(state is SuccessCreatePiutang){
-              Navigator.pop(context);
-              Navigator.pop(context, true);
-            }
+              if(state is SuccessCreatePiutang){
+                Navigator.pop(context);
+                Navigator.pop(context, true);
+              }
 
-            if(state is ErrorCreatePiutang){
-              Navigator.pop(context);
-              Scaffold.of(context).showSnackBar(
-                SnackBar(
-                  content: Text('Failed create piutang',
-                  style: BaseStyle.ts14White,),
-                  backgroundColor: Colors.red,
-                ),
-              );
-            }
-          },
+              if(state is ErrorCreatePiutang){
+                Navigator.pop(context);
+                Scaffold.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('Failed create piutang',
+                    style: BaseStyle.ts14White,),
+                    backgroundColor: Colors.red,
+                  ),
+                );
+              }
+            },
 
 
-          child: BlocBuilder<PiutangBloc, PiutangState>(
-            builder: (BuildContext context, state) {
-              return  ListView(
-                children: <Widget>[
-                  Form(
-                    key: _formKey,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Padding(
-                          padding: EdgeInsets.fromLTRB(16, 16, 16, 0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text('Yang Bersangkutan*',
-                                style: BaseStyle.ts14PrimaryName,),
-                              SizedBox(
-                                height: 12,
-                              ),
-                              mapResult.length != null
-                                  ? Container(
-                                  height: 60.0 * mapResult.length,
-                                  child: ListView.builder(
-                                    physics: NeverScrollableScrollPhysics(),
-                                    itemCount: mapResult.length,
-                                    itemBuilder: (BuildContext context, int index) {
-                                      return Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: <Widget>[
-                                          ListTile(
-                                            title: Text(mapResult.values.elementAt(index).name ),
-                                            trailing: IconButton(
-                                              onPressed: () {
-                                                setState(() {
-                                                  mapResult.remove(mapResult.keys.elementAt(index));
-                                                });
-                                              },
-                                              icon: Icon(Icons.close),
+            child: BlocBuilder<PiutangBloc, PiutangState>(
+              builder: (BuildContext context, state) {
+                return  ListView(
+                  children: <Widget>[
+                    Form(
+                      key: _formKey,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Padding(
+                            padding: EdgeInsets.fromLTRB(16, 16, 16, 0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text('Yang Bersangkutan*',
+                                  style: BaseStyle.ts14PrimaryName,),
+                                SizedBox(
+                                  height: 12,
+                                ),
+                                mapResult.length != null
+                                    ? Container(
+                                    height: 60.0 * mapResult.length,
+                                    child: ListView.builder(
+                                      physics: NeverScrollableScrollPhysics(),
+                                      itemCount: mapResult.length,
+                                      itemBuilder: (BuildContext context, int index) {
+                                        return Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            ListTile(
+                                              title: Text(mapResult.values.elementAt(index).name ),
+                                              trailing: IconButton(
+                                                onPressed: () {
+                                                  setState(() {
+                                                    mapResult.remove(mapResult.keys.elementAt(index));
+                                                  });
+                                                },
+                                                icon: Icon(Icons.close),
+                                              ),
                                             ),
-                                          ),
-                                        ],
-                                      );
-                                    },
-                                  ))
-                                  : Container(),
+                                          ],
+                                        );
+                                      },
+                                    ))
+                                    : Container(),
 
-                              GestureDetector(
-                                onTap: () async {
-                                  listUser = await Navigator.push(context,
-                                      MaterialPageRoute(builder: (context) => SearchUserPage()));
-                                  if(listUser != null){
-                                    for (var key in listUser){
-                                      setState(() {
-                                        mapResult.putIfAbsent(key.id, () => key);
-                                      });
-                                      print(mapResult);
+                                GestureDetector(
+                                  onTap: () async {
+                                    listUser = await Navigator.push(context,
+                                        MaterialPageRoute(builder: (context) => SearchUserPage()));
+                                    if(listUser != null){
+                                      for (var key in listUser){
+                                        setState(() {
+                                          mapResult.putIfAbsent(key.id, () => key);
+                                        });
+                                        print(mapResult);
+                                      }
                                     }
-                                  }
-                                },
-                                child: Container(
-                                  child: Row(
-                                    children: <Widget>[
-                                      Icon(Icons.add,
-                                        color: Colors.blue,),
-                                      Text('Tambahkan Orang',
-                                        style: BaseStyle.ts12BlueBold,)
-                                    ],
+                                  },
+                                  child: Container(
+                                    child: Row(
+                                      children: <Widget>[
+                                        Icon(Icons.add,
+                                          color: Colors.blue,),
+                                        Text('Tambahkan Orang',
+                                          style: BaseStyle.ts12BlueBold,)
+                                      ],
+                                    ),
                                   ),
                                 ),
-                              ),
-                              SizedBox(
-                                height: 6,
-                              ),
-                              _validateResult
-                                  ? Text('Please add at least 1 user',
-                                style:TextStyle(
-                                    color: Colors.red
-                                ),)
-                                  : Container()
-                            ],
-                          ),
-                        ),
-                        Divider(),
-                        Padding(
-                          padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text('Item*',
-                                style: BaseStyle.ts14PrimaryName,),
-                              SizedBox(
-                                height: 12,
-                              ),
-                              TextFormField(
-                                controller: itemController,
-                                decoration: InputDecoration(
-                                    contentPadding: EdgeInsets.all(10),
-                                    border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(6),
-                                        borderSide: BorderSide()
-                                    )
+                                SizedBox(
+                                  height: 6,
                                 ),
-                                autovalidate: autoVal,
-                                validator: (value){
-                                  if(itemController.text.isEmpty){
-                                    return 'Item cannot be empty';
-                                  }
-                                  return null;
-                                },
-                              )
-                            ],
+                                _validateResult
+                                    ? Text('Please add at least 1 user',
+                                  style:TextStyle(
+                                      color: Colors.red
+                                  ),)
+                                    : Container()
+                              ],
+                            ),
                           ),
-                        ),
-                        Divider(),
-                        Padding(
-                          padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text('Description',
-                                style: BaseStyle.ts14PrimaryName,),
-                              SizedBox(
-                                height: 12,
-                              ),
-                              TextFormField(
-                                controller: descriptionController,
-                                decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.all(10),
-                                  border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(6),
-                                      borderSide: BorderSide()
+                          Divider(),
+                          Padding(
+                            padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text('Item*',
+                                  style: BaseStyle.ts14PrimaryName,),
+                                SizedBox(
+                                  height: 12,
+                                ),
+                                TextFormField(
+                                  controller: itemController,
+                                  decoration: InputDecoration(
+                                      contentPadding: EdgeInsets.all(10),
+                                      border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(6),
+                                          borderSide: BorderSide()
+                                      )
                                   ),
-
-                                ),
-                                maxLines: 5,
-                              )
-                            ],
+                                  autovalidate: autoVal,
+                                  validator: (value){
+                                    if(itemController.text.isEmpty){
+                                      return 'Item cannot be empty';
+                                    }
+                                    return null;
+                                  },
+                                )
+                              ],
+                            ),
                           ),
-                        ),
-                        Divider(),
-                        Padding(
-                          padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text('Amount*',
-                                style: BaseStyle.ts14PrimaryName,),
-                              SizedBox(
-                                height: 12,
-                              ),
-                              TextFormField(
-                                controller: amountController,
-                                decoration: InputDecoration(
+                          Divider(),
+                          Padding(
+                            padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text('Description',
+                                  style: BaseStyle.ts14PrimaryName,),
+                                SizedBox(
+                                  height: 12,
+                                ),
+                                TextFormField(
+                                  controller: descriptionController,
+                                  decoration: InputDecoration(
                                     contentPadding: EdgeInsets.all(10),
                                     border: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(6),
                                         borderSide: BorderSide()
                                     ),
-                                    prefixText: 'Rp. ',
-                                    prefixStyle: BaseStyle.ts14PrimaryName
-                                ),
-                                keyboardType: TextInputType.number,
-                                autovalidate: autoVal,
-                                validator: (value){
-                                  if(amountController.text.isEmpty){
-                                    return 'Amount cannot be empty';
-                                  }
-                                  return null;
-                                },
-                              )
-                            ],
+
+                                  ),
+                                  maxLines: 5,
+                                )
+                              ],
+                            ),
                           ),
-                        ),
-
-                        SizedBox(
-                          height: 80,
-                        ),
-                        Padding(
+                          Divider(),
+                          Padding(
                             padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
-                            child: SizedBox(
-                              width: double.infinity,
-                              child: RaisedButton(
-                                color: Colors.deepOrangeAccent,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(6)
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text('Amount*',
+                                  style: BaseStyle.ts14PrimaryName,),
+                                SizedBox(
+                                  height: 12,
                                 ),
-                                padding: EdgeInsets.all(14),
-                                onPressed: onButtonSavedPressed,
-                                child: Text('Tambahkan Piutang',
-                                  style: BaseStyle.ts14White,),
-                              ),
-                            )
-                        )
+                                TextFormField(
+                                  controller: amountController,
+                                  decoration: InputDecoration(
+                                      contentPadding: EdgeInsets.all(10),
+                                      border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(6),
+                                          borderSide: BorderSide()
+                                      ),
+                                      prefixText: 'Rp. ',
+                                      prefixStyle: BaseStyle.ts14PrimaryName
+                                  ),
+                                  keyboardType: TextInputType.number,
+                                  autovalidate: autoVal,
+                                  validator: (value){
+                                    if(amountController.text.isEmpty){
+                                      return 'Amount cannot be empty';
+                                    }
+                                    return null;
+                                  },
+                                )
+                              ],
+                            ),
+                          ),
 
-                      ],
+                          SizedBox(
+                            height: 80,
+                          ),
+                          Padding(
+                              padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
+                              child: SizedBox(
+                                width: double.infinity,
+                                child: RaisedButton(
+                                  color: Colors.deepOrangeAccent,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(6)
+                                  ),
+                                  padding: EdgeInsets.all(14),
+                                  onPressed: onButtonSavedPressed,
+                                  child: Text('Tambahkan Piutang',
+                                    style: BaseStyle.ts14White,),
+                                ),
+                              )
+                          )
+
+                        ],
+                      ),
+
                     ),
-
-                  ),
-                ],
+                  ],
 
 
 
-              );
-            },
+                );
+              },
 
+            ),
           ),
-        ),
 
 
 
-        
+          
+      ),
     );
   }
 
@@ -329,5 +335,10 @@ class _CreatePiutangFormState extends State<CreatePiutangForm> {
       );
     }
 
+  }
+
+  Future<bool> onWillPopScope() async {
+    Navigator.pop(context, false);
+    return false;
   }
 }
