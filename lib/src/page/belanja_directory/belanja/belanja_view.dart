@@ -7,6 +7,7 @@ import 'package:updateperutangan/src/page/belanja_directory/belanja/bloc/belanja
 import 'package:updateperutangan/src/page/belanja_directory/belanja/bloc/belanja_event.dart';
 import 'package:updateperutangan/src/page/belanja_directory/belanja/bloc/belanja_state.dart';
 import 'package:updateperutangan/src/page/belanja_directory/belanja_create_new/belanja_create_new_page.dart';
+import 'package:updateperutangan/src/page/belanja_directory/purchase_list/purchase_list_page.dart';
 import 'package:updateperutangan/src/utils/basestyle.dart';
 import 'package:updateperutangan/src/utils/constant.dart';
 
@@ -68,7 +69,7 @@ class _BelanjaViewState extends State<BelanjaView> {
                     itemBuilder: (BuildContext context, int index) {
                       return GestureDetector(
                         onTap: (){
-                          print("hehe");
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => PurchaseListPage(id: state.purchase.belanjaItem[index].id)));
                         },
                         child: Card(
                           child: Padding(

@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:updateperutangan/src/ext/simple_bloc_delegate.dart';
 import 'package:updateperutangan/src/page/belanja_directory/belanja/bloc/belanja_bloc.dart';
 import 'package:updateperutangan/src/page/belanja_directory/belanja_create_new/bloc/create_belanja_bloc.dart';
+import 'package:updateperutangan/src/page/belanja_directory/purchase_list/bloc/purchase_list_bloc.dart';
 import 'package:updateperutangan/src/page/detail_hutang/detail_bloc/detail_bloc.dart';
 import 'package:updateperutangan/src/page/detail_piutang/detail_bloc/detail_bloc.dart';
 import 'package:updateperutangan/src/page/home/bloc/home_bloc.dart';
@@ -56,6 +57,8 @@ class MyApp extends StatelessWidget {
           BlocProvider<CreateBelanjaBloc>(
               create: (context) => CreateBelanjaBloc()
           ),
+          BlocProvider<PurchaseListBloc>(
+              create: (context) => PurchaseListBloc())
         ],
         child: MaterialApp(
           title: 'Flutter Demo',

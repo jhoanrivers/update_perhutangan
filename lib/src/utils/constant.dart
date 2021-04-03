@@ -30,6 +30,8 @@ class Constant{
 
   static String createNewBelanja="Create New Belanja";
 
+  static String ListPurchase="Purchase List";
+
 
 
 
