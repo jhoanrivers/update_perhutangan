@@ -30,6 +30,8 @@ class BelanjaBloc extends Bloc<BelanjaEvent, BelanjaState> {
           headers: {HttpHeaders.authorizationHeader: 'Bearer $value'}
         );
 
+        print(response.body);
+
         if(response.statusCode == 200) {
           Map<String, dynamic> dataJson = json.decode(response.body);
           var currentData = dataJson['data'];

@@ -5,6 +5,8 @@ import 'package:toast/toast.dart';
 import 'package:updateperutangan/src/page/belanja_directory/purchase_list/add_purchase/bloc/add_purchase_bloc.dart';
 import 'package:updateperutangan/src/page/belanja_directory/purchase_list/add_purchase/bloc/add_purchase_event.dart';
 import 'package:updateperutangan/src/page/belanja_directory/purchase_list/add_purchase/bloc/add_purchase_state.dart';
+import 'package:updateperutangan/src/page/belanja_directory/purchase_list/bloc/purchase_list_bloc.dart';
+import 'package:updateperutangan/src/page/belanja_directory/purchase_list/bloc/purchase_list_event.dart';
 import 'package:updateperutangan/src/utils/basestyle.dart';
 import 'package:updateperutangan/src/utils/constant.dart';
 
@@ -12,7 +14,7 @@ class AddPurchaseForm extends StatefulWidget {
 
   final int id;
 
-  const AddPurchaseForm({Key key, this.id}) : super(key: key);
+  const AddPurchaseForm({@required this.id});
 
   @override
   _AddPurchaseFormState createState() => _AddPurchaseFormState();
@@ -25,6 +27,7 @@ class _AddPurchaseFormState extends State<AddPurchaseForm> {
   TextEditingController priceController = new TextEditingController();
 
   AddPurchaseBloc addPurchaseBloc;
+  PurchaseListBloc purchaseListBloc;
   AutovalidateMode autovalidateMode = AutovalidateMode.disabled;
 
   var _formKey = GlobalKey<FormState>();
@@ -34,6 +37,7 @@ class _AddPurchaseFormState extends State<AddPurchaseForm> {
     // TODO: implement initState
     super.initState();
     addPurchaseBloc = BlocProvider.of<AddPurchaseBloc>(context);
+    purchaseListBloc = BlocProvider.of<PurchaseListBloc>(context);
   }
 
 
@@ -106,6 +110,7 @@ class _AddPurchaseFormState extends State<AddPurchaseForm> {
 
           if (state is AddPurchaseSuccess) {
             Navigator.pop(context);
+            purchaseListBloc.add(GetPurchaseList(id: widget.id));
             Future.delayed(Duration(seconds: 2), (){
               Toast.show("Item successfully added", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
             });
@@ -219,7 +224,7 @@ class _AddPurchaseFormState extends State<AddPurchaseForm> {
         autovalidateMode = AutovalidateMode.always;
       });
     } else {
-      addPurchaseBloc.add(AddPurchaseItem(id: widget.id, name: nameController.text, price: priceController.text));
+      addPurchaseBloc.add(AddPurchaseItem(id: widget.id, name: nameController.text, price: int.parse(priceController.text)));
     }
 
 

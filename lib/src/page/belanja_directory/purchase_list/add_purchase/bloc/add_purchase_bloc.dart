@@ -28,7 +28,7 @@ class AddPurchaseBloc extends Bloc<AddPurchaseEvent, AddPurchaseState> {
       yield AddPurchaseLoading();
 
       Map<String, dynamic> body = {
-        "id": event.id,
+        "purchase_id": event.id,
         "price" : event.price,
         "name" : event.name
       };
@@ -41,7 +41,7 @@ class AddPurchaseBloc extends Bloc<AddPurchaseEvent, AddPurchaseState> {
           headers: {HttpHeaders.authorizationHeader : "Bearer $value"},
           body: json.encode(body)
         );
-
+        print(response.body);
         if(response.statusCode == 200) {
           yield AddPurchaseSuccess();
         } else {
@@ -54,8 +54,6 @@ class AddPurchaseBloc extends Bloc<AddPurchaseEvent, AddPurchaseState> {
       }
 
     }
-
-
   }
 
 }

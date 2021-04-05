@@ -36,6 +36,8 @@ class PurchaseListBloc extends Bloc<PurchaseListEvent, PurchaseListState> {
           headers: {HttpHeaders.authorizationHeader : 'Bearer $value'}
         );
 
+        print(response.body);
+
         if(response.statusCode == 200) {
           Map<String, dynamic> dataJson = json.decode(response.body);
           var checkData = dataJson['data'];

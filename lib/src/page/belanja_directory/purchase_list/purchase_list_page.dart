@@ -28,7 +28,6 @@ class _PurchaseListPageState extends State<PurchaseListPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     purchaseListBloc = BlocProvider.of<PurchaseListBloc>(context);
     purchaseListBloc.add(GetPurchaseList(id: widget.id));
@@ -160,7 +159,7 @@ class _PurchaseListPageState extends State<PurchaseListPage> {
     return FloatingActionButton(
       backgroundColor: Colors.deepOrangeAccent,
       onPressed: (){
-        Navigator.push(context, MaterialPageRoute(builder: (context) => AddPurchaseForm()));
+        Navigator.push(context, MaterialPageRoute(builder: (context) => AddPurchaseForm(id: widget.id,)));
       },
       child: Icon(Icons.add),
     );

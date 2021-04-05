@@ -13,7 +13,7 @@ abstract class AddPurchaseEvent extends Equatable {
 class AddPurchaseItem extends AddPurchaseEvent {
   final int id;
   final String name;
-  final String price;
+  final int price;
 
   AddPurchaseItem({this.id, this.name, this.price});
 
