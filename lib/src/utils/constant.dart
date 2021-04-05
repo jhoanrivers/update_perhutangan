@@ -32,6 +32,8 @@ class Constant{
 
   static String ListPurchase="Purchase List";
 
+  static String addPurchaseItem="Add Purchase Item";
+
 
 
 

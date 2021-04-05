@@ -52,8 +52,8 @@ class BaseStyle {
   static TextStyle ts12PrimaryLabel = TextStyle(
       fontFamily: fontFamily,
       fontSize: 12,
-      color: Colors.black26,
-      fontWeight: bold
+      color: Colors.black87,
+      fontWeight: FontWeight.w600
   );
 
   static TextStyle ts12BlueBold = TextStyle(
