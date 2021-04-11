@@ -13,6 +13,7 @@ import 'package:updateperutangan/src/page/belanja_directory/belanja_create_new/b
 import 'package:updateperutangan/src/page/piutang/search_user_page.dart';
 import 'package:updateperutangan/src/utils/basestyle.dart';
 import 'package:updateperutangan/src/utils/constant.dart';
+import 'package:updateperutangan/src/utils/globals.dart';
 
 class BelanjaCreateNewPage extends StatefulWidget {
   @override
@@ -325,6 +326,7 @@ class _BelanjaCreateNewPageState extends State<BelanjaCreateNewPage> {
         for(int i = 0 ; i < mapResult.length ; i++) {
           members.add(mapResult.keys.elementAt(i));
         }
+        members.add(accountId);
       }
       createBelanjaBloc.add(DoCreateBelanja(
           date: DateFormat("dd-MMMM-yyyy").format(purchaseDate),

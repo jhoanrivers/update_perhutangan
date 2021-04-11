@@ -2,6 +2,7 @@
 
 
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:updateperutangan/src/model/purchase_item.dart';
 
 abstract class PurchaseListState extends Equatable {
@@ -27,3 +28,9 @@ class PurchaseSuccessGetList extends PurchaseListState{
 }
 
 class PurchaseFailedGetList extends PurchaseListState{}
+
+class PurchaseLoadingDeleteList extends PurchaseListState{}
+
+class PurchaseSuccessDeleteItem extends PurchaseListState {}
+
+class PurchaseFailedDeleteItem extends PurchaseListState{}

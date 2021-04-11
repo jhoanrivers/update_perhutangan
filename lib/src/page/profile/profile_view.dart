@@ -147,30 +147,40 @@ class _ProfileViewState extends State<ProfileView> {
                   child: Padding(
                 padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
+                    // Padding(
+                    //   padding: EdgeInsets.only(top: 20),
+                    //   child: CachedNetworkImage(
+                    //     imageUrl:
+                    //         'https://vignette.wikia.nocookie.net/kiminonawa/images/6/62/Kimi-no-Na-wa.-Visual.jpg/revision/latest/scale-to-width-down/340?cb=20160927170951',
+                    //     imageBuilder: (context, imageProvider) => Container(
+                    //       width: 100.0,
+                    //       height: 100.0,
+                    //       decoration: BoxDecoration(
+                    //         shape: BoxShape.circle,
+                    //         image: DecorationImage(
+                    //             image: imageProvider, fit: BoxFit.cover),
+                    //       ),
+                    //     ),
+                    //     placeholder: (context, url) =>
+                    //         CircularProgressIndicator(),
+                    //     errorWidget: (context, url, error) => Icon(Icons.error),
+                    //   ),
+                    // ),
+
+
                     Padding(
-                      padding: EdgeInsets.only(top: 20),
-                      child: CachedNetworkImage(
-                        imageUrl:
-                            'https://vignette.wikia.nocookie.net/kiminonawa/images/6/62/Kimi-no-Na-wa.-Visual.jpg/revision/latest/scale-to-width-down/340?cb=20160927170951',
-                        imageBuilder: (context, imageProvider) => Container(
-                          width: 100.0,
-                          height: 100.0,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            image: DecorationImage(
-                                image: imageProvider, fit: BoxFit.cover),
-                          ),
-                        ),
-                        placeholder: (context, url) =>
-                            CircularProgressIndicator(),
-                        errorWidget: (context, url, error) => Icon(Icons.error),
-                      ),
+                      padding: EdgeInsets.only(left: 16, top: 20),
+                      child: Text('Welcome',
+                      style: BaseStyle.ts18Black54Bold,)
                     ),
+
                     SizedBox(
-                      height: 64,
+                      height: 24,
                     ),
-                    
+
+
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,

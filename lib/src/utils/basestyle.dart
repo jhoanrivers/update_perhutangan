@@ -34,6 +34,13 @@ class BaseStyle {
       fontWeight: bold
   );
 
+  static TextStyle ts18Black54Bold = TextStyle(
+      fontFamily: fontFamily,
+      color: Colors.black54,
+      fontSize: 18,
+      fontWeight: bold
+  );
+
   static TextStyle ts14Red = TextStyle(
       fontFamily: fontFamily,
       color: Colors.red,
@@ -56,6 +63,13 @@ class BaseStyle {
       fontWeight: FontWeight.w600
   );
 
+  static TextStyle ts12GreyLabel = TextStyle(
+      fontFamily: fontFamily,
+      fontSize: 12,
+      color: Colors.black45,
+  );
+
+
   static TextStyle ts12BlueBold = TextStyle(
       fontFamily: fontFamily,
       fontSize: 12,
@@ -75,6 +89,14 @@ class BaseStyle {
       color: Colors.grey,
       fontWeight: FontWeight.w600
   );
+
+  static TextStyle ts14OrangeLabel = TextStyle(
+      fontFamily: fontFamily,
+      fontSize: 14,
+      color: Colors.orange,
+      fontWeight: FontWeight.w600
+  );
+
 
 
   static TextStyle ts14PrimaryLabelGreen = TextStyle(

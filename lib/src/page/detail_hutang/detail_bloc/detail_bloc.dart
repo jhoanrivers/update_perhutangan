@@ -6,6 +6,7 @@ import 'dart:io';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:updateperutangan/src/page/detail_hutang/detail_bloc/detail_state.dart';
+import 'package:updateperutangan/src/service/service_client.dart';
 
 class DetailBloc extends Bloc<DetailEvent, DetailState> {
   @override
@@ -18,12 +19,16 @@ class DetailBloc extends Bloc<DetailEvent, DetailState> {
     final key = 'token';
     final value = prefs.getString(key);
 
+
+    var baseUrl = ServiceClient.baseUrl;
+
+
     if (event is ActionForRequest) {
       yield LoadingState();
 
       try{
         var response = await http.put(
-          'https://dev-hutangku.herokuapp.com/confirm/request',
+          '$baseUrl/confirm/request',
           headers: {HttpHeaders.authorizationHeader : 'Bearer $value'},
           body: jsonEncode(<String, dynamic> {
             'loan_id' : event.loan_id,

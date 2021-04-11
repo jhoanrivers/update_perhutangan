@@ -89,9 +89,9 @@ class _HomeViewState extends State<HomeView> {
                           ),
                         ),
                         Positioned(
-                          top: 10,
-                          left: 10,
-                          right: 10,
+                          top: 16,
+                          left: 16,
+                          right: 16,
                           child: Container(
                             child: Column(
                               children: <Widget>[
@@ -101,36 +101,36 @@ class _HomeViewState extends State<HomeView> {
                                   children: <Widget>[
                                     Text('Update Perutangan',
                                       style: BaseStyle.ts16WhiteBold,),
-                                    Stack(
-                                      children: <Widget>[
-                                        IconButton(
-                                          icon: Icon(Icons.chat,
-                                          color: Colors.white,),
-                                          onPressed: () {
-                                            print('notif');
-                                          },
-                                        ),
-                                        Positioned(
-                                          top: 4,
-                                          left: 4,
-                                          child: Container(
-                                            width: 20,
-                                            height: 20,
-                                            decoration: BoxDecoration(
-                                                borderRadius: BorderRadius
-                                                    .circular(90),
-                                                color: Colors.pink
-                                            ),
-                                            padding: EdgeInsets.only(
-                                                left: 6, top: 2, bottom: 2),
-                                            child: Text('1',
-                                              style: TextStyle(
-                                                  color: Colors.white
-                                              ),),
-                                          ),
-                                        )
-                                      ],
-                                    )
+                                    // Stack(
+                                    //   children: <Widget>[
+                                    //     IconButton(
+                                    //       icon: Icon(Icons.chat,
+                                    //       color: Colors.white,),
+                                    //       onPressed: () {
+                                    //         print('notif');
+                                    //       },
+                                    //     ),
+                                    //     Positioned(
+                                    //       top: 4,
+                                    //       left: 4,
+                                    //       child: Container(
+                                    //         width: 20,
+                                    //         height: 20,
+                                    //         decoration: BoxDecoration(
+                                    //             borderRadius: BorderRadius
+                                    //                 .circular(90),
+                                    //             color: Colors.pink
+                                    //         ),
+                                    //         padding: EdgeInsets.only(
+                                    //             left: 6, top: 2, bottom: 2),
+                                    //         child: Text('1',
+                                    //           style: TextStyle(
+                                    //               color: Colors.white
+                                    //           ),),
+                                    //       ),
+                                    //     )
+                                    //   ],
+                                    // )
                                   ],
                                 ),
                                 SizedBox(

@@ -109,12 +109,14 @@ class _DetailPageState extends State<DetailPage> {
                   style: BaseStyle.ts16Black,
                 ),
                 actions: <Widget>[
-                  IconButton(
+                  widget.dataLoanHutang.loanHutang.status_loan == 'pending'
+                      ? IconButton(
                     onPressed: (){
                       _showDialog(context,state);
                     },
                     icon: Icon(Icons.more_vert),
                   )
+                      : Container()
                 ],
               ),
               body: Column(
@@ -316,8 +318,7 @@ class _DetailPageState extends State<DetailPage> {
         contentPadding: EdgeInsets.all(10),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         children: <Widget>[
-          widget.dataLoanHutang.loanHutang.status_loan == 'pending'
-              ? ListTile(
+          ListTile(
             onTap: (){
               detailBloc.add(ActionForRequest(
                   loan_id: widget.dataLoanHutang.loanHutang.id,
@@ -325,15 +326,13 @@ class _DetailPageState extends State<DetailPage> {
               ));
             },
             leading: Icon(Icons.play_circle_filled,
-            color: Colors.black,),
+              color: Colors.black,),
             title: Text(
                 "Accept",
                 style: BaseStyle.ts14GreyBlue
-            ),)
-              : Container(),
+            ),),
 
-          widget.dataLoanHutang.loanHutang.status_loan == 'pending'
-              ? ListTile(
+          ListTile(
             onTap: (){
               detailBloc.add(ActionForRequest(
                   loan_id: widget.dataLoanHutang.loanHutang.id,
@@ -341,22 +340,11 @@ class _DetailPageState extends State<DetailPage> {
               ));
             },
             leading: Icon(Icons.cancel,
-            color: Colors.black,),
+              color: Colors.black,),
             title: Text(
                 "Reject",
                 style: BaseStyle.ts14GreyBlue
             ),)
-              : Container(),
-
-          widget.dataLoanHutang.loanHutang.status_loan == 'accepted'
-              ? ListTile(
-            onTap: (){},
-            leading: Icon(Icons.monetization_on,
-            color: Colors.black,),
-            title: Text('Pay',
-            style: BaseStyle.ts14GreyBlue,),
-          )
-              : Container()
 
         ],
       ),

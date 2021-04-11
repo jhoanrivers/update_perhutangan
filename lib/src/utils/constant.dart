@@ -34,6 +34,10 @@ class Constant{
 
   static String addPurchaseItem="Add Purchase Item";
 
+  static String edit="Edit";
+
+  static String cancel="Cancel";
+
 
 
 

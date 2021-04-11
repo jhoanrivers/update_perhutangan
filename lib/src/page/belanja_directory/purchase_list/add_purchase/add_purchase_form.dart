@@ -111,13 +111,8 @@ class _AddPurchaseFormState extends State<AddPurchaseForm> {
           if (state is AddPurchaseSuccess) {
             Navigator.pop(context);
             purchaseListBloc.add(GetPurchaseList(id: widget.id));
-            Future.delayed(Duration(seconds: 2), (){
-              Toast.show("Item successfully added", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
-            });
             Navigator.pop(context);
-
           }
-
 
           },
 

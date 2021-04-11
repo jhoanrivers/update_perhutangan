@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:updateperutangan/src/page/detail_piutang/detail_bloc/detail_event.dart';
 import 'package:updateperutangan/src/page/detail_piutang/detail_bloc/detail_state.dart';
+import 'package:updateperutangan/src/service/service_client.dart';
 
 class DetailPiutangBloc extends Bloc<DetailEvent, DetailState> {
   @override
@@ -17,12 +18,15 @@ class DetailPiutangBloc extends Bloc<DetailEvent, DetailState> {
     final key = 'token';
     final value = prefs.getString(key);
 
+    var baseUrl = ServiceClient.baseUrl;
+
+
     if (event is ActionForRequest) {
       yield LoadingState();
 
       try{
         var response = await http.put(
-          'https://dev-hutangku.herokuapp.com/confirm/request',
+          '$baseUrl/confirm/request',
           headers: {HttpHeaders.authorizationHeader : 'Bearer $value'},
           body: jsonEncode(<String, dynamic> {
             'loan_id' : event.loan_id,

@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:updateperutangan/src/model/item_belanja.dart';
 import 'package:updateperutangan/src/page/belanja_directory/purchase_list/add_purchase/add_purchase_form.dart';
 import 'package:updateperutangan/src/page/belanja_directory/purchase_list/bloc/purchase_list_bloc.dart';
 import 'package:updateperutangan/src/page/belanja_directory/purchase_list/bloc/purchase_list_event.dart';
@@ -24,6 +25,7 @@ class _PurchaseListPageState extends State<PurchaseListPage> {
 
 
   PurchaseListBloc purchaseListBloc;
+  bool isEdit = false;
 
 
   @override
@@ -66,6 +68,18 @@ class _PurchaseListPageState extends State<PurchaseListPage> {
       backgroundColor: Colors.white,
       title: Text(Constant.ListPurchase, style: BaseStyle.ts16Black,),
       centerTitle: false,
+      actions: [
+        FlatButton(
+            onPressed: (){
+              setState(() {
+                isEdit = !isEdit;
+              });
+            },
+            child: isEdit
+            ? Text(Constant.cancel, style: BaseStyle.ts14PrimaryLabel,)
+            : Text(Constant.edit, style: BaseStyle.ts14OrangeLabel,)
+        )
+      ],
     );
 
   }
@@ -75,6 +89,30 @@ class _PurchaseListPageState extends State<PurchaseListPage> {
     return BlocListener<PurchaseListBloc, PurchaseListState>(
         listener: (context, state) {
 
+          if(state is PurchaseLoadingDeleteList){
+            showDialog(
+              context: context,
+              barrierDismissible: false,
+              builder: (BuildContext context) {
+                return Dialog(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(6)
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.all(20),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        CircularProgressIndicator(),
+                        SizedBox(width: 20,),
+                        Text("Creating process"),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            );
+          }
 
 
         },
@@ -86,6 +124,8 @@ class _PurchaseListPageState extends State<PurchaseListPage> {
               child: CircularProgressIndicator(),
             );
           }
+
+
 
           if (state is PurchaseSuccessGetList){
             return SingleChildScrollView(
@@ -112,13 +152,40 @@ class _PurchaseListPageState extends State<PurchaseListPage> {
                           physics: NeverScrollableScrollPhysics(),
                           itemBuilder: (context, index) {
                             return Card(
-                              child: ListTile(
-                                onTap: (){
-                                  print("tarararam");
-                                },
-                                title: Text(toBeginningOfSentenceCase(state.purchaseItem.items[index].name)),
-                                subtitle: Text("Added by "+getBuyerItem(state.purchaseItem.items[index].createdBy, state)),
-                                trailing: Text(state.purchaseItem.items[index].price.toString()),
+                              child: Padding(
+                                padding: EdgeInsets.all(16),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    SizedBox(
+                                      width: MediaQuery.of(context).size.width*0.4,
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(toBeginningOfSentenceCase(state.purchaseItem.items[index].name),
+                                            style: BaseStyle.ts14PrimaryName,
+                                          ),
+                                          SizedBox(height: 6,),
+                                          Text(state.purchaseItem.items[index].price.toString(),
+                                            style: BaseStyle.ts14PrimaryLabelGreen,),
+                                          SizedBox(height: 6,),
+                                          Text("Added by "+getBuyerItem(state.purchaseItem.items[index].createdBy, state),
+                                            style: BaseStyle.ts12GreyLabel,),
+                                        ],
+                                      ),
+                                    ),
+                                    isEdit
+                                        ? IconButton(
+                                        icon: Icon(Icons.clear,
+                                        color: Colors.black54,),
+                                        onPressed: (){
+                                          doShowDialogDelete(state.purchaseItem.items[index]);
+                                        }
+                                    )
+                                        : Container()
+
+                                  ],
+                                ),
                               )
                             );
                           },
@@ -132,7 +199,6 @@ class _PurchaseListPageState extends State<PurchaseListPage> {
             );
           }
 
-
           return Center(
             child: Text("Refresh Page"),
           );
@@ -141,6 +207,44 @@ class _PurchaseListPageState extends State<PurchaseListPage> {
       ),
     );
   }
+
+
+  Future<void> doShowDialogDelete(ItemBelanja item) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: true, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Delete ${item.name}'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text('Are you sure want to delete ${item.name}'),
+                Text('Price is ${item.price}'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Cancel',
+              style: BaseStyle.ts12GreyLabel,),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+            TextButton(
+              child: Text('Sure'),
+              onPressed: () {
+                purchaseListBloc.add(DeleteItemFromList(id: item.id));
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
 
 
   // get user account by Id
