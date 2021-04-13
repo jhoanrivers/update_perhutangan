@@ -62,7 +62,11 @@ class _BelanjaViewState extends State<BelanjaView> {
               );
             }
             if (state is SuccessFetchDataBelanja){
-              return SingleChildScrollView(
+              return state.purchase.belanjaItem.length == 0
+                  ? Center(
+                child: Text('No purchasing yet'),
+              )
+                  : SingleChildScrollView(
                   physics: ScrollPhysics(),
                   child: ListView.builder(
                     shrinkWrap: true,

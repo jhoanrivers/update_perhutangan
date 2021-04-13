@@ -20,9 +20,11 @@ class RegisterButtonPressed extends RegisterEvent {
   final String gopay;
   final String ovoName;
   final String gopayName;
+  final String danaName;
+  final String danaNumber;
   final String fcm_token;
 
-  RegisterButtonPressed({
+  RegisterButtonPressed( {
     @required this.ovoName,
     @required this.gopayName,
     @required this.ovo,
@@ -30,7 +32,9 @@ class RegisterButtonPressed extends RegisterEvent {
     @required this.username,
     @required this.name,
     @required this.password,
-    @required this.fcm_token
+    @required this.fcm_token,
+    @required this.danaName,
+    @required this.danaNumber,
   });
 
 }

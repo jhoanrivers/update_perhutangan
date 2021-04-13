@@ -45,16 +45,6 @@ class _PiutangViewState extends State<PiutangView> {
         iconTheme: IconThemeData(
           color: Colors.black
         ),
-        // actions: <Widget>[
-        //   IconButton(
-        //     icon: Icon(Icons.search),
-        //     onPressed: (){},
-        //   ),
-        //   IconButton(
-        //     onPressed: (){},
-        //     icon: Icon(Icons.chat),
-        //   )
-        // ],
 
       ),
       body: RefreshIndicator(

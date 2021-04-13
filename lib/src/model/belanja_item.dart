@@ -41,9 +41,13 @@ class BelanjaItem {
 
   static List<BelanjaItem> parseListItem(List<dynamic> dataJson) {
     List<BelanjaItem> listBelanja = [];
-    dataJson.forEach((element) {
-      listBelanja.add(BelanjaItem.fromJson(element));
-    });
+    if( dataJson == null) {
+      return listBelanja;
+    } else {
+      dataJson.forEach((element) {
+        listBelanja.add(BelanjaItem.fromJson(element));
+      });
+    }
     return listBelanja;
   }
 

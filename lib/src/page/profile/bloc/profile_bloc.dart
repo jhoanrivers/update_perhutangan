@@ -31,6 +31,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
             ServiceClient.baseUrl +'/my-account',
             headers: {HttpHeaders.authorizationHeader: 'Bearer $value'});
 
+
         if (response.statusCode == 200) {
           Map<String, dynamic> dataJson = json.decode(response.body);
           Account dataUser = Account.fromJson(dataJson['data']);

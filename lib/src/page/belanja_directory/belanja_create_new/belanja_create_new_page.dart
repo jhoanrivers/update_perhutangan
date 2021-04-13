@@ -187,7 +187,7 @@ class _BelanjaCreateNewPageState extends State<BelanjaCreateNewPage> {
                                 onPressed: () {
                                   DatePicker.showDatePicker(context,
                                       showTitleActions: true,
-                                      minTime: DateTime.now(),
+                                      minTime: DateTime(2020, 6, 7),
                                       maxTime: DateTime(2050, 6, 7), onChanged: (date) {
                                         //print('change $date');
                                       }, onConfirm: (date) {

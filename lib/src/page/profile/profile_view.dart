@@ -82,10 +82,10 @@ class _ProfileViewState extends State<ProfileView> {
                 automaticallyImplyLeading: false,
                 title: Text(
                   'Profile',
-                  style: BaseStyle.ts18WhiteBold,
+                  style: BaseStyle.ts16Black,
                 ),
-                iconTheme: IconThemeData(color: Colors.white),
-                backgroundColor: Colors.deepOrangeAccent,
+                iconTheme: IconThemeData(color: Colors.black54),
+                backgroundColor: Colors.white,
               ),
               endDrawer: Drawer(
                 child: Padding(
@@ -111,7 +111,8 @@ class _ProfileViewState extends State<ProfileView> {
                           onTap: () {},
                           child: Row(
                             children: <Widget>[
-                              Icon(Icons.settings),
+                              Icon(Icons.settings,
+                              color: Colors.black54,),
                               SizedBox(
                                 width: 20,
                               ),
@@ -179,8 +180,6 @@ class _ProfileViewState extends State<ProfileView> {
                     SizedBox(
                       height: 24,
                     ),
-
-
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -264,6 +263,27 @@ class _ProfileViewState extends State<ProfileView> {
                       ],
                     ),
                     Divider(),
+
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Text(
+                          'Dana',
+                          style: BaseStyle.ts14PrimaryLabel,
+                        ),
+                        Container(
+                          width: 160,
+                          child: state is SuccessFetchData
+                              ? Text(
+                            state.dataUser.dana.toString(),
+                            style: BaseStyle.ts14PrimaryName,
+                          )
+                              : Text('-'),
+                        )
+                      ],
+                    ),
+
                   ],
                 ),
               )));

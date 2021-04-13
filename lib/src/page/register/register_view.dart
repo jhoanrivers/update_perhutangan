@@ -24,6 +24,8 @@ class _RegisterViewState extends State<RegisterView> {
   var passwordController = TextEditingController();
   var gopayNameController = TextEditingController();
   var ovoNameController = TextEditingController();
+  var danaNameController = TextEditingController();
+  var danaNumberController = TextEditingController();
 
   final _formkeyRegister = GlobalKey<FormState>();
   bool autoVal = false;
@@ -39,6 +41,7 @@ class _RegisterViewState extends State<RegisterView> {
   bool isOvoNameEnable = false;
   bool isGopayEnable = false;
   bool isGopayNameEnable = false;
+  bool isDanaNameEnable = false;
 
 
   RegisterBloc registerBloc;
@@ -282,7 +285,7 @@ class _RegisterViewState extends State<RegisterView> {
                               ),
                               TextFormField(
                                 decoration: InputDecoration(
-                                  labelText: 'Gopay',
+                                  labelText: 'Gopay Number',
                                   border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(6),
                                       borderSide: BorderSide()),
@@ -332,7 +335,7 @@ class _RegisterViewState extends State<RegisterView> {
                               ),
                               TextFormField(
                                 decoration: InputDecoration(
-                                  labelText: 'OVO',
+                                  labelText: 'OVO Number',
                                   border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(6),
                                       borderSide: BorderSide()),
@@ -369,14 +372,67 @@ class _RegisterViewState extends State<RegisterView> {
                                 autovalidate: autoVal,
                                 validator: (value) {
                                   if (value.isEmpty) {
-                                    return 'OVO name cannot be empty';
+                                    return 'OVO name can not be empty';
                                   }
                                   if (regExpName.hasMatch(value)) {
-                                    return 'OVO name can not be numerical';
+                                    return 'OVO number can not be numberical';
                                   }
                                   return null;
                                 },
                                 controller: ovoNameController,
+                              ),
+
+                              SizedBox(
+                                height: 24,
+                              ),
+                              TextFormField(
+                                decoration: InputDecoration(
+                                    labelText: 'Dana Number',
+                                    border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(6),
+                                        borderSide: BorderSide()),
+                                    counterText: ""
+
+                                ),
+                                controller: danaNumberController,
+                                autovalidate: autoVal,
+                                keyboardType: TextInputType.number,
+                                maxLength: 13,
+                                validator: (value) {
+                                  if (value.isEmpty) {
+                                    return 'Dana number cannot be empty';
+                                  }
+                                  if (danaNumberController.text.length < 9) {
+                                    return 'Dana number at least 9 digit';
+                                  }
+                                  if (danaNumberController.text.length > 13) {
+                                    return 'Dana number maximum 13 digit';
+                                  }
+                                  return null;
+                                },
+                              ),
+
+                              SizedBox(
+                                height: 24,
+                              ),
+                              TextFormField(
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(6),
+                                      borderSide: BorderSide()),
+                                  labelText: 'Dana Name',
+                                ),
+                                autovalidate: autoVal,
+                                validator: (value) {
+                                  if (value.isEmpty) {
+                                    return 'Dana name cannot be empty';
+                                  }
+                                  if (regExpName.hasMatch(value)) {
+                                    return 'Dana name can not be numerical';
+                                  }
+                                  return null;
+                                },
+                                controller: danaNameController,
                               ),
                               SizedBox(
                                 height: 48,
@@ -425,6 +481,8 @@ class _RegisterViewState extends State<RegisterView> {
         ovo: ovoController.text,
         gopayName: gopayNameController.text,
         ovoName: ovoNameController.text,
+        danaName: danaNameController.text,
+        danaNumber: danaNumberController.text,
         fcm_token: fcm_token
       ));
     }
@@ -458,56 +516,6 @@ class _RegisterViewState extends State<RegisterView> {
       });
     }
   }
-
-  void isOvoExist(String value) {
-    if(value.isNotEmpty){
-      setState(() {
-        isOvoEnable = true;
-      });
-    } else{
-      setState(() {
-        isOvoEnable = false;
-      });
-    }
-  }
-
-  void isOvoNameExist(String value) {
-    if(value.isNotEmpty){
-      setState(() {
-        isOvoNameEnable = true;
-      });
-    } else{
-      setState(() {
-        isOvoNameEnable = false;
-      });
-    }
-  }
-
-  void isGopayExist(String value) {
-    if(value.isNotEmpty){
-      setState(() {
-        isGopayEnable = true;
-      });
-    } else{
-      setState(() {
-        isGopayEnable = false;
-      });
-    }
-  }
-
-  void isGopayNameExist(String value) {
-    if(value.isNotEmpty){
-      setState(() {
-        isGopayNameEnable = true;
-      });
-    } else{
-      setState(() {
-        isGopayNameEnable = false;
-      });
-    }
-  }
-
-
 
 
 

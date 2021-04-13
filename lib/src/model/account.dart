@@ -8,6 +8,8 @@ class Account {
   String gopayName;
   String ovo;
   String ovoName;
+  String dana;
+  String danaName;
   bool isSelected = false;
 
   Account(
@@ -20,7 +22,10 @@ class Account {
       this.gopayName,
       this.ovo,
       this.ovoName,
-      this.isSelected});
+      this.isSelected,
+      this.dana,
+      this.danaName
+      });
 
   Account.fromJson(Map<String, dynamic> json) {
     this.id = json['id'];
@@ -32,6 +37,8 @@ class Account {
     this.gopayName = json['gopay_name'];
     this.ovo = json['ovo'];
     this.ovoName = json['ovo_name'];
+    this.dana = json['dana'];
+    this.danaName = json['dana_name'];
   }
 
   Map<String, dynamic> toMap() => {
@@ -43,16 +50,19 @@ class Account {
         'gopay_name': this.gopayName,
         'ovo': this.ovo,
         'ovo_name': this.ovoName,
+        'dana': this.dana,
+        'dana_name': this.danaName,
       };
 
-
-
   static List<Account> parseList(List<dynamic> dataJson) {
-    List<Account> listBelanja = [];
+    List<Account> listAccount = [];
+    if (dataJson == null) {
+      return listAccount;
+    }
     dataJson.forEach((element) {
-      listBelanja.add(Account.fromJson(element));
+      listAccount.add(Account.fromJson(element));
     });
-    return listBelanja;
+    return listAccount;
   }
 
 

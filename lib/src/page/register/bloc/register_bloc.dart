@@ -29,6 +29,8 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState>{
             'gopay' :event.gopay,
             'gopay_name' : event.gopayName,
             'ovo_name' : event.ovoName,
+            'dana' : event.danaNumber,
+            'dana_name' : event.danaName,
             'fcm_token' : event.fcm_token
           })
         );
