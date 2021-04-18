@@ -31,7 +31,7 @@ class _BelanjaViewState extends State<BelanjaView> {
     // TODO: implement initState
     super.initState();
     belanjaBloc = Provider.of<BelanjaBloc>(context, listen: false);
-    belanjaBloc.add(GetListBelanja(start: 0,finish: 10));
+    belanjaBloc.add(GetListBelanja(start: 0,finish: 20));
   }
 
 

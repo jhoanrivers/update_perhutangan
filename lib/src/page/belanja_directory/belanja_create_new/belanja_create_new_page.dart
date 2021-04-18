@@ -7,6 +7,8 @@ import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:toast/toast.dart';
 import 'package:updateperutangan/src/model/account.dart';
+import 'package:updateperutangan/src/page/belanja_directory/belanja/bloc/belanja_bloc.dart';
+import 'package:updateperutangan/src/page/belanja_directory/belanja/bloc/belanja_event.dart';
 import 'package:updateperutangan/src/page/belanja_directory/belanja_create_new/bloc/create_belanja_bloc.dart';
 import 'package:updateperutangan/src/page/belanja_directory/belanja_create_new/bloc/create_belanja_event.dart';
 import 'package:updateperutangan/src/page/belanja_directory/belanja_create_new/bloc/create_belanja_state.dart';
@@ -23,6 +25,7 @@ class BelanjaCreateNewPage extends StatefulWidget {
 class _BelanjaCreateNewPageState extends State<BelanjaCreateNewPage> {
 
   CreateBelanjaBloc createBelanjaBloc;
+  BelanjaBloc belanjaBloc;
 
   TextEditingController titleTextController = new TextEditingController();
   Map<int, Account> mapResult = new Map();
@@ -32,13 +35,12 @@ class _BelanjaCreateNewPageState extends State<BelanjaCreateNewPage> {
   DateTime purchaseDate;
 
 
-
   GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     createBelanjaBloc = BlocProvider.of<CreateBelanjaBloc>(context);
+    belanjaBloc = BlocProvider.of<BelanjaBloc>(context);
 
   }
 
@@ -118,6 +120,7 @@ class _BelanjaCreateNewPageState extends State<BelanjaCreateNewPage> {
           }
 
           if(state is SuccessCreateBelanja) {
+            belanjaBloc.add(GetListBelanja(start: 0, finish: 20));
             Navigator.pop(context);
             Toast.show("Success Create Belanja", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
             members.clear();
