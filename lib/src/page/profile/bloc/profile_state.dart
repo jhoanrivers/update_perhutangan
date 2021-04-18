@@ -33,3 +33,11 @@ class SuccessFetchData extends ProfileState {
 }
 
 class FailedFetchData extends ProfileState {}
+
+class LoadingEditData extends ProfileState{}
+
+class LoginAgainAfterEditData extends ProfileState{}
+
+class SuccessEditProfile extends ProfileState {}
+
+class FailedEditProfile extends ProfileState{}

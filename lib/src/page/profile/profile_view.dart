@@ -6,6 +6,7 @@ import 'package:updateperutangan/src/page/login/login_page.dart';
 import 'package:updateperutangan/src/page/profile/bloc/profile_bloc.dart';
 import 'package:updateperutangan/src/page/profile/bloc/profile_event.dart';
 import 'package:updateperutangan/src/page/profile/bloc/profile_state.dart';
+import 'package:updateperutangan/src/page/profile/edit_profile_page.dart';
 import 'package:updateperutangan/src/utils/basestyle.dart';
 
 class ProfileView extends StatefulWidget {
@@ -108,7 +109,9 @@ class _ProfileViewState extends State<ProfileView> {
                       Container(
                         padding: EdgeInsets.fromLTRB(16, 10, 16, 10),
                         child: GestureDetector(
-                          onTap: () {},
+                          onTap: () {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => EditProfilePage()));
+                          },
                           child: Row(
                             children: <Widget>[
                               Icon(Icons.settings,
