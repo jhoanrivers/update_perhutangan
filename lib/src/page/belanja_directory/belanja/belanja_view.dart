@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
+import 'package:updateperutangan/src/model/account.dart';
 import 'package:updateperutangan/src/page/belanja_directory/belanja/bloc/belanja_bloc.dart';
 import 'package:updateperutangan/src/page/belanja_directory/belanja/bloc/belanja_event.dart';
 import 'package:updateperutangan/src/page/belanja_directory/belanja/bloc/belanja_state.dart';
@@ -103,7 +104,7 @@ class _BelanjaViewState extends State<BelanjaView> {
                                         SizedBox(
                                           height: 6,
                                         ),
-                                        Text(state.purchase.account[index].name)
+                                        Text(getNameByCreatedId(state.purchase.belanjaItem[index].createdBy, state.purchase.account))
                                       ],
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                     )
@@ -145,4 +146,19 @@ class _BelanjaViewState extends State<BelanjaView> {
 
 
   }
+
+
+  String getNameByCreatedId(int id, List<Account> account) {
+    var name = "";
+
+    for( int i = 0; i< account.length ; i++) {
+      if(id == account[i].id){
+        name = account[i].name;
+      }
+    }
+    return name;
+  }
+
+
+
 }

@@ -1,6 +1,8 @@
 
 
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:updateperutangan/src/model/account.dart';
@@ -17,7 +19,7 @@ class EditProfilePage extends StatefulWidget {
 class _EditProfilePageState extends State<EditProfilePage> {
 
   ProfileBloc profileBloc;
-
+  Codec<String, String> stringToBase64 = utf8.fuse(base64);
 
   var nameController = TextEditingController();
   var ovoController = TextEditingController();
@@ -35,14 +37,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
   bool autoValConfirm = false;
 
 
-  bool isUsernameEnable = false;
-  bool isNameEnable = false;
-  bool isOvoEnable = false;
-  bool isOvoNameEnable = false;
-  bool isGopayEnable = false;
-  bool isGopayNameEnable = false;
-  bool isDanaNameEnable = false;
-
 
   var regExpName = RegExp(r'[!@#<>?":_`~;[\]\\|=+)(*&^%0-9-]');
 
@@ -52,7 +46,24 @@ class _EditProfilePageState extends State<EditProfilePage> {
     // TODO: implement initState
     super.initState();
     profileBloc = BlocProvider.of<ProfileBloc>(context);
+
+    setDataUserInForm(profileBloc.dataUser);
   }
+
+
+  void setDataUserInForm(Account dataUser) {
+
+    nameController.text = dataUser.name;
+    ovoController.text = dataUser.ovo;
+    gopayController.text = dataUser.gopay ;
+    passwordController.text = stringToBase64.decode(dataUser.password);
+    gopayNameController.text = dataUser.gopayName;
+    ovoNameController.text = dataUser.ovoName;
+    danaNameController.text = dataUser.danaName;
+    danaNumberController.text = dataUser.dana;
+
+  }
+
 
 
   @override
@@ -162,6 +173,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                       borderSide: BorderSide()),
                                   labelText: 'Name',
                                 ),
+
                                 autovalidate: autoVal,
                                 validator: (value) {
                                   if (value.isEmpty) {
@@ -353,21 +365,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
                                 ),
                                 controller: danaNumberController,
-                                autovalidate: autoVal,
                                 keyboardType: TextInputType.number,
                                 maxLength: 13,
-                                validator: (value) {
-                                  if (value.isEmpty) {
-                                    return 'Dana number cannot be empty';
-                                  }
-                                  if (danaNumberController.text.length < 9) {
-                                    return 'Dana number at least 9 digit';
-                                  }
-                                  if (danaNumberController.text.length > 13) {
-                                    return 'Dana number maximum 13 digit';
-                                  }
-                                  return null;
-                                },
                               ),
 
                               SizedBox(
@@ -380,16 +379,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                       borderSide: BorderSide()),
                                   labelText: 'Dana Name',
                                 ),
-                                autovalidate: autoVal,
-                                validator: (value) {
-                                  if (value.isEmpty) {
-                                    return 'Dana name cannot be empty';
-                                  }
-                                  if (regExpName.hasMatch(value)) {
-                                    return 'Dana name can not be numerical';
-                                  }
-                                  return null;
-                                },
                                 controller: danaNameController,
                               ),
                               SizedBox(
@@ -403,13 +392,11 @@ class _EditProfilePageState extends State<EditProfilePage> {
                           child: RaisedButton(
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(6)),
-                            color: isUsernameEnable
-                                ? Colors.green
-                                : Colors.grey,
+                            color: Colors.green,
                             padding: EdgeInsets.symmetric(vertical: 14),
                             onPressed: _onButtonRegisterPressed,
                             child: Text(
-                              'Register',
+                              'Edit Profile',
                               style: BaseStyle.ts16WhiteBold,
                             ),
                           ),
@@ -457,4 +444,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
     Navigator.pop(context);
     return false;
   }
+
+
 }
